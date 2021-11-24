@@ -1,0 +1,23 @@
+[{
+  "_id": {
+    "$oid": "60929cd56ce96574b4508dbf"
+  },
+  "fullNameCustomer": {
+    "firstName": "Trịnh Tường",
+    "lastName": "Khâm"
+  },
+  "dateOfBirth": "08/03/1999",
+  "identityCardNumber": "331858506",
+  "address": "Bình Tân - Vĩnh Long",
+  "phoneNumber": "0776688934",
+  "email": "khamtt8399@gmail.com",
+  "loginInformation": {
+    "userName": "abc",
+    "password": "123",
+    "type": "Admin",
+    "roles": [
+      "All"
+    ]
+  },
+  "avatar": "/uploads/user-01.png"
+}]

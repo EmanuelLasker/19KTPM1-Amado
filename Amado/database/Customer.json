@@ -1,0 +1,48 @@
+[
+  {
+    "fullNameCustomer": {
+      "firstName": "Trịnh Tường",
+      "lastName:": "Khâm"
+    },
+    "dateOfBirth": "08/03/1999",
+    "sex": true,
+    "identityCardNumber": "331858506",
+    "address": "Bình Tân - Vĩnh Long",
+    "phoneNumber": "0776688934",
+    "email": "khamtt8399@gmail.com",
+    "listProduct": [],
+    "listFavorite": [],
+    "loginInformation": {
+      "userName": "tuongkhamuser",
+      "password": "khamtt12345",
+      "type": "User",
+      "roles": [
+        "Normal"
+      ]
+    },
+    "avatar": "/public/images/avatar-2.jpg"
+  },
+  {
+    "fullNameCustomer": {
+      "firstName": "Trịnh Tường",
+      "lastName:": "Khâm"
+    },
+    "dateOfBirth": "08/03/1999",
+    "sex": true,
+    "identityCardNumber": "331858506",
+    "address": "Bình Tân - Vĩnh Long",
+    "phoneNumber": "0776688934",
+    "email": "khamtt8399@gmail.com",
+    "listProduct": [],
+    "listFavorite": [],
+    "loginInformation": {
+      "userName": "user",
+      "password": "123",
+      "type": "User",
+      "roles": [
+        "Normal"
+      ]
+    },
+    "avatar": "/public/images/avatar-2.jpg"
+  }
+]
