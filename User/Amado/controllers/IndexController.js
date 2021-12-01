@@ -1,7 +1,7 @@
 const type = require("../models/types");
 const supplier = require("../models/suppliers");
 const product = require("../models/products");
-const customer = require("../models/customers");
+const customers = require("../models/customers");
 const region = require('../models/region');
 const bill = require('../models/bills');
 const OjectId = require('mongodb').ObjectId;
@@ -9,7 +9,7 @@ class IndexController {
   index(req, res, next) {
     type.find({}, (err, result) => {
       if (req.isAuthenticated()) {
-        customer.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
+        customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
           res.render("index", { data: result, message: req.flash("success"), customer: customerResult });
         })
       } else {
@@ -17,32 +17,10 @@ class IndexController {
       }
     });
   }
-  getSigninPage(req, res, next) {
+  getLoginPage(req, res, next) {
     var messageError = req.flash("error");
     var messageSuccess = req.flash("success");
-    res.render("signin", { message: messageError.length != 0 ? messageError : messageSuccess, typeMessage:  messageSuccess.length != 0 ? 'success': 'error'});
-  }
-  getShopPage(req, res, next) {
-    type.find({}, (err, result) => {
-      if (req.isAuthenticated()) {
-        customer.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
-          res.render("shop", { data: result, message: req.flash("success"), customer: customerResult });
-        })
-      } else {
-        res.render("shop", { data: result, message: req.flash("success"), customer: undefined });
-      }
-    });
-  }
-  getProductDetailsPage(req, res, next) {
-    type.find({}, (err, result) => {
-      if (req.isAuthenticated()) {
-        customer.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
-          res.render("product-details", { data: result, message: req.flash("success"), customer: customerResult });
-        })
-      } else {
-        res.render("product-details", { data: result, message: req.flash("success"), customer: undefined });
-      }
-    });
+    res.render("loginuser", { message: messageError.length != 0 ? messageError : messageSuccess, typeMessage:  messageSuccess.length != 0 ? 'success': 'error'});
   }
   getLogout(req, res, next) {
     req.logout();
@@ -50,14 +28,14 @@ class IndexController {
   }
   getCartPage(req, res, next) {
     if (req.isAuthenticated()) {
-      customer.findOne(
+      customers.findOne(
         { "loginInformation.userName": req.session.passport.user.username },
         (err, customerResult) => {
           res.render("cart", { customer: customerResult, message: req.flash('success') });
         }
       );
     } else {
-      res.redirect("/signin");
+      res.redirect("/login");
     }
   }
   getAddToCartSingle(req, res, next) {
@@ -65,7 +43,7 @@ class IndexController {
       var id = req.params.id;
       var user = req.session.passport.user.username;
       product.findOne({ _id: id }, (err, productResult) => {
-        customer
+        customers
           .findOneAndUpdate(
             { "loginInformation.userName": user },
             {
@@ -93,7 +71,7 @@ class IndexController {
           });
       });
     } else {
-      res.redirect("/signin");
+      res.redirect("/login");
     }
   }
   postAddToCartMulti(req, res, next) {
@@ -102,7 +80,7 @@ class IndexController {
       var user = req.session.passport.user.username;
       var amount = req.body.quantity ? req.body.quantity : 1;
       product.findOne({ _id: id }, (err, productResult) => {
-        customer
+        customers
           .findOneAndUpdate(
             { "loginInformation.userName": user },
             {
@@ -130,14 +108,14 @@ class IndexController {
           });
       });
     } else {
-      res.redirect("/signin");
+      res.redirect("/login");
     }
   }
   postUpdateQTYInCart(req, res, next) {
     var id = req.params.id;
     var quantity = parseInt(req.body.amount);
     var user = req.session.passport.user.username;
-    customer.updateOne({ "loginInformation.userName": user, "listProduct.productID": id }, { $set: { "listProduct.$.amount": quantity } })
+    customers.updateOne({ "loginInformation.userName": user, "listProduct.productID": id }, { $set: { "listProduct.$.amount": quantity } })
       .then(() => {
         res.redirect('/cart');
       })
@@ -149,7 +127,7 @@ class IndexController {
     if (req.isAuthenticated()) {
       var id = req.params.id;
       var user = req.session.passport.user.username;
-      customer.updateMany({ 'loginInformation.userName': user }, { $pull: { listProduct: { productID: id } } })
+      customers.updateMany({ 'loginInformation.userName': user }, { $pull: { listProduct: { productID: id } } })
         .then(() => {
           req.flash("success", "Đã xóa sản phẩm khỏi giỏ!");
           res.redirect('/cart');
@@ -159,17 +137,17 @@ class IndexController {
           next();
         });
     } else {
-      res.redirect('/signin');
+      res.redirect('/login');
     }
   }
   getCheckoutPage(req, res, next) {
     if (req.isAuthenticated()) {
       var user = req.session.passport.user.username;
-      customer.findOne({ 'loginInformation.userName': user }, (err, customerResult) => {
+      customers.findOne({ 'loginInformation.userName': user }, (err, customerResult) => {
         res.render("checkout", { customer: customerResult });
       });
     } else {
-      res.redirect('/signin');
+      res.redirect('/login');
     }
   }
   postCheckout(req, res, next) {
@@ -179,7 +157,7 @@ class IndexController {
       var district = req.body.district;
       var ward = req.body.ward;
       var address = req.body.address;
-      customer.findOne({ 'loginInformation.userName': user }, (err, customerResult) => {
+      customers.findOne({ 'loginInformation.userName': user }, (err, customerResult) => {
         region.findOne({Id: city}, (err, cityResult) => {
           var cityName = cityResult.Name;
           var districtData = cityResult.Districts.filter(e => e.Id == district);
@@ -207,7 +185,7 @@ class IndexController {
         })
       })
     } else {
-      res.redirect('/signin');
+      res.redirect('/login');
     }
   }
   search(req, res, next) {
@@ -218,7 +196,7 @@ class IndexController {
           { productName: { $regex: key, $options: "i" } },
           (err, productResult) => {
             if (req.isAuthenticated()) {
-              customer.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
+              customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
                 res.render("search", {
                   types: typeResult,
                   suppliers: supplierResult,
@@ -243,10 +221,10 @@ class IndexController {
     });
   }
   getRegisterPage(req, res, next) {
-    res.render('signup', {message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error')});
+    console.log(1);
+    res.render('sign-up', {message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error')});
   }
   postRegisterUser(req, res, next) {
-    console.log(111);
     var firstname = req.body.firstname;
     var lastname = req.body.lastname;
     var username = req.body.username;
@@ -255,13 +233,11 @@ class IndexController {
     var email = req.body.email;
     var password = req.body.password;
     var re_password = req.body.repassword;
-    customer.findOne({ 'loginInformation.userName': username }, (err, customerResult) => {
+    customers.findOne({ 'loginInformation.userName': username }, (err, customerResult) => {
       if (customerResult) {
-        console.log(112);
         req.flash('error', 'Tài khoản đã tồn tại!');
-        res.redirect('/signup')
+        res.redirect('/sign-up')
       } else {
-        console.log(113);
         var data = {
           'fullNameCustomer': {'firstName': firstname, 'lastName': lastname},
           'dateOfBirth': null,
@@ -275,17 +251,16 @@ class IndexController {
           'loginInformation': {'userName': username, 'password': password, 'type': 'User', roles: []},
           'avatar': '/uploads/user-01.png'
         }
-        var newUser = new customer(data);
+        var newUser = new customers(data);
         newUser.save()
         .then(() => {
-          console.log(114);
           req.flash('success', 'Tạo tài khoản thành công!');
-          res.redirect('/signin');
+          res.redirect('/login');
         })
         .catch((err) => {
           console.log(err);
           req.flash('error', 'Tạo tài khoản không thành công!');
-          res.redirect('/signin');
+          res.redirect('/login');
         });
       }
     });
@@ -295,7 +270,7 @@ class IndexController {
       var id = req.params.id;
       var user = req.session.passport.user.username;
       product.findOne({ _id: id }, (err, productResult) => {
-        customer
+        customers
           .findOneAndUpdate(
             { "loginInformation.userName": user },
             {
@@ -317,13 +292,13 @@ class IndexController {
           });
       });
     } else {
-      res.redirect("/signin");
+      res.redirect("/login");
     }
   }
   getFavoritePage(req, res, next) {
     var itemsPerPage = 6;
     if(req.isAuthenticated()) {
-      customer.findOne({'loginInformation.userName': req.session.passport.user.username}, (err, customerResult) => {
+      customers.findOne({'loginInformation.userName': req.session.passport.user.username}, (err, customerResult) => {
         type.find({}, (err, data) => {
           supplier.find({}, (err, supplier) => {
             res.render("favorites", {
@@ -339,14 +314,14 @@ class IndexController {
         });
       });
     } else {
-      res.redirect('/signin');
+      res.redirect('/login');
     }
   }
   getFavoriteAtPage(req, res, next) {
     var itemsPerPage = 6;
     var page = req.params.page;
     if(req.isAuthenticated()) {
-      customer.findOne({'loginInformation.userName': req.session.passport.user.username}, (err, customerResult) => {
+      customers.findOne({'loginInformation.userName': req.session.passport.user.username}, (err, customerResult) => {
         type.find({}, (err, data) => {
           supplier.find({}, (err, supplier) => {
             res.render("favorites", {
@@ -362,14 +337,14 @@ class IndexController {
         });
       });
     } else {
-      res.redirect('/signin');
+      res.redirect('/login');
     }
   }
   getDeleteFavorite(req, res, next) {
     if (req.isAuthenticated()) {
       var id = req.params.id;
       var user = req.session.passport.user.username;
-      customer.updateMany({ 'loginInformation.userName': user }, { $pull: { listFavorite: { _id: OjectId(id) } } })
+      customers.updateMany({ 'loginInformation.userName': user }, { $pull: { listFavorite: { _id: OjectId(id) } } })
         .then(() => {
           req.flash("success", "Đã sản phẩm khỏi yêu thích!");
           res.redirect('/favorite');
@@ -379,7 +354,7 @@ class IndexController {
           next();
         });
     } else {
-      res.redirect('/signin');
+      res.redirect('/login');
     }
   }
 }

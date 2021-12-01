@@ -68,6 +68,25 @@
       <div class="logo">
         <a href="/"><img src="/public/img/core-img/logo.png" alt="" /></a>
       </div>
+      <!-- Account Menu-->
+      <nav class="amado-acc">
+        <ul>
+        <% if (customer == undefined) { %>
+          <li class="active">
+            <a href="/login" class="acc-login">
+              <img src="/public/img/core-img/login.png" alt="" />
+              Đăng nhập
+            </a>
+          </li> 
+          <li>
+            <a href="/sign-up" class="acc-signup">
+              <img src="/public/img/core-img/register.png" alt="" />
+              Đăng ký
+            </a>
+          </li>
+        <% }  %>
+        </ul>
+      </nav>
       <!-- Amado Nav -->
       <nav class="amado-nav">
         <ul>
