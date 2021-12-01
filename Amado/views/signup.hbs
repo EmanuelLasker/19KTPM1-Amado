@@ -12,41 +12,46 @@
                             </div>
                         </div>
 
-                        <form action="#" class="signup-form">
+                        <form method="POST" action="#" class="signup-form">
                             <div class="form-group mb-3">
-                                <label class="label" for="name">Full name</label>
-                                <input type="text" class="form-control" placeholder="Phone number" required>
+                                <label class="label" for="name">First name</label>
+                                <input type="text" class="form-control" placeholder="First name" name="firstname" id="firstname" required>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="label" for="name">Last name</label>
+                                <input type="text" class="form-control" placeholder="Last name" name="lastname" id="lastname" required>
                             </div>
 
                             <div class="form-group mb-3">
                                 <label class="label" for="idno">Identification Card number</label>
-                                <input type="text" class="form-control" placeholder="Identification Card number"
+                                <input type="text" class="form-control" placeholder="Identification Card number" name="cmnd" id="cmnd"
                                     required>
                             </div>
 
                             <div class="form-group mb-3">
                                 <label class="label" for="email">Email</label>
-                                <input type="text" class="form-control" placeholder="Email" required>
+                                <input type="text" class="form-control" placeholder="Email" name="email" id="email" required>
                             </div>
 
                             <div class="form-group mb-3">
                                 <label class="label" for="phoneno">Phone number</label>
-                                <input type="text" class="form-control" placeholder="Phone number" required>
+                                <input type="text" class="form-control" placeholder="Phone number" name="phone" id="phone" required>
                             </div>
 
                             <div class="form-group mb-3">
                                 <label class="label" for="name">Username</label>
-                                <input type="text" class="form-control" placeholder="Username" required>
+                                <input type="text" class="form-control" placeholder="Username" name="username" id="username" required>
                             </div>
 
                             <div class="form-group mb-3">
                                 <label class="label" for="password">Password</label>
-                                <input type="password" class="form-control" placeholder="Password" required>
+                                <input type="password" class="form-control" placeholder="Password" name="password" id="pass1" required>
                             </div>
 
                             <div class="form-group mb-3">
                                 <label class="label" for="confirm">Confirm</label>
-                                <input type="password" class="form-control" placeholder="Confirm password" required>
+                                <input type="password" class="form-control" placeholder="Confirm password" name="repassword" id="pass2" required>
                             </div>
 
 
