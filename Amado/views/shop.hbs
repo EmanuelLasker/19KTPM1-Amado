@@ -55,7 +55,9 @@
             </nav>
             <!-- Button Group -->
             <div class="amado-btn-group mt-30 mb-100">
-                <a href="signin" class="btn amado-btn mb-15">Sign in</a>
+                {{#unless customer}}
+                    <a href="signin" class="btn amado-btn mb-15">Sign in</a>
+                {{/unless}}
                 <a href="#" class="btn amado-btn active">New this week</a>
             </div>
             <!-- Cart Menu -->
