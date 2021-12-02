@@ -1,6 +1,7 @@
 const product = require("../models/products");
 const supplier = require("../models/suppliers");
 const type = require("../models/types");
+const customer = require("../models/customers");
 
 class CategoriesController {
   getList(req, res, next) {
@@ -10,13 +11,31 @@ class CategoriesController {
     product.find({ "description.typeCode": id }, (err, result) => {
       supplier.find({}, (err, supllierResult) => {
         type.findOne({ _id: id }, (err, typeResult) => {
-          res.render("categories-list-item", {
-            suppliers: supllierResult,
-            products: result,
-            type: typeResult,
-            itemsPerPage: itemsPerPage,
-            currentPage: 1
-          });
+          if (req.isAuthenticated()) {
+            customer.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
+              res.render("categories-list-item", { 
+                data: result, 
+                message: req.flash("success"), 
+                customer: customerResult ,
+                suppliers: supllierResult,
+                products: result,
+                type: typeResult,
+                itemsPerPage: itemsPerPage,
+                currentPage: 1
+              });
+            })
+          } else {
+            res.render("categories-list-item", { 
+              data: result, 
+              message: req.flash("success"), 
+              customer: undefined,
+              suppliers: supllierResult,
+              products: result,
+              type: typeResult,
+              itemsPerPage: itemsPerPage,
+              currentPage: 1
+            });
+          }
         });
       });
     });
@@ -28,13 +47,31 @@ class CategoriesController {
     product.find({ "description.typeCode": id }, (err, result) => {
       supplier.find({}, (err, supllierResult) => {
         type.findOne({ _id: id }, (err, typeResult) => {
-          res.render("categories-list-item", {
-            suppliers: supllierResult,
-            products: result,
-            type: typeResult,
-            itemsPerPage: itemsPerPage,
-            currentPage: currentPage
-          });
+          if (req.isAuthenticated()) {
+            customer.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
+              res.render("categories-list-item", { 
+                data: result, 
+                message: req.flash("success"), 
+                customer: customerResult ,
+                suppliers: supllierResult,
+                products: result,
+                type: typeResult,
+                itemsPerPage: itemsPerPage,
+                currentPage: currentPage
+              });
+            })
+          } else {
+            res.render("categories-list-item", { 
+              data: result, 
+              message: req.flash("success"), 
+              customer: undefined,
+              suppliers: supllierResult,
+              products: result,
+              type: typeResult,
+              itemsPerPage: itemsPerPage,
+              currentPage: currentPage
+            });
+          }
         });
       });
     });
