@@ -5,6 +5,7 @@ const customers = require("../models/customers");
 const region = require('../models/region');
 const bill = require('../models/bills');
 const OjectId = require('mongodb').ObjectId;
+
 class IndexController {
   index(req, res, next) {
     type.find({}, (err, result) => {
