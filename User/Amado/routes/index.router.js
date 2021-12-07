@@ -5,6 +5,7 @@ const indexController = require('../controllers/IndexController');
 
 // User
 router.get('/login', indexController.getLoginPage);
+router.get('/user-info',indexController.getUserInformation);
 router.get('/logout', indexController.getLogout);
 router.get('/sign-up', indexController.getRegisterPage);
 router.post('/sign-up', indexController.postRegisterUser);

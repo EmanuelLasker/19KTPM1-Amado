@@ -93,3 +93,9 @@ input.qty-text {
 .amado-acc {
   margin-bottom: 3rem;
 }
+
+.amado-user-info{
+  box-sizing: border-box;
+  position: relative;
+  height: 809.618px;
+}

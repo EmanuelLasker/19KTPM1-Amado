@@ -27,6 +27,18 @@ class IndexController {
     req.logout();
     res.redirect('/');
   }
+  getUserInformation(req, res, next  ){
+    if (req.isAuthenticated()) {
+      customers.findOne(
+          { "loginInformation.userName": req.session.passport.user.username },
+          (err, customerResult) => {
+            res.render("user-profile", { customer: customerResult, message: req.flash('success') });
+          }
+      );
+    } else {
+      res.redirect("/login");
+    }
+  }
   getCartPage(req, res, next) {
     if (req.isAuthenticated()) {
       customers.findOne(

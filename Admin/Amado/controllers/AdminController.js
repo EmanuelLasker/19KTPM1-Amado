@@ -520,6 +520,7 @@ class AdminController {
       res.redirect('/admin/dashboard/orders-manager');
     });
   }
+
   getLogout(req, res, next) {
     req.logout();
     res.redirect('/admin/login');
