@@ -1,12 +1,13 @@
-const type = require("../models/types");
-const supplier = require("../models/suppliers");
-const product = require("../models/products");
-const customers = require("../models/customers");
-const region = require('../models/region');
-const bill = require('../models/bills');
+const type = require("../../models/types");
+const supplier = require("../../models/suppliers");
+const product = require("../../models/products");
+const customers = require("../../models/customers");
+const region = require('../../models/region');
+const bill = require('../../models/bills');
 const OjectId = require('mongodb').ObjectId;
+const bcrypt = require('bcrypt');
 
-class IndexController {
+class UserController {
   index(req, res, next) {
     type.find({}, (err, result) => {
       if (req.isAuthenticated()) {
@@ -246,6 +247,7 @@ class IndexController {
     var email = req.body.email;
     var password = req.body.password;
     var re_password = req.body.repassword;
+    var hashed_password = bcrypt.hashSync(password, 10);
     customers.findOne({ 'loginInformation.userName': username }, (err, customerResult) => {
       if (customerResult) {
         req.flash('error', 'Tài khoản đã tồn tại!');
@@ -261,7 +263,7 @@ class IndexController {
           'email': email,
           'listProduct': [],
           'listFavorite': [],
-          'loginInformation': {'userName': username, 'password': password, 'type': 'User', roles: []},
+          'loginInformation': {'userName': username, 'password': hashed_password, 'type': 'User', roles: []},
           'avatar': '/uploads/user-01.png'
         }
         var newUser = new customers(data);
@@ -372,4 +374,4 @@ class IndexController {
   }
 }
 
-module.exports = new IndexController();
+module.exports = new UserController();

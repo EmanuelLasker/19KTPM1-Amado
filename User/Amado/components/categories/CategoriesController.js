@@ -1,7 +1,7 @@
-const product = require("../models/products");
-const supplier = require("../models/suppliers");
-const type = require("../models/types");
-const customer = require("../models/customers");
+const product = require("../../models/products");
+const supplier = require("../../models/suppliers");
+const type = require("../../models/types");
+const customer = require("../../models/customers");
 
 class CategoriesController {
   getList(req, res, next) {

@@ -1,7 +1,7 @@
-const product = require("../models/products");
-const type = require("../models/types");
-const supplier = require("../models/suppliers");
-const customers = require("../models/customers");
+const product = require("../../models/products");
+const type = require("../../models/types");
+const supplier = require("../../models/suppliers");
+const customers = require("../../models/customers");
 
 class ProductController {
   productDetail(req, res, next) {
