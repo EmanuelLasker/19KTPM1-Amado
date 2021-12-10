@@ -17,6 +17,7 @@ class AdminController {
     var lastname = req.body.lastname;
     var username = req.body.username;
     var dob = req.body.dob;
+    var gender = req.body.gender;
     var phone = req.body.phone;
     var cmnd = req.body.cmnd;
     var address = req.body.address;
@@ -32,6 +33,7 @@ class AdminController {
         var data = {
           'fullNameCustomer': {'firstName': firstname, 'lastName': lastname},
           'dateOfBirth': dob,
+          'gender': gender,
           'identityCardNumber': cmnd,
           'address': address,
           'phoneNumber': phone,
