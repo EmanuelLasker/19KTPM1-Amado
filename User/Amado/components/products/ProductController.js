@@ -1,4 +1,5 @@
 const product = require("../../models/products");
+const comment = require("../../models/comments");
 const type = require("../../models/types");
 const supplier = require("../../models/suppliers");
 const customers = require("../../models/customers");
@@ -7,13 +8,16 @@ class ProductController {
   productDetail(req, res, next) {
     var id = req.params.id;
     product.findOne({ _id: id }, (err, result) => {
-      if(req.isAuthenticated()) {
-        customers.findOne({'loginInformation.userName': req.session.passport.user.username}, (err, customerResult) => {
-          res.render("product-details", { data: result, customer: customerResult });
-        });
-      } else {
-        res.render("product-details", { data: result, customer: undefined });
-      }
+      var name = result.productName;
+      comment.find({ productName: name}, (err, commentResult) => {
+        if(req.isAuthenticated()) {
+          customers.findOne({'loginInformation.userName': req.session.passport.user.username}, (err, customerResult) => {
+            res.render("product-details", { data: result, customer: customerResult, comments: commentResult });
+          });
+        } else {
+          res.render("product-details", { data: result, customer: undefined, comments: commentResult });
+        }
+      });
     });
   }
   search(req, res, next) {
