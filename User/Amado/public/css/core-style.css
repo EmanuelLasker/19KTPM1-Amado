@@ -1994,6 +1994,10 @@ select.form-select {
   padding-left: 16px
 }
 
+.cmt-card-full {
+  width: 100%
+}
+
 .hidden-data {
   font-size: 1px;
   color: #ffffff
