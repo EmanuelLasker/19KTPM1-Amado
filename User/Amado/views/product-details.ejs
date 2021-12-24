@@ -220,9 +220,15 @@
               <div class="form-group">
                 <input class="form-control form-control-lg" name="productName" id="productName" type="hidden" value="<%= data.productName %>">
               </div>
-              <div class="form-group">
-                <input class="form-control form-control-lg" name="customerName" id="customerName" type="text" placeholder="Tên" autocomplete="off" required>
-              </div>
+              <% if (customer == undefined) { %>
+                <div class="form-group">
+                  <input class="form-control form-control-lg" name="customerName" id="customerName" type="text" placeholder="Tên" autocomplete="off" required>
+                </div>
+              <% } else { %>
+                <div class="form-group">
+                  <div class="cmt-name"><%= customer.fullNameCustomer.lastName + " " + customer.fullNameCustomer.firstName %></div>
+                </div>
+              <%} %>
               <div class="form-group">
                 <input class="form-control form-control-lg" name="comment" id="comment" type="text" placeholder="Bình luận" autocomplete="off" required>
               </div>
