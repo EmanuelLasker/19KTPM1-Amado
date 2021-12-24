@@ -74,6 +74,10 @@ router.get('/dashboard/admin-list/:page', adminController.getAdminListAtPage);
 router.get('/dashboard/admin-list/', adminController.getAdminListPage);
 
 router.get('/profile', adminController.getAdminProfile);
+router.post('/profile/:id', uploadSingle.single('thumbnail'), adminController.postAdminProfile);
+
+router.get('/dashboard/user-list/:page', adminController.getUserListAtPage);
+router.get('/dashboard/user-list/', adminController.getUserListPage);
 
 // Logout
 router.get('/dashboard/logout', getLogout);
