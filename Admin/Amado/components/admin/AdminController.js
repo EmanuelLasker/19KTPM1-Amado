@@ -18,7 +18,7 @@ class AdminController {
     var lastname = req.body.lastname;
     var username = req.body.username;
     var dob = req.body.dob;
-    var gender = req.body.gender;
+    var sex = req.body.sex;
     var phone = req.body.phone;
     var cmnd = req.body.cmnd;
     var address = req.body.address;
@@ -34,7 +34,7 @@ class AdminController {
         var data = {
           'fullNameCustomer': {'firstName': firstname, 'lastName': lastname},
           'dateOfBirth': dob,
-          'gender': gender,
+          'sex': sex,
           'identityCardNumber': cmnd,
           'address': address,
           'phoneNumber': phone,
@@ -178,7 +178,7 @@ class AdminController {
                   customer: resultCustomer,
                   admins: adminResult,
                   message: req.flash("success"),
-                  page: 1,
+                  page: page,
                   numberItemPerpage: numberItemPerpage,
               });
             }
@@ -669,14 +669,14 @@ class AdminController {
       var numberItemPerpage = 12;
       var page = req.params.page;
       customers.find({}, (err, userResult) => {
-        customers.findOne(
+        admin.findOne(
           { "loginInformation.userName": req.session.passport.user.username },
             (err, resultCustomer) => {
                 res.render("user-list", {
                   customer: resultCustomer,
                   users: userResult,
                   message: req.flash("success"),
-                  page: 1,
+                  page: page,
                   numberItemPerpage: numberItemPerpage,
               });
             }
@@ -707,6 +707,6 @@ class AdminController {
     } else {
       res.redirect("admin/login/");
     }
-  }
+  } 
 }
 module.exports = new AdminController();
