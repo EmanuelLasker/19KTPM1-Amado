@@ -1,5 +1,5 @@
 const product = require("../../models/products");
-const comment = require("../../models/comments");
+const comments = require("../../models/comments");
 const type = require("../../models/types");
 const supplier = require("../../models/suppliers");
 const customers = require("../../models/customers");
@@ -9,7 +9,7 @@ class ProductController {
     var id = req.params.id;
     product.findOne({ _id: id }, (err, result) => {
       var name = result.productName;
-      comment.find({ productName: name}, (err, commentResult) => {
+      comments.find({ productName: name}, (err, commentResult) => {
         if(req.isAuthenticated()) {
           customers.findOne({'loginInformation.userName': req.session.passport.user.username}, (err, customerResult) => {
             res.render("product-details", { data: result, customer: customerResult, comments: commentResult });
@@ -19,6 +19,35 @@ class ProductController {
         }
       });
     });
+  }
+  postComment(req, res, next) {
+
+    var date = new Date();
+    var day = ("0" + date.getDate()).slice(-2);
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    var year = date.getFullYear();
+    var date_str = day + "/" + month + "/" + year;
+
+    var customerName = req.body.customerName;
+    var productName = req.body.productName;
+    var comment = req.body.comment;
+
+    var data = {
+      'customerName': customerName,
+      'productName': productName,
+      'comment': comment,
+      'date': date_str
+    }
+
+    console.log(data);
+
+    var newCmt = new comments(data);
+    newCmt.save()
+    .then(() => {
+      res.redirect('back');
+    });
+    res.redirect('back');
+
   }
   search(req, res, next) {
     var key = req.query.search;

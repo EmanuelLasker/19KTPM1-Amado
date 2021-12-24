@@ -216,12 +216,21 @@
         <div class="card">
           <div class="card-header">Bình luận</div>
           <div class="card-body">
-            <form method="POST" action="">
+            <form method="POST" action="/product/product-details">
               <div class="form-group">
-                <input class="form-control form-control-lg" name="username" id="username" type="text" placeholder="Tên" autocomplete="off" required>
+                <input class="form-control form-control-lg" name="productName" id="productName" type="hidden" value="<%= data.productName %>">
               </div>
+              <% if (customer == undefined) { %>
+                <div class="form-group">
+                  <input class="form-control form-control-lg" name="customerName" id="customerName" type="text" placeholder="Tên" autocomplete="off" required>
+                </div>
+              <% } else { %>
+                <div class="form-group">
+                  <div class="cmt-name"><%= customer.fullNameCustomer.lastName + " " + customer.fullNameCustomer.firstName %></div>
+                </div>
+              <%} %>
               <div class="form-group">
-                <input class="form-control form-control-lg" name="comment" id="comment" type="text" placeholder="Bình luận..." required>
+                <input class="form-control form-control-lg" name="comment" id="comment" type="text" placeholder="Bình luận" autocomplete="off" required>
               </div>
               <button type="submit" class="btn amado-btn">Gửi</button>
             </form>
@@ -231,17 +240,21 @@
       <!-- Product Comment Input End -->
 
       <!-- Product Comment List Area Start-->
-      <div>
-        <div class="cmt-name">Tên tài khoản</div>
-        <div class="cmt">Bình luận blablabla</div>
-      </div>
-      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="card">
-            <div class="card-body p-0">
-              Heyheyhey
-            </div>
+      <% comments.forEach(element => {%>
+        <hr>
+        <div class="cmt-card">
+          <div class="cmt-card-column cmt-card-ava">
+            <a class="nav-user-img">
+              <img src="/uploads/user-01.png" atl="" class="user-avatar-md rounded-circle">
+            </a>
+          </div>
+          <div class="cmt-card-column cmt-card-content">
+            <div class="cmt-name"><%= element.customerName %></div>
+            <div class="cmt-time"><%= element.date %></div>
+            <div class="cmt"><%= element.comment %></div>
+          </div>
         </div>
-      </div>
+      <%}) %>
       <!-- Product Comment List Area End -->
 
 

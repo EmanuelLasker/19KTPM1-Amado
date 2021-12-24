@@ -1956,3 +1956,45 @@ img {
 select.form-select {
   display: block;
 } */
+.cmt {
+  font-size: 16px;
+  color: #6b6b6b;
+}
+
+.cmt-time {
+  font-size: 12px;
+  color: #a5a5a5;
+}
+
+.cmt-name {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.comp-margin-bottom {
+  margin-bottom: 32px;
+}
+
+.cmt-card {
+  padding: 16px;
+  height: 96px;
+  padding-top: 0px
+}
+
+.cmt-card-column {
+  float: left
+}
+
+.cmt-card-ava {
+  width: 5%;
+}
+
+.cmt-card-content {
+  width: 95%;
+  padding-left: 16px
+}
+
+.hidden-data {
+  font-size: 1px;
+  color: #ffffff
+}
