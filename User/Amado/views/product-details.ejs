@@ -226,6 +226,9 @@
                 </div>
               <% } else { %>
                 <div class="form-group">
+                  <input class="form-control form-control-lg" name="customerName" id="customerName" type="hidden" value="<%= customer.fullNameCustomer.lastName + ' ' + customer.fullNameCustomer.firstName %>">
+                </div>
+                <div class="form-group">
                   <div class="cmt-name"><%= customer.fullNameCustomer.lastName + " " + customer.fullNameCustomer.firstName %></div>
                 </div>
               <%} %>
@@ -240,21 +243,43 @@
       <!-- Product Comment Input End -->
 
       <!-- Product Comment List Area Start-->
-      <% comments.forEach(element => {%>
-        <hr>
-        <div class="cmt-card">
-          <div class="cmt-card-column cmt-card-ava">
-            <a class="nav-user-img">
-              <img src="/uploads/user-01.png" atl="" class="user-avatar-md rounded-circle">
-            </a>
+      <div class="row">
+        <!-- Single Product Area -->
+        <% cmtList = comments.length > itemsPerPage ? comments.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) : comments%> 
+        <% cmtList.forEach(element=> {%>
+          <div class="cmt-card-full">
+            <hr>
+            <div class="cmt-card">
+              <div class="cmt-card-column cmt-card-ava">
+                <a class="nav-user-img">
+                  <img src="/uploads/user-01.png" atl="" class="user-avatar-md rounded-circle">
+                </a>
+              </div>
+              <div class="cmt-card-column cmt-card-content">
+                <div class="cmt-name"><%= element.customerName %></div>
+                <div class="cmt-time"><%= element.date %></div>
+                <div class="cmt"><%= element.comment %></div>
+              </div>
+            </div>
           </div>
-          <div class="cmt-card-column cmt-card-content">
-            <div class="cmt-name"><%= element.customerName %></div>
-            <div class="cmt-time"><%= element.date %></div>
-            <div class="cmt"><%= element.comment %></div>
-          </div>
+        <%}) %>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <!-- Pagination -->
+          <nav aria-label="navigation">
+            <ul class="pagination justify-content-end mt-50">
+              <% totalPage = comments.length % itemsPerPage != 0 ? (comments.length / itemsPerPage) + 1 : comments.length / itemsPerPage %>
+              <% for(var i = 1; i <= totalPage; i++){%>
+                <li class="page-item <%= i == currentPage ? 'active' : '' %> ">
+                  <a class="page-link" href="/product/<%= data._id %>/page/<%= i %>"><%= i %></a>
+                </li>
+              <%} %> 
+            </ul>
+          </nav>
         </div>
-      <%}) %>
+      </div>
       <!-- Product Comment List Area End -->
 
 
