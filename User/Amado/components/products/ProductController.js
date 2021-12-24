@@ -7,21 +7,62 @@ const customers = require("../../models/customers");
 class ProductController {
   productDetail(req, res, next) {
     var id = req.params.id;
+    var numberItemPerpage = 5;
     product.findOne({ _id: id }, (err, result) => {
       var name = result.productName;
       comments.find({ productName: name}, (err, commentResult) => {
         if(req.isAuthenticated()) {
           customers.findOne({'loginInformation.userName': req.session.passport.user.username}, (err, customerResult) => {
-            res.render("product-details", { data: result, customer: customerResult, comments: commentResult });
+            res.render("product-details", { 
+              data: result, 
+              customer: customerResult, 
+              comments: commentResult,
+              currentPage: 1,
+              itemsPerPage: numberItemPerpage 
+            });
           });
         } else {
-          res.render("product-details", { data: result, customer: undefined, comments: commentResult });
+          res.render("product-details", { 
+            data: result, 
+            customer: undefined, 
+            comments: commentResult,
+            currentPage: 1,
+            itemsPerPage: numberItemPerpage 
+          });
+        }
+      });
+    });
+  }
+  productDetailAtPage(req, res, next) {
+    var id = req.params.id;
+    var numberItemPerpage = 5;
+    var page = req.params.page;
+    product.findOne({ _id: id }, (err, result) => {
+      var name = result.productName;
+      comments.find({ productName: name}, (err, commentResult) => {
+        if(req.isAuthenticated()) {
+          customers.findOne({'loginInformation.userName': req.session.passport.user.username}, (err, customerResult) => {
+            res.render("product-details", { 
+              data: result, 
+              customer: customerResult, 
+              comments: commentResult,
+              currentPage: page,
+              itemsPerPage: numberItemPerpage 
+            });
+          });
+        } else {
+          res.render("product-details", { 
+            data: result, 
+            customer: undefined, 
+            comments: commentResult,
+            currentPage: page,
+            itemsPerPage: numberItemPerpage 
+          });
         }
       });
     });
   }
   postComment(req, res, next) {
-
     var date = new Date();
     var day = ("0" + date.getDate()).slice(-2);
     var month = ("0" + (date.getMonth() + 1)).slice(-2);
@@ -45,9 +86,12 @@ class ProductController {
     newCmt.save()
     .then(() => {
       res.redirect('back');
+    })
+    .catch((err) => {
+      console.log(err);
+      req.flash('error', 'Bình luận không thành công!');
+      res.redirect('back');
     });
-    res.redirect('back');
-
   }
   search(req, res, next) {
     var key = req.query.search;
@@ -148,13 +192,32 @@ class ProductController {
   filterProduct(req, res, next) {
     var selection = req.body.selection;
     var supplierFilter = req.body.supplier;
+    var priceFilter = req.body.price;
+
     req.session.selection = selection;
     req.session.supplierFilter = supplierFilter;
-    console.log(req.session)
+    //console.log(req.session)
+    //console.log(priceFilter);
     var itemsPerPage = 6;
     if(selection) {
       if(supplierFilter) {
         product.find({description: {$elementMatch: {typeCode: selection, supplierCode: supplierFilter}}}, (err, result) => {
+          if(priceFilter==1)
+            result.sort(function(a, b) {
+              return parseFloat(a._doc.description.price) - parseFloat(b._doc.description.price);
+            });
+          else if(priceFilter==2)
+            result.sort(function(a, b) {
+              return parseFloat(b._doc.description.price) - parseFloat(a._doc.description.price);
+            });
+          else if(priceFilter==3)
+            result.sort(function(a, b) {
+              return parseInt(a._doc.description.productName) - parseInt(b._doc.description.productName);
+            });
+          else if(priceFilter==4)
+            result.sort(function(a, b) {
+              return parseInt(b._doc.description.productName) - parseInt(b._doc.description.productName);
+            });
           type.find({}, (err, data) => {
             supplier.find({}, (err, supplier) => {
               if(req.isAuthenticated()) {
@@ -168,7 +231,8 @@ class ProductController {
                     message: req.flash('success'),
                     customer: customerResult,
                     selected: selection,
-                    supplierFilter: supplierFilter
+                    supplierFilter: supplierFilter,
+                    priceValue: priceFilter
                   });
                 })
               } else {
@@ -181,7 +245,8 @@ class ProductController {
                   message: req.flash('success'),
                   customer: undefined,
                   selected: selection,
-                  supplierFilter: supplierFilter
+                  supplierFilter: supplierFilter,
+                  priceValue: priceFilter
                 });
               }
             });
@@ -189,6 +254,22 @@ class ProductController {
         });
       } else {
         product.find({'description.typeCode': selection}, (err, result) => {
+          if(priceFilter==1)
+            result.sort(function(a, b) {
+              return parseFloat(a._doc.description.price) - parseFloat(b._doc.description.price);
+            });
+          else if(priceFilter==2)
+            result.sort(function(a, b) {
+              return parseFloat(b._doc.description.price) - parseFloat(a._doc.description.price);
+            });
+          else if(priceFilter==3)
+            result.sort(function(a, b) {
+              return parseInt(a._doc.description.productName) - parseInt(b._doc.description.productName);
+            });
+          else if(priceFilter==4)
+            result.sort(function(a, b) {
+              return parseInt(b._doc.description.productName) - parseInt(b._doc.description.productName);
+            });
           type.find({}, (err, data) => {
             supplier.find({}, (err, supplier) => {
               if(req.isAuthenticated()) {
@@ -202,7 +283,8 @@ class ProductController {
                     message: req.flash('success'),
                     customer: customerResult,
                     selected: selection,
-                    supplierFilter: supplierFilter
+                    supplierFilter: supplierFilter,
+                    priceValue: priceFilter
                   });
                 })
               } else {
@@ -215,7 +297,8 @@ class ProductController {
                   message: req.flash('success'),
                   customer: undefined,
                   selected: selection,
-                  supplierFilter: supplierFilter
+                  supplierFilter: supplierFilter,
+                  priceValue: priceFilter
                 });
               }
             });
@@ -225,6 +308,22 @@ class ProductController {
     } else {
       if(supplierFilter) {
         product.find({'description.supplierCode': supplierFilter}, (err, result) => {
+          if(priceFilter==1)
+            result.sort(function(a, b) {
+              return parseFloat(a._doc.description.price) - parseFloat(b._doc.description.price);
+            });
+          else if(priceFilter==2)
+            result.sort(function(a, b) {
+              return parseFloat(b._doc.description.price) - parseFloat(a._doc.description.price);
+            });
+          else if(priceFilter==3)
+            result.sort(function(a, b) {
+              return parseInt(a._doc.description.productName) - parseInt(b._doc.description.productName);
+            });
+          else if(priceFilter==4)
+            result.sort(function(a, b) {
+              return parseInt(b._doc.description.productName) - parseInt(b._doc.description.productName);
+            });
           type.find({}, (err, data) => {
             supplier.find({}, (err, supplier) => {
               if(req.isAuthenticated()) {
@@ -238,7 +337,8 @@ class ProductController {
                     message: req.flash('success'),
                     customer: customerResult,
                     selected: selection,
-                    supplierFilter: supplierFilter
+                    supplierFilter: supplierFilter,
+                    priceValue: priceFilter
                   });
                 })
               } else {
@@ -251,7 +351,8 @@ class ProductController {
                   message: req.flash('success'),
                   customer: undefined,
                   selected: selection,
-                  supplierFilter: supplierFilter
+                  supplierFilter: supplierFilter,
+                  priceValue: priceFilter
                 });
               }
             });
@@ -259,6 +360,22 @@ class ProductController {
         });
       } else {
         product.find({}, (err, result) => {
+          if(priceFilter==1)
+            result.sort(function(a, b) {
+              return parseFloat(a._doc.description.price) - parseFloat(b._doc.description.price);
+            });
+          else if(priceFilter==2)
+            result.sort(function(a, b) {
+              return parseFloat(b._doc.description.price) - parseFloat(a._doc.description.price);
+            });
+          else if(priceFilter==3)
+            result.sort(function(a, b) {
+              return parseInt(a._doc.description.productName) - parseInt(b._doc.description.productName);
+            });
+          else if(priceFilter==4)
+            result.sort(function(a, b) {
+              return parseInt(b._doc.description.productName) - parseInt(b._doc.description.productName);
+            });
           type.find({}, (err, data) => {
             supplier.find({}, (err, supplier) => {
               if(req.isAuthenticated()) {
@@ -271,7 +388,8 @@ class ProductController {
                     currentPage: 1,
                     message: req.flash('success'),
                     customer: customerResult,
-                    selected: selection
+                    selected: selection,
+                    priceValue: priceFilter
                   });
                 })
               } else {
@@ -283,7 +401,8 @@ class ProductController {
                   currentPage: 1,
                   message: req.flash('success'),
                   customer: undefined,
-                  selected: selection
+                  selected: selection,
+                  priceValue: priceFilter
                 });
               }
             });
@@ -312,7 +431,8 @@ class ProductController {
                   message: req.flash('success'),
                   customer: customerResult,
                   selected: selection,
-                  supplierFilter: supplierFilter
+                  supplierFilter: supplierFilter,
+                  priceValue: priceFilter
                 });
               })
             } else {
@@ -325,7 +445,8 @@ class ProductController {
                 message: req.flash('success'),
                 customer: undefined,
                 selected: selection,
-                supplierFilter: supplierFilter
+                supplierFilter: supplierFilter,
+                priceValue: priceFilter
               });
             }
           });
@@ -346,7 +467,8 @@ class ProductController {
                   message: req.flash('success'),
                   customer: customerResult,
                   selected: selection,
-                  supplierFilter: supplierFilter
+                  supplierFilter: supplierFilter,
+                  priceValue: priceFilter
                 });
               })
             } else {
@@ -359,7 +481,8 @@ class ProductController {
                 message: req.flash('success'),
                 customer: undefined,
                 selected: selection,
-                supplierFilter: supplierFilter
+                supplierFilter: supplierFilter,
+                priceValue: priceFilter
               });
             }
           });
