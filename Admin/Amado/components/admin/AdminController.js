@@ -5,6 +5,7 @@ const admin = require("../../models/admin");
 const bill = require('../../models/bills');
 const region = require("../../models/region");
 const bcrypt = require('bcrypt'); // !HASH_HERE
+const customers = require("../../models/customers");
 class AdminController {
   getLoginPage(req, res, next) {
     res.render("login", { message: req.flash("error") });
@@ -17,7 +18,7 @@ class AdminController {
     var lastname = req.body.lastname;
     var username = req.body.username;
     var dob = req.body.dob;
-    var gender = req.body.gender;
+    var sex = req.body.sex;
     var phone = req.body.phone;
     var cmnd = req.body.cmnd;
     var address = req.body.address;
@@ -33,7 +34,7 @@ class AdminController {
         var data = {
           'fullNameCustomer': {'firstName': firstname, 'lastName': lastname},
           'dateOfBirth': dob,
-          'gender': gender,
+          'sex': sex,
           'identityCardNumber': cmnd,
           'address': address,
           'phoneNumber': phone,
@@ -177,7 +178,7 @@ class AdminController {
                   customer: resultCustomer,
                   admins: adminResult,
                   message: req.flash("success"),
-                  page: 1,
+                  page: page,
                   numberItemPerpage: numberItemPerpage,
               });
             }
@@ -627,5 +628,85 @@ class AdminController {
       res.redirect("/login");
     }
   }
+
+  postAdminProfile(req, res, next) {
+    if (req.isAuthenticated()) {
+      var idAdmin = req.params.id;
+      admin.findOne({ _id: idAdmin }, (err, adminResult) => {
+        var data = {
+          fullNameCustomer: {
+            firstName: req.body.adminFirstName,
+            lastName: req.body.adminLastName
+          },
+          sex: req.body.adminSex,
+          identityCardNumber: req.body.adminIdentityCardNumber,
+          phoneNumber: req.body.adminPhoneNumber,
+          address: req.body.adminAddress,
+          email: req.body.adminEmail
+        };
+        admin
+          .findOneAndUpdate({ _id: idAdmin }, data, { new: true })
+          .then(() => {
+            req.flash("success", "Cập nhật thông tin thành công!");
+            res.redirect("/admin/profile");
+          })
+          .catch((err) => {
+            console.log(err);
+            req.flash(
+              "err",
+              "Cập nhật thông tin không thành công! Có lỗi xảy ra!"
+            );
+            next();
+          });
+      });
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
+
+  getUserListAtPage(req, res, next) {
+    if (req.isAuthenticated()) {
+      var numberItemPerpage = 12;
+      var page = req.params.page;
+      customers.find({}, (err, userResult) => {
+        admin.findOne(
+          { "loginInformation.userName": req.session.passport.user.username },
+            (err, resultCustomer) => {
+                res.render("user-list", {
+                  customer: resultCustomer,
+                  users: userResult,
+                  message: req.flash("success"),
+                  page: page,
+                  numberItemPerpage: numberItemPerpage,
+              });
+            }
+          );
+      });
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
+  
+  getUserListPage(req, res, next) {
+    if (req.isAuthenticated()) {
+      var numberItemPerpage = 12;
+      customers.find({}, (err, userResult) => {
+        admin.findOne(
+          { "loginInformation.userName": req.session.passport.user.username },
+            (err, resultCustomer) => {
+                res.render("user-list", {
+                  customer: resultCustomer,
+                  users: userResult,
+                  message: req.flash("success"),
+                  page: 1,
+                  numberItemPerpage: numberItemPerpage,
+              });
+            }
+          );
+      });
+    } else {
+      res.redirect("admin/login/");
+    }
+  } 
 }
 module.exports = new AdminController();
