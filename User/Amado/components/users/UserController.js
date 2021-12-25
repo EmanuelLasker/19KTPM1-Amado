@@ -40,6 +40,56 @@ class UserController {
       res.redirect("/login");
     }
   }
+  postUserInformation(req, res, next){
+    //console.log(req.session.passport.user.username);
+    var firstname = req.body.firstName;
+    var lastname = req.body.lastName;
+    var username = req.session.passport.user.username;
+    var phone = req.body.phone;
+    var cmnd = req.body.cmnd;
+    var email = req.body.email;
+    var sex = req.body.sex.toLowerCase()=="nam"?true:false;
+    var address = req.body.addr;
+    var avatar = req.body.avatar;
+    //console.log(req.params.id);
+    //'loginInformation.userName': username
+
+    // var password = req.body.password;
+    // var re_password = req.body.repassword;
+    // var hashed_password = bcrypt.hashSync(password, 10);
+
+    if (req.isAuthenticated()) {
+     // var idProduct = req.params.id;
+      customers.findOne({ 'loginInformation.userName': username }, (err, customerResult) => {
+        var data = {
+          'fullNameCustomer': {'firstName': firstname, 'lastName': lastname},
+          // 'dateOfBirth': customerResult.dateOfBirth,
+          'sex': sex,
+          'identityCardNumber': cmnd,
+          'address': address,
+          'phoneNumber': phone,
+          'email': email,
+          'avatar': avatar
+        }
+        customers
+            .findOneAndUpdate({ 'loginInformation.userName': username }, data, { new: true })
+            .then(() => {
+              req.flash("success", "Cập nhật thông tin thành công!");
+              res.redirect("/user-info");
+            })
+            .catch((err) => {
+              console.log(err);
+              req.flash(
+                  "err",
+                  "Cập nhật thông tin không thành công! Có lỗi xảy ra!"
+              );
+              next();
+            });
+      });
+    } else {
+      res.redirect("/login");
+    }
+  }
   getCartPage(req, res, next) {
     if (req.isAuthenticated()) {
       customers.findOne(

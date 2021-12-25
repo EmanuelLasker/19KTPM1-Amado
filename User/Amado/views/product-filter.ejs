@@ -260,8 +260,13 @@
                   <p class="pr-3">Sắp xếp theo</p>
                   <form class="priceFilter" action="/product/product-filter" method="post">
                     <select name="price" id="sortBydate" onchange="this.form.submit()">
-
-                      <%if(priceValue==1){%>
+                      <%if(priceValue==undefined){%>
+                        <option value="0" selected>Mặc định</option>
+                        <option value="1">Giá tăng dần</option>
+                        <option value="2">Giá giảm dần</option>
+                        <option value="3">A->Z</option>
+                        <option value="4">Z->A</option>
+                      <%}else if(priceValue==1){%>
                         <option value="0" >Mặc định</option>
                         <option value="1" selected>Giá tăng dần</option>
                         <option value="2">Giá giảm dần</option>
@@ -285,14 +290,7 @@
                         <option value="2" >Giá giảm dần</option>
                         <option value="3" >A->Z</option>
                         <option value="4" selected>Z->A</option>
-                      <%} else{%>
-                        <option value="0" selected>Mặc định</option>
-                        <option value="1">Giá tăng dần</option>
-                        <option value="2">Giá giảm dần</option>
-                        <option value="3">A->Z</option>
-                        <option value="4">Z->A</option>
-                        <%}%>
-
+                      <%}%>
 
                     </select>
                   </form>
@@ -486,12 +484,12 @@
       $('input[name=supplier]').change(function(){
       //  $('form.typeFilter').submit();
         $('form.supplierFilter').submit();
-        $('form.priceFilter').submit();
+        //$('form.priceFilter').submit();
       });
       $('input[name=selection]').change(function () {
         $('form.typeFilter').submit();
        // $('form.supplierFilter').submit();
-        $('form.priceFilter').submit();
+        //$('form.priceFilter').submit();
       });
     });
 
