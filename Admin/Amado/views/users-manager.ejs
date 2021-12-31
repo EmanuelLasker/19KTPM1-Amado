@@ -99,7 +99,7 @@
                                             </div>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/admin/dashboard/user-list">Quản lý người dùng</a>
+                                            <a class="nav-link" href="/admin/dashboard/users-manager">Quản lý người dùng</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link active" href="/admin/dashboard/admin-list">Danh sách tài khoản quản trị</a>
@@ -186,6 +186,10 @@
                                                                 <td> <%= element.address %>  </td>
                                                                 <td> <%= element.phoneNumber %>  </td>
                                                                 <td> <%= element.email %>  </td>
+                                                                <td>
+                                                                    <a style="margin-right: 5px;" href="/admin/dashboard/users-manager/update/<%= element._id %>"><i class="fas fa-edit"></i></a>
+                                                                    <a onclick="comfirmDelete('Bạn có muốn thông tin khách hàng này?',event)" style="margin-right: 5px;" href="/admin/dashboard/users-manager/delete/<%= element._id %>"><i class="fas fa-trash"></i></a>
+                                                                </td>
                                                                 <% i++ %>
                                                             </tr>
                                                         <%}) %> 
@@ -200,7 +204,7 @@
                                 <% numberPage = 0 %> 
                                 <% users.length % numberItemPerpage == 0 ? numberPage = (parseInt(users.length/numberItemPerpage)) : numberPage = (parseInt(users.length/numberItemPerpage)) + 1 %> 
                                 <% for(var i = 1; i <= numberPage; i++) {%>
-                                    <li class="page-item <%= i == page ? 'active' : '' %> "><a class="page-link" href="/admin/dashboard/user-list/<%= i %> "><%= i %> </a></li>                                    
+                                    <li class="page-item <%= i == page ? 'active' : '' %> "><a class="page-link" href="/admin/dashboard/users-manager/<%= i %> "><%= i %> </a></li>                                    
                                 <%} %> 
                             </ul>
                         </nav>

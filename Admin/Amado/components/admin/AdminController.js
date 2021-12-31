@@ -32,31 +32,32 @@ class AdminController {
       } else {
         var hash = bcrypt.hashSync(password, 10); // !HASH_HERE
         var data = {
-          'fullNameCustomer': {'firstName': firstname, 'lastName': lastname},
+          'fullNameCustomer': { 'firstName': firstname, 'lastName': lastname },
           'dateOfBirth': dob,
           'sex': sex,
           'identityCardNumber': cmnd,
           'address': address,
           'phoneNumber': phone,
           'email': email,
-          'loginInformation': {'userName': username, 'password': hash, 'type': 'Admin', roles: ["All"]},
+          'loginInformation': { 'userName': username, 'password': hash, 'type': 'Admin', roles: ["All"] },
           'avatar': '/uploads/user-01.png'
         }
         var newUser = new admin(data);
         newUser.save()
-        .then(() => {
-          req.flash('success', 'Tạo tài khoản thành công!');
-          res.redirect('/admin/dashboard');
-        })
-        .catch((err) => {
-          console.log(err);
-          req.flash('error', 'Tạo tài khoản không thành công!');
-          res.redirect('/admin/dashboard');
-        });
+          .then(() => {
+            req.flash('success', 'Tạo tài khoản thành công!');
+            res.redirect('/admin/dashboard');
+          })
+          .catch((err) => {
+            console.log(err);
+            req.flash('error', 'Tạo tài khoản không thành công!');
+            res.redirect('/admin/dashboard');
+          });
       }
     });
   }
-  getDashboardPage(req, res, next) {;
+  getDashboardPage(req, res, next) {
+    ;
     if (req.isAuthenticated()) {
       product.find({}, (err, productResult) => {
         bill.find({}, (err, billResult) => {
@@ -173,16 +174,16 @@ class AdminController {
       admin.find({}, (err, adminResult) => {
         admin.findOne(
           { "loginInformation.userName": req.session.passport.user.username },
-            (err, resultCustomer) => {
-                res.render("admin-list", {
-                  customer: resultCustomer,
-                  admins: adminResult,
-                  message: req.flash("success"),
-                  page: page,
-                  numberItemPerpage: numberItemPerpage,
-              });
-            }
-          );
+          (err, resultCustomer) => {
+            res.render("admin-list", {
+              customer: resultCustomer,
+              admins: adminResult,
+              message: req.flash("success"),
+              page: page,
+              numberItemPerpage: numberItemPerpage,
+            });
+          }
+        );
       });
     } else {
       res.redirect("/admin/login");
@@ -194,16 +195,16 @@ class AdminController {
       admin.find({}, (err, adminResult) => {
         admin.findOne(
           { "loginInformation.userName": req.session.passport.user.username },
-            (err, resultCustomer) => {
-                res.render("admin-list", {
-                  customer: resultCustomer,
-                  admins: adminResult,
-                  message: req.flash("success"),
-                  page: 1,
-                  numberItemPerpage: numberItemPerpage,
-              });
-            }
-          );
+          (err, resultCustomer) => {
+            res.render("admin-list", {
+              customer: resultCustomer,
+              admins: adminResult,
+              message: req.flash("success"),
+              page: 1,
+              numberItemPerpage: numberItemPerpage,
+            });
+          }
+        );
       });
     } else {
       res.redirect("admin/login/");
@@ -340,8 +341,8 @@ class AdminController {
   }
   getCategoriesManagerPage(req, res, next) {
     var numberItemPerpage = 6;
-    if(req.isAuthenticated()) {
-      admin.findOne({"loginInformation.userName": req.session.passport.user.username}, (err, customerResult) => {
+    if (req.isAuthenticated()) {
+      admin.findOne({ "loginInformation.userName": req.session.passport.user.username }, (err, customerResult) => {
         type.find({}, (err, typeResult) => {
           res.render('categories-manager', {
             customer: customerResult,
@@ -357,10 +358,10 @@ class AdminController {
     }
   }
   getCategoriesManagerAtPage(req, res, next) {
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
       var numberItemPerpage = 6;
       var page = req.params.page;
-      admin.findOne({"loginInformation.userName": req.session.passport.user.username}, (err, customerResult) => {
+      admin.findOne({ "loginInformation.userName": req.session.passport.user.username }, (err, customerResult) => {
         type.find({}, (err, typeResult) => {
           res.render('categories-manager', {
             customer: customerResult,
@@ -376,11 +377,11 @@ class AdminController {
     }
   }
   getUpdateCategoriesPage(req, res, next) {
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
       var id = req.params.id;
-      type.findOne({_id: id}, (err, typeResult) => {
-        admin.findOne({"loginInformation.userName": req.session.passport.user.username}, (err, customerResult) => {
-          res.render('update-categories', {type: typeResult, customer: customerResult});
+      type.findOne({ _id: id }, (err, typeResult) => {
+        admin.findOne({ "loginInformation.userName": req.session.passport.user.username }, (err, customerResult) => {
+          res.render('update-categories', { type: typeResult, customer: customerResult });
         });
       });
     } else {
@@ -388,16 +389,16 @@ class AdminController {
     }
   }
   getAddCategoriesPage(req, res, next) {
-    if(req.isAuthenticated()) {
-      admin.findOne({"loginInformation.userName": req.session.passport.user.username}, (err, customerResult) => {
-        res.render('add-categories', {customer: customerResult});
+    if (req.isAuthenticated()) {
+      admin.findOne({ "loginInformation.userName": req.session.passport.user.username }, (err, customerResult) => {
+        res.render('add-categories', { customer: customerResult });
       });
     } else {
       res.redirect('/admin/login');
     }
   }
   postAddCategories(req, res, next) {
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
       var data = {
         'typeName': req.body.name,
         'thumbnail': `/${req.file.path}`,
@@ -405,14 +406,14 @@ class AdminController {
       }
       var newCategories = new type(data);
       newCategories.save()
-      .then(() => {
-        req.flash('success', 'Thêm danh mục thành công!');
-        res.redirect('/admin/dashboard/categories-manager/');
-      })
-      .catch((err) => {
-        console.log(err);
-        req.flash('error', 'Thêm danh mục không thành công! Có lỗi xảy ra!');
-      });
+        .then(() => {
+          req.flash('success', 'Thêm danh mục thành công!');
+          res.redirect('/admin/dashboard/categories-manager/');
+        })
+        .catch((err) => {
+          console.log(err);
+          req.flash('error', 'Thêm danh mục không thành công! Có lỗi xảy ra!');
+        });
     } else {
       res.redirect('/admin/login');
     }
@@ -461,9 +462,9 @@ class AdminController {
   }
   getOrdersManagerPage(req, res, next) {
     var numberItemPerpage = 6;
-    if(req.isAuthenticated()) {
-      admin.findOne({"loginInformation.userName": req.session.passport.user.username}, (err, customerResult) => {
-        bill.find({status: {$nin: ['Chờ xác nhận']}}, (err, billResult) => {
+    if (req.isAuthenticated()) {
+      admin.findOne({ "loginInformation.userName": req.session.passport.user.username }, (err, customerResult) => {
+        bill.find({ status: { $nin: ['Chờ xác nhận'] } }, (err, billResult) => {
           res.render('orders-manager', {
             customer: customerResult,
             bills: billResult,
@@ -479,9 +480,9 @@ class AdminController {
   }
   getPendingOrderPage(req, res, next) {
     var numberItemPerpage = 6;
-    if(req.isAuthenticated()) {
-      admin.findOne({"loginInformation.userName": req.session.passport.user.username}, (err, customerResult) => {
-        bill.find({status: 'Chờ xác nhận'}, (err, billResult) => {
+    if (req.isAuthenticated()) {
+      admin.findOne({ "loginInformation.userName": req.session.passport.user.username }, (err, customerResult) => {
+        bill.find({ status: 'Chờ xác nhận' }, (err, billResult) => {
           res.render('pending-order', {
             customer: customerResult,
             bills: billResult,
@@ -498,9 +499,9 @@ class AdminController {
   getPendingOrderAtPage(req, res, next) {
     var numberItemPerpage = 6;
     var page = req.params.page;
-    if(req.isAuthenticated()) {
-      admin.findOne({"loginInformation.userName": req.session.passport.user.username}, (err, customerResult) => {
-        bill.find({status: 'Chờ xác nhận'}, (err, billResult) => {
+    if (req.isAuthenticated()) {
+      admin.findOne({ "loginInformation.userName": req.session.passport.user.username }, (err, customerResult) => {
+        bill.find({ status: 'Chờ xác nhận' }, (err, billResult) => {
           res.render('pending-order', {
             customer: customerResult,
             bills: billResult,
@@ -516,51 +517,51 @@ class AdminController {
   }
   getUpdateStatusOrder(req, res, next) {
     var id = req.params.id;
-    var data = {status: 'Chuẩn bị hàng'}
-    bill.findOneAndUpdate({_id: id}, data, {new: true})
-    .then(() => {
-      req.flash("success", "Đã xác nhận đơn hàng!");
-      res.redirect('/admin/dashboard/pending-orders-manager');
-    })
-    .catch((err) => {
-      console.log(err);
-      req.flash("error", "Lỗi xác nhận đơn hàng!");
-      res.redirect('/admin/dashboard/pending-orders-manager');
-    });
+    var data = { status: 'Chuẩn bị hàng' }
+    bill.findOneAndUpdate({ _id: id }, data, { new: true })
+      .then(() => {
+        req.flash("success", "Đã xác nhận đơn hàng!");
+        res.redirect('/admin/dashboard/pending-orders-manager');
+      })
+      .catch((err) => {
+        console.log(err);
+        req.flash("error", "Lỗi xác nhận đơn hàng!");
+        res.redirect('/admin/dashboard/pending-orders-manager');
+      });
   }
   getDeleteStatusOrder(req, res, next) {
     var id = req.params.id;
-    var data = {status: 'Đã hủy'}
-    bill.findOneAndUpdate({_id: id}, data, {new: true})
-    .then(() => {
-      req.flash("success", "Đã hủy đơn hàng!");
-      res.redirect('/admin/dashboard/pending-orders-manager');
-    })
-    .catch((err) => {
-      console.log(err);
-      req.flash("error", "Lỗi hủy đơn hàng!");
-      res.redirect('/admin/dashboard/pending-orders-manager');
-    });
+    var data = { status: 'Đã hủy' }
+    bill.findOneAndUpdate({ _id: id }, data, { new: true })
+      .then(() => {
+        req.flash("success", "Đã hủy đơn hàng!");
+        res.redirect('/admin/dashboard/pending-orders-manager');
+      })
+      .catch((err) => {
+        console.log(err);
+        req.flash("error", "Lỗi hủy đơn hàng!");
+        res.redirect('/admin/dashboard/pending-orders-manager');
+      });
   }
   getUpdateAllStatusOrder(req, res, next) {
-    var data = {status: 'Chuẩn bị hàng'}
-    bill.updateMany({}, {$set: data}, {new: true})
-    .then(() => {
-      req.flash("success", "Đã xác nhận đơn hàng!");
-      res.redirect('/admin/dashboard/pending-orders-manager');
-    })
-    .catch((err) => {
-      console.log(err);
-      req.flash("error", "Lỗi xác nhận đơn hàng!");
-      res.redirect('/admin/dashboard/pending-orders-manager');
-    });
+    var data = { status: 'Chuẩn bị hàng' }
+    bill.updateMany({}, { $set: data }, { new: true })
+      .then(() => {
+        req.flash("success", "Đã xác nhận đơn hàng!");
+        res.redirect('/admin/dashboard/pending-orders-manager');
+      })
+      .catch((err) => {
+        console.log(err);
+        req.flash("error", "Lỗi xác nhận đơn hàng!");
+        res.redirect('/admin/dashboard/pending-orders-manager');
+      });
   }
   getUpdateOrder(req, res, next) {
     var id = req.params.id;
     var user = req.session.passport.user.username;
-    admin.findOne({'loginInformation.userName': user}, (err, customerResult) => {
-      bill.findOne({_id: id}, (err, billResult) => {
-        res.render('update-order', {customer: customerResult, bill: billResult});
+    admin.findOne({ 'loginInformation.userName': user }, (err, customerResult) => {
+      bill.findOne({ _id: id }, (err, billResult) => {
+        res.render('update-order', { customer: customerResult, bill: billResult });
       });
     });
   }
@@ -575,54 +576,54 @@ class AdminController {
     var ward = req.body.ward;
     var address = req.body.address;
     var status = req.body.status;
-    region.findOne({Id: city}, (err, cityResult) => {
+    region.findOne({ Id: city }, (err, cityResult) => {
       var cityName = cityResult.Name;
       var districtData = cityResult.Districts.filter(e => e.Id == district);
       var districtName = districtData[0].Name;
       var wardName = districtData[0].Wards.filter(e => e.Id == ward)[0].Name;
       var data = {
-        'displayName': {firstName: firstName, lastName: lastName},
+        'displayName': { firstName: firstName, lastName: lastName },
         'address': `${address}, ${wardName}, ${districtName}, ${cityName}`,
         'status': status
-        }
-      bill.findOneAndUpdate({_id: id}, {$set: data}, {new: true})
-      .then(() => {
-        req.flash('success', 'Cập nhật thông tin đơn hàng thành công!');
-        res.redirect('/admin/dashboard/orders-manager');
-      })
-      .catch((err) => {
-        console.log(err);
-        req.flash('error', 'Cập nhật thông tin đơn hàng không thành công!');
-        res.redirect('/admin/dashboard/orders-manager');
-      });
+      }
+      bill.findOneAndUpdate({ _id: id }, { $set: data }, { new: true })
+        .then(() => {
+          req.flash('success', 'Cập nhật thông tin đơn hàng thành công!');
+          res.redirect('/admin/dashboard/orders-manager');
+        })
+        .catch((err) => {
+          console.log(err);
+          req.flash('error', 'Cập nhật thông tin đơn hàng không thành công!');
+          res.redirect('/admin/dashboard/orders-manager');
+        });
     });
   }
   getDeleteOrder(req, res, next) {
     var id = req.params.id;
-    var data = {status: 'Đã hủy'}
-    bill.findOneAndUpdate({_id: id}, data, {new: true})
-    .then(() => {
-      req.flash("success", "Đã hủy đơn hàng!");
-      res.redirect('/admin/dashboard/orders-manager');
-    })
-    .catch((err) => {
-      console.log(err);
-      req.flash("error", "Lỗi hủy đơn hàng!");
-      res.redirect('/admin/dashboard/orders-manager');
-    });
+    var data = { status: 'Đã hủy' }
+    bill.findOneAndUpdate({ _id: id }, data, { new: true })
+      .then(() => {
+        req.flash("success", "Đã hủy đơn hàng!");
+        res.redirect('/admin/dashboard/orders-manager');
+      })
+      .catch((err) => {
+        console.log(err);
+        req.flash("error", "Lỗi hủy đơn hàng!");
+        res.redirect('/admin/dashboard/orders-manager');
+      });
   }
   getLogout(req, res, next) {
     req.logout();
     res.redirect('/admin/login');
   }
 
-  getAdminProfile(req, res, next){
+  getAdminProfile(req, res, next) {
     if (req.isAuthenticated()) {
       admin.findOne(
-          { "loginInformation.userName": req.session.passport.user.username },
-          (err, adminResult) => {
-            res.render("admin-profile", { adminProfile: adminResult, message: req.flash('success') });
-          }
+        { "loginInformation.userName": req.session.passport.user.username },
+        (err, adminResult) => {
+          res.render("admin-profile", { adminProfile: adminResult, message: req.flash('success') });
+        }
       );
     } else {
       res.redirect("/login");
@@ -672,42 +673,114 @@ class AdminController {
       customers.find({}, (err, userResult) => {
         admin.findOne(
           { "loginInformation.userName": req.session.passport.user.username },
-            (err, resultCustomer) => {
-                res.render("user-list", {
-                  customer: resultCustomer,
-                  users: userResult,
-                  message: req.flash("success"),
-                  page: page,
-                  numberItemPerpage: numberItemPerpage,
-              });
-            }
-          );
+          (err, resultCustomer) => {
+            res.render("users-manager", {
+              customer: resultCustomer,
+              users: userResult,
+              message: req.flash("success"),
+              page: page,
+              numberItemPerpage: numberItemPerpage,
+            });
+          }
+        );
       });
     } else {
       res.redirect("/admin/login");
     }
   }
-  
+
   getUserListPage(req, res, next) {
     if (req.isAuthenticated()) {
       var numberItemPerpage = 12;
       customers.find({}, (err, userResult) => {
         admin.findOne(
           { "loginInformation.userName": req.session.passport.user.username },
-            (err, resultCustomer) => {
-                res.render("user-list", {
-                  customer: resultCustomer,
-                  users: userResult,
-                  message: req.flash("success"),
-                  page: 1,
-                  numberItemPerpage: numberItemPerpage,
-              });
-            }
-          );
+          (err, resultCustomer) => {
+            res.render("users-manager", {
+              customer: resultCustomer,
+              users: userResult,
+              message: req.flash("success"),
+              page: 1,
+              numberItemPerpage: numberItemPerpage,
+            });
+          }
+        );
       });
     } else {
       res.redirect("admin/login/");
     }
-  } 
+  }
+
+  getUpdateUserPage(req, res, next) {
+    if (req.isAuthenticated()) {
+      var idCustomer = req.params.id;
+      customers.findOne({ _id: idCustomer }, (err, userResult) => {
+        admin.findOne(
+          { "loginInformation.userName": req.session.passport.user.username },
+          (err, customerResult) => {
+            res.render("update-user", {
+              customer: customerResult,
+              user: userResult,
+              message: req.flash('success')
+            });
+          }
+        );
+      });
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
+  postUpdateUserPage(req, res, next) {
+    if (req.isAuthenticated()) {
+      var idCustomer = req.params.id;
+      customers.findOne({ _id: idCustomer }, (err, userResult) => {
+        var data = {
+          fullNameCustomer: {
+            firstName: req.body.userFirstName,
+            lastName: req.body.userLastName
+          },
+          sex: req.body.userSex,
+          dateOfBirth: req.body.userDoB,
+          identityCardNumber: req.body.userCardNumber,
+          phoneNumber: req.body.userPhoneNumber,
+          address: req.body.userAddress,
+          email: req.body.userEmail
+        };
+        customers
+          .findOneAndUpdate({ _id: idCustomer }, data, { new: true })
+          .then(() => {
+            req.flash("success", "Cập nhật thông tin thành công!");
+            res.redirect("/admin/dashboard/users-manager");
+          })
+          .catch((err) => {
+            console.log(err);
+            req.flash(
+              "err",
+              "Cập nhật thông tin không thành công! Có lỗi xảy ra!"
+            );
+            next();
+          });
+      });
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
+
+  getDeleteUserInfo(req, res, next) {
+    if (req.isAuthenticated()) {
+      var idCustomer = req.params.id;
+      customers.findOneAndRemove({ _id: idCustomer }, (err, result) => {
+        if (err) {
+          console.log(err);
+          req.flash("error", "Xóa thông tin không thành công! Có lỗi xảy ra!");
+          next();
+        }
+        req.flash("success", "Xóa thông tin thành công!");
+        res.redirect("/admin/dashboard/users-manager");
+      });
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
 }
 module.exports = new AdminController();

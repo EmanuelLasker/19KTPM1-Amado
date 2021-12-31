@@ -45,7 +45,7 @@
                                 <img src="/uploads/user-01.png" alt="" class="user-avatar-md rounded-circle"></a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
-                                    <% fullName = adminProfile.fullNameCustomer.firstName + " " + adminProfile.fullNameCustomer.lastName %> 
+                                    <% fullName = customer.fullNameCustomer.firstName + " " + customer.fullNameCustomer.lastName %> 
                                     <h5 class="mb-0 text-white nav-user-name"><%= fullName %> </h5>
                                 </div>
                                 <a class="dropdown-item" href="/admin/profile"><i class="fas fa-user mr-2"></i>Tài khoản</a>
@@ -125,32 +125,32 @@
         <!-- ============================================================== -->
         <div class="dashboard-wrapper">
             <div class="amado-pro-catagory clearfix">
-                <!--Admin Infomation Area Start-->
-                <div class="amado-admin-info">
+                <!--User Infomation Area Start-->
+                <div class="amado-user-info">
                     <div class="container rounded bg-white mt-5 md-5">
                         <div class="row">
                             <div class="col-md-4 border-right">
-                                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" src="<%=adminProfile.avatar%>"><span class="font-weight-bold"><%=adminProfile.fullNameCustomer.firstName+" "+adminProfile.fullNameCustomer.lastName%></span><span name="userName" class="text-black-50"><%=adminProfile.loginInformation.userName%></span><span> </span></div>
+                                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" src="<%=user.avatar%>"><span class="font-weight-bold"><%=user.fullNameCustomer.firstName+" "+user.fullNameCustomer.lastName%></span><span name="userName" class="text-black-50"><%=user.loginInformation.userName%></span><span> </span></div>
                             </div>
                             <div class="col-md-8 border-right">
                                 <div class="p-3 py-5">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <h4 class="text-right">Thông tin tài khoản</h4>
                                     </div>
-                                    <form class="row g-3" accept-charset="utf-8" spellcheck="false" enctype="multipart/form-data" action="/admin/profile/<%=adminProfile._id %>" method="POST">
+                                    <form class="row g-3" accept-charset="utf-8" spellcheck="false" enctype="multipart/form-data" action="/dashboard/users-manager/update/<%=user._id %>" method="POST">
                                     <div class="row mt-2">
-                                        <div class="col-md-6"><label for="validationServer01" class="form-label">Tên</label><input type="text" name="adminLastName" class="form-control" id="validationServer01" value="<%=adminProfile.fullNameCustomer.lastName%>" placeholder="<%=adminProfile.fullNameCustomer.lastName%>" required></div>
-                                        <div class="col-md-6"><label for="validationServer01" class="form-label">Họ</label><input type="text" name="adminFirstName" class="form-control" id="validationServer01" value="<%=adminProfile.fullNameCustomer.firstName%>" placeholder="<%=adminProfile.fullNameCustomer.firstName%>" required></div>
+                                        <div class="col-md-6"><label for="validationServer01" class="form-label">Tên</label><input type="text" name="userLastName" class="form-control" id="validationServer01" value="<%=user.fullNameCustomer.lastName%>" placeholder="<%=user.fullNameCustomer.lastName%>" required></div>
+                                        <div class="col-md-6"><label for="validationServer01" class="form-label">Họ</label><input type="text" name="userFirstName" class="form-control" id="validationServer01" value="<%=user.fullNameCustomer.firstName%>" placeholder="<%=user.fullNameCustomer.firstName%>" required></div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-md-12"><label for="validationServer01" class="form-label">Giới tính</label><input type="text" name="adminSex" class="form-control" id="validationServer01" placeholder="<%=adminProfile.sex=='Nam'?'Nam':'Nữ'%>" value="<%=adminProfile.sex=='Nam'?'Nam':'Nữ'%>"></div>
-                                        <div class="col-md-12"><label for="validationServer01" class="form-label">CMND</label><input type="text" name="adminIdentityCardNumber" class="form-control" id="validationServer01" placeholder="<%=adminProfile.identityCardNumber%>" value="<%=adminProfile.identityCardNumber%>"></div>
+                                        <div class="col-md-12"><label for="validationServer01" class="form-label">Giới tính</label><input type="text" name="userSex" class="form-control" id="validationServer01" placeholder="<%=user.sex=='Nam'?'Nam':'Nữ'%>" value="<%=user.sex=='Nam'?'Nam':'Nữ'%>"></div>
+                                        <div class="col-md-12"><label for="validationServer01" class="form-label">CMND</label><input type="text" name="userIdentityCardNumber" class="form-control" id="validationServer01" placeholder="<%=user.identityCardNumber%>" value="<%=user.identityCardNumber%>"></div>
                                         <div class="col-md-12"><label for="validationServer01" class="form-label">Ngày sinh</label>
-                                            <input id="validationServer01" class="form-control form-control-lg" type="date" name="adminDoB" required placeholder="yyyy-mm-dd" value="<%=adminProfile.dateOfBirth%>">
+                                            <input id="validationServer01" class="form-control form-control-lg" type="date" name="userDoB" required placeholder="yyyy-mm-dd" value="<%=user.dateOfBirth%>">
                                         </div>
-                                        <div class="col-md-12"><label for="validationServer01" class="form-label">Số Điện Thoại</label><input type="text" name="adminPhoneNumber" class="form-control" id="validationServer01" placeholder="<%=adminProfile.phoneNumber%>" value="<%=adminProfile.phoneNumber%>"></div>
-                                        <div class="col-md-12"><label for="validationServer01" class="form-label">Địa Chỉ</label><input type="text" name="adminAddress" class="form-control" id="validationServer01" placeholder="<%=adminProfile.address%>" value="<%=adminProfile.address%>"></div>
-                                        <div class="col-md-12"><label for="validationServer01" class="form-label">Email</label><input type="text" name="adminEmail" class="form-control" id="validationServer01" placeholder="<%=adminProfile.email%>" value="<%=adminProfile.email%>"></div>
+                                        <div class="col-md-12"><label for="validationServer01" class="form-label">Số Điện Thoại</label><input type="text" name="userPhoneNumber" class="form-control" id="validationServer01" placeholder="<%=user.phoneNumber%>" value="<%=user.phoneNumber%>"></div>
+                                        <div class="col-md-12"><label for="validationServer01" class="form-label">Địa Chỉ</label><input type="text" name="userAddress" class="form-control" id="validationServer01" placeholder="<%=user.address%>" value="<%=user.address%>"></div>
+                                        <div class="col-md-12"><label for="validationServer01" class="form-label">Email</label><input type="text" name="userEmail" class="form-control" id="validationServer01" placeholder="<%=user.email%>" value="<%=user.email%>"></div>
                                     </div>
                                     <!--                                    <div class="row mt-3">-->
                                     <!--                                        <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" value=""></div>-->

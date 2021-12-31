@@ -76,8 +76,14 @@ router.get('/dashboard/admin-list/', adminController.getAdminListPage);
 router.get('/profile', adminController.getAdminProfile);
 router.post('/profile/:id', uploadSingle.single('thumbnail'), adminController.postAdminProfile);
 
-router.get('/dashboard/user-list/:page', adminController.getUserListAtPage);
-router.get('/dashboard/user-list/', adminController.getUserListPage);
+// User Manager
+router.get('/dashboard/users-manager/:page', adminController.getUserListAtPage);
+router.get('/dashboard/users-manager/', adminController.getUserListPage);
+
+router.post('/dashboard/users-manager/update/:id', uploadSingle.single('thumbnail'), adminController.postUpdateUserPage);
+router.get('/dashboard/users-manager/update/:id', adminController.getUpdateUserPage);
+
+router.get('/dashboard/users-manager/delete/:id', adminController.getDeleteUserInfo);
 
 // Logout
 router.get('/dashboard/logout', getLogout);
