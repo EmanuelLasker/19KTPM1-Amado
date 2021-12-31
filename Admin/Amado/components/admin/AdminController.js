@@ -639,6 +639,7 @@ class AdminController {
             lastName: req.body.adminLastName
           },
           sex: req.body.adminSex,
+          dateOfBirth: req.body.adminDoB,
           identityCardNumber: req.body.adminIdentityCardNumber,
           phoneNumber: req.body.adminPhoneNumber,
           address: req.body.adminAddress,
