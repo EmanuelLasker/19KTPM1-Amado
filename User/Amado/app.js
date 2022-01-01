@@ -53,3 +53,4 @@ app.use("/categories", categories);
 app.listen(PORT, () => {
   console.log(`Server started at: localhost:${PORT}`);
 });
+

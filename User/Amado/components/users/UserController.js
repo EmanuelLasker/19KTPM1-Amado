@@ -6,16 +6,18 @@ const region = require('../../models/region');
 const bill = require('../../models/bills');
 const OjectId = require('mongodb').ObjectId;
 const bcrypt = require('bcrypt');
+const LocalStorage = require('node-localstorage').LocalStorage,
+    localStorage = new LocalStorage('./scratch');
 
 class UserController {
   index(req, res, next) {
     type.find({}, (err, result) => {
       if (req.isAuthenticated()) {
         customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
-          res.render("index", { data: result, message: req.flash("success"), customer: customerResult });
+          res.render("index", { data: result, message: req.flash("success"), customer: customerResult, title: "Amado - Trang chủ" });
         })
       } else {
-        res.render("index", { data: result, message: req.flash("success"), customer: undefined });
+        res.render("index", { data: result, message: req.flash("success"), customer: undefined, title: "Amado - Trang chủ" });
       }
     });
   }
@@ -33,7 +35,7 @@ class UserController {
       customers.findOne(
           { "loginInformation.userName": req.session.passport.user.username },
           (err, customerResult) => {
-            res.render("user-profile", { customer: customerResult, message: req.flash('success') });
+            res.render("user-profile", {title:"Thông tin người dùng", customer: customerResult, message: req.flash('success') });
           }
       );
     } else {
@@ -99,8 +101,32 @@ class UserController {
         }
       );
     } else {
-      res.redirect("/login");
+      var tmp_user = JSON.parse(localStorage.getItem('tmp_user'));
+
+      if(tmp_user == null){
+        var data = {
+          'fullNameCustomer': null,
+          'dateOfBirth': null,
+          'sex': null,
+          'identityCardNumber': null,
+          'address': null,
+          'phoneNumber': null,
+          'email': null,
+          'listProduct': [],
+          'listFavorite': [],
+          'loginInformation': null,
+          'avatar': null
+        }
+
+        tmp_user = new customers(data);
+        // const LocalStorage = require('node-localstorage').LocalStorage,
+        //     localStorage = new LocalStorage('./scratch');
+        localStorage.setItem('tmp_user',JSON.stringify(tmp_user));
+      }
+
+      res.render("cart", { customer: tmp_user, message: req.flash('success') });
     }
+
   }
   getAddToCartSingle(req, res, next) {
     if (req.isAuthenticated()) {
@@ -135,7 +161,30 @@ class UserController {
           });
       });
     } else {
-      res.redirect("/login");
+      var id = req.params.id;
+      let tmp_user = JSON.parse(localStorage.getItem('tmp_user'));
+      //res.redirect("/login");
+      product.findOne({ _id: id }, (err, productResult) => {
+        var data =
+            {productID: productResult._id.toString(),
+            productName: productResult.productName,
+            productPrice: productResult.description.price,
+            productImage: productResult.description.imageList[0],
+            amount: 1};
+        tmp_user.listProduct.push(data)
+
+      }).then(() => {
+        req.flash("success", "Sản phẩm đã thêm vào giỏ!");
+        localStorage.setItem('tmp_user',JSON.stringify(tmp_user));
+        res.redirect(`/product/`);
+      })
+          .catch((err) => {
+            console.log(err);
+            req.flash("error", "Lỗi khi thêm sản phẩm vào giỏ!");
+            next();
+          });
+
+
     }
   }
   postAddToCartMulti(req, res, next) {
@@ -262,6 +311,7 @@ class UserController {
             if (req.isAuthenticated()) {
               customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
                 res.render("search", {
+                  title: "Tìm kiếm",
                   types: typeResult,
                   suppliers: supplierResult,
                   products: productResult,
@@ -271,6 +321,7 @@ class UserController {
               });
             } else {
               res.render("search", {
+                title: "Tìm kiếm",
                 types: typeResult,
                 suppliers: supplierResult,
                 products: productResult,
