@@ -19,6 +19,11 @@ passport.use(
           if (!bcrypt.compareSync(password, user.loginInformation.password)) {
             return done(null, false, { message: 'Sai tên tài khoản hoặc mật khẩu!' });
           }
+
+          if (user.verified == 'false') {
+            return done(null, false, {message: 'Tài khoản chưa được kích hoạt!'});
+          }
+
           return done(null, user, { message: 'Đăng nhập thành công!' });
         }
       );

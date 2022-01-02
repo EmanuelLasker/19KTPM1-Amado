@@ -11,7 +11,8 @@ const customer = new mongoose.Schema({
     listProduct: Array,
     listFavorite: Array,
     loginInformation: Object,
-    avatar: String
+    avatar: String,
+    verified: String
 },{ versionKey: null });
 
 module.exports = mongoose.model('customers', customer);
