@@ -65,21 +65,29 @@ class AdminController {
               { "loginInformation.userName": req.session.passport.user.username },
               (err, customerResult) => {
 
-                var list = [];
+                var list = []
+                var dates = []
+
                 billResult.forEach(e => {
+                  var count = 0
                   e.listProduct.forEach(pro => {
                     list.push(pro)
+                    count += parseInt(pro.amount)
                   })
+
+                  if (!dates.includes(e.date.year + "-" + e.date.month + "-" + e.date.day)) {
+                    dates.push([e.date.year + "-" + e.date.month + "-" + e.date.day, count])
+                  }
                 })
 
-                var extractedList = [];
+                var extractedList = []
                 list.forEach(e => {
                   if (!extractedList.includes(e.productID)) {
                     extractedList.push(e.productID)
                   }
                 })
 
-                var topList = [];
+                var topList = []
                 extractedList.forEach(eEL => {
                   var totalAmount = 0;
                   var totalPrice = 0;
@@ -100,7 +108,7 @@ class AdminController {
                   return b.amount - a.amount;
                 })
 
-                var types = [];
+                var types = []
                 typeResult.forEach(e => {
                   var totalAmount = 0;
                   topList.forEach(eTL => {
@@ -108,7 +116,7 @@ class AdminController {
                       totalAmount += parseInt(eTL.amount)
                     }
                   })
-                  types.push({_id: e._id, name: e.typeName, amount: totalAmount})
+                  types.push({ _id: e._id, name: e.typeName, amount: totalAmount })
                 })
 
                 var typeList = []
@@ -117,13 +125,120 @@ class AdminController {
                   typeList.push([element.name, element.amount]);
                 });
 
+                var today = new Date();
+                var currentYear = today.getFullYear() - 1
+
+                var monthArr = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+                var countMonth = []
+                for (var j = 0; j < 12; j++)
+                  countMonth.push(0)
+
+                dates.sort(function (a, b) {
+                  var t1 = a[0].split("-")
+                  var t2 = b[0].split("-")
+
+                  if (parseInt(t1[0]) > parseInt(t2[0]))
+                    return 1
+                  else if (parseInt(t1[0]) < parseInt(t2[0]))
+                    return -1
+                  else {
+                    if (parseInt(t1[1]) > parseInt(t2[1]))
+                      return 1
+                    else if (parseInt(t1[1]) < parseInt(t2[1]))
+                      return -1
+                    else {
+                      if (parseInt(t1[2]) > parseInt(t2[2]))
+                        return 1
+                      else if (parseInt(t1[2]) < parseInt(t2[2]))
+                        return -1
+                    }
+                  }
+                  return 0;
+                })
+
+                billResult.forEach(e => {
+                  if (e.date.month == '1' && e.date.year == currentYear) {
+                    e.listProduct.forEach(pro => {
+                      countMonth[0] += parseInt(pro.amount)
+                    })
+                  }
+                  else if (e.date.month == '2' && e.date.year == currentYear) {
+                    e.listProduct.forEach(pro => {
+                      countMonth[1] += parseInt(pro.amount)
+                    })
+                  }
+                  else if (e.date.month == '3' && e.date.year == currentYear) {
+                    e.listProduct.forEach(pro => {
+                      countMonth[2] += parseInt(pro.amount)
+                    })
+                  }
+                  else if (e.date.month == '4' && e.date.year == currentYear) {
+                    e.listProduct.forEach(pro => {
+                      countMonth[3] += parseInt(pro.amount)
+                    })
+                  }
+                  else if (e.date.month == '5' && e.date.year == currentYear) {
+                    e.listProduct.forEach(pro => {
+                      countMonth[4] += parseInt(pro.amount)
+                    })
+                  }
+                  else if (e.date.month == '6' && e.date.year == currentYear) {
+                    e.listProduct.forEach(pro => {
+                      countMonth[5] += parseInt(pro.amount)
+                    })
+                  }
+                  else if (e.date.month == '7' && e.date.year == currentYear) {
+                    e.listProduct.forEach(pro => {
+                      countMonth[6] += parseInt(pro.amount)
+                    })
+                  }
+                  else if (e.date.month == '8' && e.date.year == currentYear) {
+                    e.listProduct.forEach(pro => {
+                      countMonth[7] += parseInt(pro.amount)
+                    })
+                  }
+                  else if (e.date.month == '9' && e.date.year == currentYear) {
+                    e.listProduct.forEach(pro => {
+                      countMonth[8] += parseInt(pro.amount)
+                    })
+                  }
+                  else if (e.date.month == '10' && e.date.year == currentYear) {
+                    e.listProduct.forEach(pro => {
+                      countMonth[9] += parseInt(pro.amount)
+                    })
+                  }
+                  else if (e.date.month == '11' && e.date.year == currentYear) {
+                    e.listProduct.forEach(pro => {
+                      countMonth[10] += parseInt(pro.amount)
+                    })
+                  }
+                  else if (e.date.month == '12' && e.date.year == currentYear) {
+                    e.listProduct.forEach(pro => {
+                      countMonth[11] += parseInt(pro.amount)
+                    })
+                  }
+                });
+
+                var monthSta = []
+                monthSta.push(['Tháng', 'Số lượng'])
+                for (var j = 0; j < 12; j++)
+                  monthSta.push([monthArr[j], countMonth[j]])
+
+                var dayList = []
+                dayList.push(['Ngày', 'Số lượng'])
+                dates.forEach(element => {
+                  dayList.push(element)
+                });
+
                 res.render("dashboard", {
                   message: req.flash("success"),
                   customer: customerResult,
                   abc: billResult,
                   products: productResult,
                   topList: topList,
-                  typeList: JSON.stringify(typeList)
+                  typeList: JSON.stringify(typeList),
+                  monthList: JSON.stringify(monthSta),
+                  dayList: JSON.stringify(dayList)
                 });
               }
             );

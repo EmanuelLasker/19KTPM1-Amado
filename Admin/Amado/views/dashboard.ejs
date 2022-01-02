@@ -342,8 +342,52 @@
                             <!-- end recent orders  -->
                         </div>
 
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <!-- ============================================================== -->
+                            <!-- top perfomimg  -->
+                            <!-- ============================================================== -->
+                            <div class="card">
+                                <h5 class="card-header">Top Sản Phẩm Bán Chạy</h5>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table no-wrap p-table">
+                                            <thead class="bg-light">
+                                                <tr class="border-0">
+                                                    <th class="border-0">Tên sản phẩm</th>
+                                                    <th class="border-0">Số lượng bán</th>
+                                                    <th class="border-0">Doanh thu</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% topList.every(e=> {%>
+                                                    <% if (e> 10) {%>
+                                                        <% return false; %>
+                                                            <%} %>
+                                                                <tr>
+                                                                    <td>
+                                                                        <%= e.productName %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= e.amount %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= e.price %>
+                                                                    </td>
+                                                                </tr>
+                                                                <% return true; %>
+                                                                    <%}) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ============================================================== -->
+                            <!-- end top perfomimg  -->
+                            <!-- ============================================================== -->
+                        </div>
+
                         <div class="row">
-                            <div class="col-xl-9"> 
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="card">
                                     <h5 class="card-header">Danh mục sản phẩm</h5>
                                     <div class="card-body">
@@ -353,185 +397,148 @@
 
                                             var set = JSON.parse('<%- typeList %>')
 
-                                            function drawChart() {  
+                                            function drawChart() {
                                                 var data = google.visualization.arrayToDataTable(set);
-                                    
+
                                                 var options = {
-                                                    title: 'Thống kê số lượng sản phẩm theo danh mục',
+                                                    title: 'Số lượng sản phẩm theo danh mục',
                                                     is3D: true,
                                                 };
-                                    
+
                                                 var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-                                    
+
                                                 chart.draw(data, options);
                                             }
                                         </script>
-                                        <div id="piechart" style="width: 900px; height: 500px;"></div>
+                                        <div id="piechart" style="width: 1200px; height: 500px;"></div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-xl-3 col-lg-12 col-md-6 col-sm-12 col-12">
-                                <!-- ============================================================== -->
-                                <!-- top perfomimg  -->
-                                <!-- ============================================================== -->
-                                <div class="card">
-                                    <h5 class="card-header">Top Sản Phẩm Bán Chạy</h5>
-                                    <div class="card-body p-0">
-                                        <div class="table-responsive">
-                                            <table class="table no-wrap p-table">
-                                                <thead class="bg-light">
-                                                    <tr class="border-0">
-                                                        <th class="border-0">Tên sản phẩm</th>
-                                                        <th class="border-0">Số lượng bán</th>
-                                                        <th class="border-0">Doanh thu</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <% topList.every(e=> {%>
-                                                        <% if (e> 10) {%>
-                                                            <% return false; %>
-                                                                <%} %>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <%= e.productName %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= e.amount %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= e.price %>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <% return true; %>
-                                                                        <%}) %>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- ============================================================== -->
-                                <!-- end top perfomimg  -->
-                                <!-- ============================================================== -->
-                            </div>
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="card">
+                                        <h5 class="card-header">Thống kê số lượng sản phẩm</h5>
+                                        <div class="card-body">
+                                            <script type="text/javascript">
+                                                google.charts.load('current', { 'packages': ['bar'] });
+                                                google.charts.setOnLoadCallback(drawChart);
 
-                            <!-- ============================================================== -->
-                            <!-- product category  -->
-                            <!-- ============================================================== -->
-                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-                                <div class="card">
-                                    <h5 class="card-header">Product Category</h5>
-                                    <div class="card-body">
-                                        <div class="ct-chart-category ct-golden-section" style="height: 315px;"></div>
-                                        <div class="text-center m-t-40">
-                                            <span class="legend-item mr-3">
-                                                <span class="fa-xs text-primary mr-1 legend-tile"><i
-                                                        class="fa fa-fw fa-square-full "></i></span>
-                                                <span class="legend-text">Man</span>
-                                            </span>
-                                            <span class="legend-item mr-3">
-                                                <span class="fa-xs text-secondary mr-1 legend-tile"><i
-                                                        class="fa fa-fw fa-square-full"></i></span>
-                                                <span class="legend-text">Woman</span>
-                                            </span>
-                                            <span class="legend-item mr-3">
-                                                <span class="fa-xs text-info mr-1 legend-tile"><i
-                                                        class="fa fa-fw fa-square-full"></i></span>
-                                                <span class="legend-text">Accessories</span>
-                                            </span>
+                                                var set1 = JSON.parse('<%- monthList %>')
+
+                                                function drawChart() {
+                                                    var data = google.visualization.arrayToDataTable(set1);
+
+                                                    var options = {
+                                                        chart: {
+                                                            title: 'Số lượng sản phẩm bán ra theo Tháng'
+                                                        }
+                                                    };
+
+                                                    var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+                                                    chart.draw(data, google.charts.Bar.convertOptions(options));
+                                                }
+                                            </script>
+                                            <div id="columnchart_material" style="width: 500px; height: 300px;"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- ============================================================== -->
-                            <!-- end product category  -->
-                            <!-- product sales  -->
-                            <!-- ============================================================== -->
-                            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="float-right">
-                                                <select class="custom-select">
-                                                    <option selected>Today</option>
-                                                    <option value="1">Weekly</option>
-                                                    <option value="2">Monthly</option>
-                                                    <option value="3">Yearly</option>
-                                                </select>
-                                            </div>
-                                        <h5 class="mb-0">Product Sales</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="ct-chart-product ct-golden-section"></div>
+
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <h5 class="card-header">Thống kê số lượng sản phẩm</h5>
+                                        <div class="card-body">
+                                            <script type="text/javascript">
+                                                google.charts.load('current', { 'packages': ['corechart'] });
+                                                google.charts.setOnLoadCallback(drawChart);
+
+                                                var set2 = JSON.parse('<%- dayList %>')
+
+                                                function drawChart() {
+                                                    var data = google.visualization.arrayToDataTable(set2);
+
+                                                    var options = {
+                                                        title: 'Số lượng sản phẩm bán ra theo Ngày',
+                                                        curveType: 'function',
+                                                        legend: { position: 'bottom' }
+                                                    };
+
+                                                    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+                                                    chart.draw(data, options);
+                                                }
+                                            </script>
+                                            <div id="curve_chart" style="width: 900px; height: 500px"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- ============================================================== -->
-                            <!-- end product sales  -->
-                            <!-- ============================================================== -->
 
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- ============================================================== -->
-            <!-- footer -->
-            <!-- ============================================================== -->
-            <div class="footer">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                            Copyright © 2018 Concept. All rights reserved. Dashboard by <a
-                                href="https://colorlib.com/wp/">Colorlib</a>.
-                        </div>
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="text-md-right footer-links d-none d-sm-block">
-                                <a href="javascript: void(0);">About</a>
-                                <a href="javascript: void(0);">Support</a>
-                                <a href="javascript: void(0);">Contact Us</a>
+                <!-- ============================================================== -->
+                <!-- footer -->
+                <!-- ============================================================== -->
+                <div class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                Copyright © 2018 Concept. All rights reserved. Dashboard by <a
+                                    href="https://colorlib.com/wp/">Colorlib</a>.
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="text-md-right footer-links d-none d-sm-block">
+                                    <a href="javascript: void(0);">About</a>
+                                    <a href="javascript: void(0);">Support</a>
+                                    <a href="javascript: void(0);">Contact Us</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- ============================================================== -->
+                <!-- end footer -->
+                <!-- ============================================================== -->
             </div>
             <!-- ============================================================== -->
-            <!-- end footer -->
+            <!-- end wrapper  -->
             <!-- ============================================================== -->
         </div>
         <!-- ============================================================== -->
-        <!-- end wrapper  -->
+        <!-- end main wrapper  -->
         <!-- ============================================================== -->
-    </div>
-    <!-- ============================================================== -->
-    <!-- end main wrapper  -->
-    <!-- ============================================================== -->
-    <!-- Optional JavaScript -->
-    <!-- jquery 3.3.1 -->
-    <script src="/public/assets/vendor/jquery/jquery-3.3.1.min.js"></script>
-    <!-- bootstap bundle js -->
-    <script src="/public/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
-    <!-- slimscroll js -->
-    <script src="/public/assets/vendor/slimscroll/jquery.slimscroll.js"></script>
-    <!-- main js -->
-    <script src="/public/assets/libs/js/main-js.js"></script>
-    <!-- chart chartist js -->
-    <script src="/public/assets/vendor/charts/chartist-bundle/chartist.min.js"></script>
-    <!-- sparkline js -->
-    <script src="/public/assets/vendor/charts/sparkline/jquery.sparkline.js"></script>
-    <!-- morris js -->
-    <!-- <script src="/public/assets/vendor/charts/morris-bundle/raphael.min.js"></script>
+        <!-- Optional JavaScript -->
+        <!-- jquery 3.3.1 -->
+        <script src="/public/assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+        <!-- bootstap bundle js -->
+        <script src="/public/assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+        <!-- slimscroll js -->
+        <script src="/public/assets/vendor/slimscroll/jquery.slimscroll.js"></script>
+        <!-- main js -->
+        <script src="/public/assets/libs/js/main-js.js"></script>
+        <!-- chart chartist js -->
+        <script src="/public/assets/vendor/charts/chartist-bundle/chartist.min.js"></script>
+        <!-- sparkline js -->
+        <script src="/public/assets/vendor/charts/sparkline/jquery.sparkline.js"></script>
+        <!-- morris js -->
+        <!-- <script src="/public/assets/vendor/charts/morris-bundle/raphael.min.js"></script>
     <script src="/public/assets/vendor/charts/morris-bundle/morris.js"></script> -->
-    <!-- chart c3 js -->
-    <script src="/public/assets/vendor/charts/c3charts/c3.min.js"></script>
-    <script src="/public/assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
-    <script src="/public/assets/vendor/charts/c3charts/C3chartjs.js"></script>
-    <script src="/public/assets/libs/js/dashboard-ecommerce.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    
-    <% if(message && message.length> 0){%>
-        <script>
-            toastr.success('<%= message %>', 'Thông báo', { timeOut: 1500, progressBar: true, closeButton: true });
-        </script>
-        <%} %>
+        <!-- chart c3 js -->
+        <script src="/public/assets/vendor/charts/c3charts/c3.min.js"></script>
+        <script src="/public/assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
+        <script src="/public/assets/vendor/charts/c3charts/C3chartjs.js"></script>
+        <script src="/public/assets/libs/js/dashboard-ecommerce.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+        <% if(message && message.length> 0){%>
+            <script>
+                toastr.success('<%= message %>', 'Thông báo', { timeOut: 1500, progressBar: true, closeButton: true });
+            </script>
+            <%} %>
 </body>
 
 </html>

@@ -7,6 +7,7 @@ const bill = new mongoose.Schema({
     address: String,
     paymentMethod: String,
     resquest: String,
+    date: Object,
     status: String
 
 },{ versionKey: null });
