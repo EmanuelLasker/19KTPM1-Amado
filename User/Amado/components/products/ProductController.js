@@ -3,6 +3,8 @@ const comments = require("../../models/comments");
 const type = require("../../models/types");
 const supplier = require("../../models/suppliers");
 const customers = require("../../models/customers");
+const LocalStorage = require('node-localstorage').LocalStorage,
+    localStorage = new LocalStorage('./scratch');
 
 class ProductController {
     productDetail(req, res, next) {
@@ -142,6 +144,25 @@ class ProductController {
                             });
                         })
                     } else {
+                        let tmp_user = JSON.parse(localStorage.getItem(req.sessionID));
+
+                        if (tmp_user == null) {
+                            let data = {
+                                'fullNameCustomer': null,
+                                'dateOfBirth': null,
+                                'sex': null,
+                                'identityCardNumber': null,
+                                'address': null,
+                                'phoneNumber': null,
+                                'email': null,
+                                'listProduct': [],
+                                'listFavorite': [],
+                                'loginInformation': null,
+                                'avatar': null
+                            }
+                            tmp_user = new customers(data);
+                        }
+
                         res.render("product", {
                             data: result,
                             types: data,
@@ -149,7 +170,7 @@ class ProductController {
                             itemsPerPage: itemsPerPage,
                             currentPage: 1,
                             message: req.flash('success'),
-                            customer: undefined,
+                            customer: tmp_user,
                             priceValue: 0
                         });
                     }
