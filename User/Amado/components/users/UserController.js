@@ -8,6 +8,7 @@ const OjectId = require('mongodb').ObjectId;
 const bcrypt = require('bcrypt');
 const LocalStorage = require('node-localstorage').LocalStorage,
     localStorage = new LocalStorage('./scratch');
+const nodemailer = require("nodemailer");
 
 class UserController {
   index(req, res, next) {
@@ -336,7 +337,6 @@ class UserController {
     });
   }
   getRegisterPage(req, res, next) {
-    console.log(1);
     res.render('sign-up', {message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error')});
   }
   postRegisterUser(req, res, next) {
@@ -365,7 +365,8 @@ class UserController {
           'listProduct': [],
           'listFavorite': [],
           'loginInformation': {'userName': username, 'password': hashed_password, 'type': 'User', roles: []},
-          'avatar': '/uploads/user-01.png'
+          'avatar': '/uploads/user-01.png',
+          'verified': 'false'
         }
         var newUser = new customers(data);
         newUser.save()
