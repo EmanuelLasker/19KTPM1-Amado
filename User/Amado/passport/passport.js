@@ -20,7 +20,7 @@ passport.use(
             return done(null, false, { message: 'Sai tên tài khoản hoặc mật khẩu!' });
           }
 
-          if (user.verified == 'false') {
+          if (user.verified == false) {
             return done(null, false, {message: 'Tài khoản chưa được kích hoạt!'});
           }
 

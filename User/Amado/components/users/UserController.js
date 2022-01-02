@@ -9,6 +9,10 @@ const bcrypt = require('bcrypt');
 const LocalStorage = require('node-localstorage').LocalStorage,
     localStorage = new LocalStorage('./scratch');
 const nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken");
+const _ = require("lodash");
+
+const EMAIL_SECRET = 'asdf1093KMnzxcvnkljvasdu09123nlasdasdf';
 
 class UserController {
   index(req, res, next) {
@@ -373,32 +377,52 @@ class UserController {
         .then(() => {
 
           // Send verification email
-          var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-              user: 'johndoe.alexa.19clc5@gmail.com',
-              pass: 'helloiamjohn123'
-            }
-          });
-      
-          var mailOptions = {
-            from: 'johndoe.alexa.19clc5@gmail.com',
-            to: 'fredinartandveronica@gmail.com',
-            subject: 'Send Gmail using Node.js',
-            text: 'Hi! Please click the button below to verify your account!'
-          }
-      
-          transporter.sendMail(mailOptions, function(error, info) {
-            if (error) {
-              console.log(error);
-            } else {
-              console.log('Email sent: ' + info.response);
-            }
-          });
+          try {
+            
+            // Generate token
+            const token = jwt.sign(
+              {
+                user: data.loginInformation.userName,
+              },
+              EMAIL_SECRET,
+              {
+                expiresIn: '1d',
+              },
+            );
 
-          // render new page
-          req.flash('success', 'Tạo tài khoản thành công!');
-          res.redirect('/login');
+            const url = `http://localhost:3000/confirmation/${token}`;
+
+            var transporter = nodemailer.createTransport({
+              service: 'gmail',
+              auth: {
+                user: 'johndoe.alexa.19clc5@gmail.com',
+                pass: 'helloiamjohn123'
+              }
+            });
+        
+            var mailOptions = {
+              from: 'johndoe.alexa.19clc5@gmail.com',
+              to: 'johndoe.alexa.19clc5@gmail.com',
+              subject: 'Confirm your email',
+              html: `Please click the following link to confirm your email: <a href="${url}">${url}</a>`
+            }
+        
+            transporter.sendMail(mailOptions, function(error, info) {
+              if (error) {
+                console.log(error);
+              } else {
+                console.log('Email sent: ' + info.response);
+              }
+            });
+
+            // render new page
+            req.flash('success', 'Tạo tài khoản thành công!');
+            res.redirect('/login');
+
+          } catch (e) {
+            console.log(e);
+          }
+
         })
         .catch((err) => {
           console.log(err);
@@ -408,29 +432,16 @@ class UserController {
       }
     });
   }
-  postSendVerificationEmail() {
-    var transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'johndoe.alexa.19clc5@gmail.com',
-        pass: 'helloiamjohn123'
-      }
+  getConfirmEmail(req, res, next) {
+    const user = jwt.verify(req.params.token, EMAIL_SECRET);
+    customers.updateOne(
+      { "loginInformation.userName": user.user }, 
+      { $set: {"verified" : true}}
+    , (err, res) => {
+      console.log(res);
     });
-
-    var mailOptions = {
-      from: 'no-reply@amadoboutique.cf',
-      to: 'johndoe.alexa.19clc5@gmail.com',
-      subject: 'Send Gmail using Node.js',
-      text: 'Ho! You are approaching me!'
-    }
-
-    transporter.sendMail(mailOptions, function(error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
+    console.log(user.user);
+    res.send('sucess');
   }
   getAddFavorite(req, res, next) {
     if (req.isAuthenticated()) {

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const customer = new mongoose.Schema({
     fullNameCustomer: Object,
     dateOfBirth: String,
-    sex: String,
+    sex: Boolean,
     identityCardNumber: String,
     address: String,
     phoneNumber: String,
@@ -12,7 +12,7 @@ const customer = new mongoose.Schema({
     listFavorite: Array,
     loginInformation: Object,
     avatar: String,
-    verified: String
+    verified: Boolean
 },{ versionKey: null });
 
 module.exports = mongoose.model('customers', customer);

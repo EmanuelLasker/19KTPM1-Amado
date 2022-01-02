@@ -9,6 +9,7 @@ router.post('/user-info',userController.postUserInformation);
 router.get('/logout', userController.getLogout);
 router.get('/sign-up', userController.getRegisterPage);
 router.post('/sign-up', userController.postRegisterUser);
+router.get('/confirmation/:token', userController.getConfirmEmail);
 router.post(
   '/login',
   passport.authenticate('user-local', {
