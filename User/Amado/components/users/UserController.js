@@ -371,6 +371,32 @@ class UserController {
         var newUser = new customers(data);
         newUser.save()
         .then(() => {
+
+          // Send verification email
+          var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: 'johndoe.alexa.19clc5@gmail.com',
+              pass: 'helloiamjohn123'
+            }
+          });
+      
+          var mailOptions = {
+            from: 'johndoe.alexa.19clc5@gmail.com',
+            to: 'fredinartandveronica@gmail.com',
+            subject: 'Send Gmail using Node.js',
+            text: 'Hi! Please click the button below to verify your account!'
+          }
+      
+          transporter.sendMail(mailOptions, function(error, info) {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
+
+          // render new page
           req.flash('success', 'Tạo tài khoản thành công!');
           res.redirect('/login');
         })
@@ -379,6 +405,30 @@ class UserController {
           req.flash('error', 'Tạo tài khoản không thành công!');
           res.redirect('/login');
         });
+      }
+    });
+  }
+  postSendVerificationEmail() {
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'johndoe.alexa.19clc5@gmail.com',
+        pass: 'helloiamjohn123'
+      }
+    });
+
+    var mailOptions = {
+      from: 'no-reply@amadoboutique.cf',
+      to: 'johndoe.alexa.19clc5@gmail.com',
+      subject: 'Send Gmail using Node.js',
+      text: 'Ho! You are approaching me!'
+    }
+
+    transporter.sendMail(mailOptions, function(error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
       }
     });
   }
