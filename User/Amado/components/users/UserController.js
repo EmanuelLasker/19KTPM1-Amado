@@ -20,6 +20,7 @@ class UserController {
       if (req.isAuthenticated()) {
         customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
           res.render("index", { data: result, message: req.flash("success"), customer: customerResult, title: "Amado - Trang chủ" });
+          console.log(customerResult);
         })
       } else {
         let tmp_user = JSON.parse(localStorage.getItem(req.sessionID));
@@ -39,8 +40,8 @@ class UserController {
           }
           tmp_user = new customers(data);
         }
-        res.render("index", { data: result, message: req.flash("success"), customer: tmp_user, title: "Amado - Trang chủ" });
-
+        res.render("index", { data: result, message: req.flash("success"), customer: undefined, title: "Amado - Trang chủ" });
+        console.log(tmp_user);
       }
     });
   }
@@ -490,8 +491,8 @@ class UserController {
                       var mailOptions = {
                         from: 'johndoe.alexa.19clc5@gmail.com',
                         to: email,
-                        subject: 'Confirm your email',
-                        html: `Please click the following link to confirm your email: <a href="${url}">${url}</a>`
+                        subject: 'Kích hoạt tài khoản Amado',
+                        html: `Chúc mừng bạn đã đăng ký thành công tài khoản Amado. Kích hoạt tài khoản của bạn <a href="${url}">tại đây</a>`
                       }
 
                       transporter.sendMail(mailOptions, function (error, info) {
