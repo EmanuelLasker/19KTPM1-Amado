@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
- 
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -12,15 +12,18 @@
     <link rel="stylesheet" href="/public/assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
     <link rel="stylesheet" href="/public/assets/vendor/charts/chartist-bundle/chartist.css">
     <link rel="stylesheet" href="/public/assets/vendor/charts/morris-bundle/morris.css">
-    <link rel="stylesheet" href="/public/assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
+    <link rel="stylesheet"
+        href="/public/assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="/public/assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="/public/assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-   <!-- Title  -->
-   <title>Amado - Dashboard</title>
+    <!-- Title  -->
+    <title>Amado - Dashboard</title>
 
-   <!-- Favicon  -->
-   <link rel="icon" href="/public/img/core-img/favicon.ico" />
+    <!-- Favicon  -->
+    <link rel="icon" href="/public/img/core-img/favicon.ico" />
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 
 <body>
@@ -33,22 +36,32 @@
         <!-- ============================================================== -->
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" href="/admin/dashboard"><img class="logo-img" src="/public/img/core-img/logo.png" alt="logo"></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" href="/admin/dashboard"><img class="logo-img"
+                        src="/public/img/core-img/logo.png" alt="logo"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse " id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto navbar-right-top">
                         <li class="nav-item dropdown nav-user">
-                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="/uploads/user-01.png" alt="" class="user-avatar-md rounded-circle"></a>
-                            <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
+                            <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
+                                aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
-                                    <% fullName = customer.fullNameCustomer.firstName + " " + customer.fullNameCustomer.lastName %> 
-                                    <h5 class="mb-0 text-white nav-user-name"><%= fullName %> </h5>
+                                    <% fullName=customer.fullNameCustomer.firstName + " " +
+                                        customer.fullNameCustomer.lastName %>
+                                        <h5 class="mb-0 text-white nav-user-name">
+                                            <%= fullName %>
+                                        </h5>
                                 </div>
-                                <a class="dropdown-item" href="/admin/profile"><i class="fas fa-user mr-2"></i>Tài khoản</a>
-                                <a class="dropdown-item" href="/admin/dashboard/logout"><i class="fas fa-power-off mr-2"></i>Đăng xuất</a>
+                                <a class="dropdown-item" href="/admin/profile"><i class="fas fa-user mr-2"></i>Tài
+                                    khoản</a>
+                                <a class="dropdown-item" href="/admin/dashboard/logout"><i
+                                        class="fas fa-power-off mr-2"></i>Đăng xuất</a>
                             </div>
                         </li>
                     </ul>
@@ -65,7 +78,8 @@
             <div class="menu-list">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
@@ -74,36 +88,48 @@
                                 Menu
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Dashboard <span class="badge badge-success">6</span></a>
+                                <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false"
+                                    data-target="#submenu-1" aria-controls="submenu-1"><i
+                                        class="fa fa-fw fa-user-circle"></i>Dashboard <span
+                                        class="badge badge-success">6</span></a>
                                 <div id="submenu-1" class="collapse submenu show">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
                                             <a class="nav-link active" href="/admin/dashboard">Tổng quan</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/admin/dashboard/categories-manager">Quản lý danh mục</a>
+                                            <a class="nav-link" href="/admin/dashboard/categories-manager">Quản lý danh
+                                                mục</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/admin/dashboard/products-manager">Quản lý sản phẩm</a>
+                                            <a class="nav-link" href="/admin/dashboard/products-manager">Quản lý sản
+                                                phẩm</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1-2" aria-controls="submenu-1-2">Quản lý đơn hàng</a>
+                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
+                                                data-target="#submenu-1-2" aria-controls="submenu-1-2">Quản lý đơn
+                                                hàng</a>
                                             <div id="submenu-1-2" class="collapse submenu show">
                                                 <ul class="nav flex-column">
                                                     <li class="nav-item">
-                                                        <a class="nav-link" href="/admin/dashboard/pending-orders-manager">Chờ xác nhận</a>
+                                                        <a class="nav-link"
+                                                            href="/admin/dashboard/pending-orders-manager">Chờ xác
+                                                            nhận</a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <a class="nav-link" href="/admin/dashboard/orders-manager">Tình trạng đơn hàng</a>
+                                                        <a class="nav-link" href="/admin/dashboard/orders-manager">Tình
+                                                            trạng đơn hàng</a>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/admin/dashboard/users-manager">Quản lý người dùng</a>
+                                            <a class="nav-link" href="/admin/dashboard/users-manager">Quản lý người
+                                                dùng</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link " href="/admin/dashboard/admin-list">Danh sách tài khoản quản trị</a>
+                                            <a class="nav-link " href="/admin/dashboard/admin-list">Danh sách tài khoản
+                                                quản trị</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link " href="/sign-up">Thêm tài khoản quản trị</a>
@@ -135,7 +161,8 @@
                                 <div class="page-breadcrumb">
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
+                                            <li class="breadcrumb-item"><a href="#"
+                                                    class="breadcrumb-link">Dashboard</a></li>
                                             <li class="breadcrumb-item active" aria-current="page">Tổng quan</li>
                                         </ol>
                                     </nav>
@@ -154,16 +181,19 @@
                             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                 <div class="card border-3 border-top border-top-primary">
                                     <div class="card-body">
-                                        <% cost = 0 %> 
-                                        <% abc.forEach(e => {%>
-                                            <% e.listProduct.forEach(pro => {%>
-                                                <% cost += parseInt(pro.productPrice)  %> 
-                                            <%}) %> 
-                                        <%}) %> 
-                                        <h5 class="text-muted">Tổng doanh thu</h5>
-                                        <div class="metric-value d-inline-block">
-                                            <h1 class="mb-1"><%= cost.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,' ) %> đồng</h1>
-                                        </div>
+                                        <% cost=0 %>
+                                            <% abc.forEach(e=> {%>
+                                                <% e.listProduct.forEach(pro=> {%>
+                                                    <% cost +=parseInt(pro.productPrice)*parseInt(pro.amount) %>
+                                                        <%}) %>
+                                                            <%}) %>
+                                                                <h5 class="text-muted">Tổng doanh thu</h5>
+                                                                <div class="metric-value d-inline-block">
+                                                                    <h1 class="mb-1">
+                                                                        <%= cost.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'
+                                                                            ) %> đồng
+                                                                    </h1>
+                                                                </div>
                                     </div>
                                 </div>
                             </div>
@@ -178,7 +208,9 @@
                                     <div class="card-body">
                                         <h5 class="text-muted">Số sản phẩm</h5>
                                         <div class="metric-value d-inline-block">
-                                            <h1 class="mb-1"><%= products.length %> </h1>
+                                            <h1 class="mb-1">
+                                                <%= products.length %>
+                                            </h1>
                                         </div>
                                     </div>
                                 </div>
@@ -194,7 +226,9 @@
                                     <div class="card-body">
                                         <h5 class="text-muted">Số đơn đặt hàng</h5>
                                         <div class="metric-value d-inline-block">
-                                            <h1 class="mb-1"><%= abc.length %> </h1>
+                                            <h1 class="mb-1">
+                                                <%= abc.length %>
+                                            </h1>
                                         </div>
                                     </div>
                                 </div>
@@ -208,14 +242,16 @@
                             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                 <div class="card border-3 border-top border-top-primary">
                                     <div class="card-body">
-                                        <% cancel = 0 %> 
-                                        <% abc.forEach(e => {%>
-                                            <% e.status == "Đã hủy" ? cancel++ : "" %> 
-                                        <%}) %> 
-                                        <h5 class="text-muted">Số đơn bị hủy</h5>
-                                        <div class="metric-value d-inline-block">
-                                            <h1 class="mb-1"><%= cancel %> </h1>
-                                        </div>
+                                        <% cancel=0 %>
+                                            <% abc.forEach(e=> {%>
+                                                <% e.status=="Đã hủy" ? cancel++ : "" %>
+                                                    <%}) %>
+                                                        <h5 class="text-muted">Số đơn bị hủy</h5>
+                                                        <div class="metric-value d-inline-block">
+                                                            <h1 class="mb-1">
+                                                                <%= cancel %>
+                                                            </h1>
+                                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -225,10 +261,10 @@
                         </div>
                         <div class="row">
                             <!-- ============================================================== -->
-                      
+
                             <!-- ============================================================== -->
 
-                                          <!-- recent orders  -->
+                            <!-- recent orders  -->
                             <!-- ============================================================== -->
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="card">
@@ -248,32 +284,54 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <% j = 1; %> 
-                                                    <% if(abc.length > 5) {%>
-                                                        <% for(var i = abc.length - 5; i < abc.length; i++) {%>
-                                                            <tr>
-                                                                <td><%= j %> </td>
-                                                                <td><%= abc[i]._id %> </td>
-                                                                <td><%= abc[i].displayName.firstName + " " +  abc[i].displayName.lastName%> </td>
-                                                                <td><%= abc[i].address %></td>
-                                                                <td>
-                                                                    <% for(var j = 0; j < abc[i].listProduct.length; j++) {%>
-                                                                        <%= abc[i].listProduct[j].productName + " x " + abc[i].listProduct[j].amount %> <br>
-                                                                    <%} %> 
-                                                                 </td>
-                                                                 <% cost = 0 %> 
-                                                                 <% for(var j = 0; j < abc[i].listProduct.length; j++) {%>
-                                                                    <% cost += parseInt(abc[i].listProduct[j].productPrice) * abc[i].listProduct[j].amount %>
-                                                                <%} %> 
-                                                                <td><%= cost %> </td>
-                                                                <td><%= abc[i].status %> </td>
-                                                            </tr>
-                                                            <% j++ %> 
-                                                        <%} %> 
-                                                    <%} %> 
-                                                    <tr>
-                                                        <td colspan="9"><a href="/admin/dashboard/pending-orders-manager" class="btn btn-outline-light float-right">Xem chi tiết</a></td>
-                                                    </tr>
+                                                    <% j=1; %>
+                                                        <% if(abc.length> 5) {%>
+                                                            <% for(var i=abc.length - 5; i < abc.length; i++) {%>
+                                                                <tr>
+                                                                    <td>
+                                                                        <%= j %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= abc[i]._id %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= abc[i].displayName.firstName + " " +
+                                                                            abc[i].displayName.lastName%>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= abc[i].address %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <% for(var j=0; j < abc[i].listProduct.length;
+                                                                            j++) {%>
+                                                                            <%= abc[i].listProduct[j].productName
+                                                                                + " x " + abc[i].listProduct[j].amount
+                                                                                %> <br>
+                                                                                <%} %>
+                                                                    </td>
+                                                                    <% cost=0 %>
+                                                                        <% for(var j=0; j < abc[i].listProduct.length;
+                                                                            j++) {%>
+                                                                            <% cost
+                                                                                +=parseInt(abc[i].listProduct[j].productPrice)
+                                                                                * abc[i].listProduct[j].amount %>
+                                                                                <%} %>
+                                                                                    <td>
+                                                                                        <%= cost %>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <%= abc[i].status %>
+                                                                                    </td>
+                                                                </tr>
+                                                                <% j++ %>
+                                                                    <%} %>
+                                                                        <%} %>
+                                                                            <tr>
+                                                                                <td colspan="9"><a
+                                                                                        href="/admin/dashboard/pending-orders-manager"
+                                                                                        class="btn btn-outline-light float-right">Xem
+                                                                                        chi tiết</a></td>
+                                                                            </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -283,26 +341,31 @@
                             <!-- ============================================================== -->
                             <!-- end recent orders  -->
                         </div>
+
                         <div class="row">
                             <!-- ============================================================== -->
-              				                        <!-- product category  -->
+                            <!-- product category  -->
                             <!-- ============================================================== -->
                             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
                                 <div class="card">
-                                    <h5 class="card-header"> Product Category</h5>
+                                    <h5 class="card-header">Product Category</h5>
                                     <div class="card-body">
                                         <div class="ct-chart-category ct-golden-section" style="height: 315px;"></div>
                                         <div class="text-center m-t-40">
                                             <span class="legend-item mr-3">
-                                                    <span class="fa-xs text-primary mr-1 legend-tile"><i class="fa fa-fw fa-square-full "></i></span><span class="legend-text">Man</span>
+                                                <span class="fa-xs text-primary mr-1 legend-tile"><i
+                                                        class="fa fa-fw fa-square-full "></i></span>
+                                                <span class="legend-text">Man</span>
                                             </span>
                                             <span class="legend-item mr-3">
-                                                <span class="fa-xs text-secondary mr-1 legend-tile"><i class="fa fa-fw fa-square-full"></i></span>
-                                            <span class="legend-text">Woman</span>
+                                                <span class="fa-xs text-secondary mr-1 legend-tile"><i
+                                                        class="fa fa-fw fa-square-full"></i></span>
+                                                <span class="legend-text">Woman</span>
                                             </span>
                                             <span class="legend-item mr-3">
-                                                <span class="fa-xs text-info mr-1 legend-tile"><i class="fa fa-fw fa-square-full"></i></span>
-                                            <span class="legend-text">Accessories</span>
+                                                <span class="fa-xs text-info mr-1 legend-tile"><i
+                                                        class="fa fa-fw fa-square-full"></i></span>
+                                                <span class="legend-text">Accessories</span>
                                             </span>
                                         </div>
                                     </div>
@@ -310,7 +373,7 @@
                             </div>
                             <!-- ============================================================== -->
                             <!-- end product category  -->
-                                   <!-- product sales  -->
+                            <!-- product sales  -->
                             <!-- ============================================================== -->
                             <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="card">
@@ -323,7 +386,7 @@
                                                     <option value="3">Yearly</option>
                                                 </select>
                                             </div> -->
-                                        <h5 class="mb-0"> Product Sales</h5>
+                                        <h5 class="mb-0">Product Sales</h5>
                                     </div>
                                     <div class="card-body">
                                         <div class="ct-chart-product ct-golden-section"></div>
@@ -350,41 +413,23 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Campaign#1</td>
-                                                        <td>98,789 </td>
-                                                        <td>$4563</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Campaign#2</td>
-                                                        <td>2,789 </td>
-                                                        <td>$325</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Campaign#3</td>
-                                                        <td>1,459 </td>
-                                                        <td>$225</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Campaign#4</td>
-                                                        <td>5,035 </td>
-                                                        <td>$856</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Campaign#5</td>
-                                                        <td>10,000 </td>
-                                                        <td>$1000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Campaign#5</td>
-                                                        <td>10,000 </td>
-                                                        <td>$1000</td>
-                                                    </tr>
-                                                    <!-- <tr>
-                                                        <td colspan="3">
-                                                            <a href="#" class="btn btn-outline-light float-right">Xem thêm</a>
-                                                        </td>
-                                                    </tr> -->
+                                                    <% topList.every(e=> {%>
+                                                        <% if (e> 10) {%>
+                                                            <% return false; %>
+                                                                <%} %>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <%= e.productName %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= e.amount %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= e.price %>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <% return true; %>
+                                                                        <%}) %>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -394,6 +439,34 @@
                                 <!-- end top perfomimg  -->
                                 <!-- ============================================================== -->
                             </div>
+
+                            <div>
+                                <div class="card">
+                                    <h5 class="card-header">Product Category</h5>
+                                    <div class="card-body">
+                                        <script type="text/javascript">
+                                            google.charts.load('current', { 'packages': ['corechart'] });
+                                            google.charts.setOnLoadCallback(drawChart);
+
+                                            var set = "<% typeList %>";
+
+                                            function drawChart() {  
+                                                var data = google.visualization.arrayToDataTable(set);
+                                    
+                                                var options = {
+                                                    title: 'My Daily Activities'
+                                                };
+                                    
+                                                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                                    
+                                                chart.draw(data, options);
+                                            }
+                                        </script>
+                                        <div id="piechart" style="width: 900px; height: 500px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -405,7 +478,8 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                             Copyright © 2018 Concept. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
+                            Copyright © 2018 Concept. All rights reserved. Dashboard by <a
+                                href="https://colorlib.com/wp/">Colorlib</a>.
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="text-md-right footer-links d-none d-sm-block">
@@ -450,11 +524,12 @@
     <script src="/public/assets/vendor/charts/c3charts/C3chartjs.js"></script>
     <script src="/public/assets/libs/js/dashboard-ecommerce.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <% if(message && message.length > 0){%>
+    
+    <% if(message && message.length> 0){%>
         <script>
-            toastr.success('<%= message %>','Thông báo', {timeOut: 1500, progressBar: true, closeButton: true});
+            toastr.success('<%= message %>', 'Thông báo', { timeOut: 1500, progressBar: true, closeButton: true });
         </script>
-    <%} %> 
+        <%} %>
 </body>
- 
+
 </html>
