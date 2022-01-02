@@ -10,7 +10,7 @@ const LocalStorage = require('node-localstorage').LocalStorage,
     localStorage = new LocalStorage('./scratch');
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
-const _ = require("lodash");
+const email_exist = require("email-existence");
 
 const EMAIL_SECRET = 'asdf1093KMnzxcvnkljvasdu09123nlasdasdf';
 
@@ -149,6 +149,7 @@ class UserController {
                     productName: productResult.productName,
                     productPrice: productResult.description.price,
                     productImage: productResult.description.imageList[0],
+                    productType: productResult.description.typeCode,
                     amount: 1,
                   },
                 ],
@@ -175,6 +176,7 @@ class UserController {
             productName: productResult.productName,
             productPrice: productResult.description.price,
             productImage: productResult.description.imageList[0],
+            productType: productResult.description.typeCode,
             amount: 1};
         tmp_user.listProduct.push(data)
 
@@ -209,6 +211,7 @@ class UserController {
                     productName: productResult.productName,
                     productPrice: productResult.description.price,
                     productImage: productResult.description.imageList[0],
+                    productType: productResult.description.typeCode,
                     amount: amount,
                   },
                 ],
@@ -357,6 +360,9 @@ class UserController {
       if (customerResult) {
         req.flash('error', 'Tài khoản đã tồn tại!');
         res.redirect('/sign-up')
+      } else if (password != re_password) {
+        req.flash('error', 'Mật khẩu không khớp!');
+        res.redirect('/sign-up');
       } else {
         var data = {
           'fullNameCustomer': {'firstName': firstname, 'lastName': lastname},
@@ -372,66 +378,96 @@ class UserController {
           'avatar': '/uploads/user-01.png',
           'verified': 'false'
         }
-        var newUser = new customers(data);
-        newUser.save()
-        .then(() => {
 
-          // Send verification email
-          try {
-            
-            // Generate token
-            const token = jwt.sign(
-              {
-                user: data.loginInformation.userName,
-              },
-              EMAIL_SECRET,
-              {
-                expiresIn: '1d',
-              },
-            );
+        customers.findOne({'email': email}, (err, emailDBResult) => {
+          // email already exists in database
+          if (emailDBResult) {
+            console.log("[ERROR] Email has already been used!");
+            req.flash('error', 'Email này đã được sử dụng.');
+            res.redirect('/sign-up');
+          
+          // email doesn't exist in database
+          } else {
+            email_exist.check(email, (err, emailExistResult) => {
 
-            const url = `http://localhost:3000/confirmation/${token}`;
+              // email exists on the internet
+              if (emailExistResult) {
 
-            var transporter = nodemailer.createTransport({
-              service: 'gmail',
-              auth: {
-                user: 'johndoe.alexa.19clc5@gmail.com',
-                pass: 'helloiamjohn123'
-              }
-            });
+                // == Account registration section start ===========================
+                var newUser = new customers(data);
+                newUser.save()
+                .then(() => {
         
-            var mailOptions = {
-              from: 'johndoe.alexa.19clc5@gmail.com',
-              to: 'johndoe.alexa.19clc5@gmail.com',
-              subject: 'Confirm your email',
-              html: `Please click the following link to confirm your email: <a href="${url}">${url}</a>`
-            }
+                  // Send verification email
+                  try {
+                    
+                    // Generate token
+                    const token = jwt.sign(
+                      {
+                        user: data.loginInformation.userName,
+                      },
+                      EMAIL_SECRET,
+                      {
+                        expiresIn: '1d',
+                      },
+                    );
         
-            transporter.sendMail(mailOptions, function(error, info) {
-              if (error) {
-                console.log(error);
+                    const url = `http://localhost:3000/confirmation/${token}`;
+        
+                    var transporter = nodemailer.createTransport({
+                      service: 'gmail',
+                      auth: {
+                        user: 'johndoe.alexa.19clc5@gmail.com',
+                        pass: 'helloiamjohn123'
+                      }
+                    });
+        
+                    var mailOptions = {
+                      from: 'johndoe.alexa.19clc5@gmail.com',
+                      to: email,
+                      subject: 'Confirm your email',
+                      html: `Please click the following link to confirm your email: <a href="${url}">${url}</a>`
+                    }
+                
+                    transporter.sendMail(mailOptions, function(error, info) {
+                      if (error) {
+                        console.log(error);
+                      } else {
+                        console.log('Email sent: ' + info.response);
+                      }
+                    });
+        
+                    // render new page
+                    req.flash('success', 'Tạo tài khoản thành công!');
+                    res.redirect('/login');
+        
+                  } catch (e) {
+                    console.log(e);
+                  }
+        
+                })
+                .catch((err) => {
+                  console.log(err);
+                  req.flash('error', 'Tạo tài khoản không thành công!');
+                  res.redirect('/login');
+                });
+                // == Account registration section end =============================
+
+              // email doesn't exist on the internet
               } else {
-                console.log('Email sent: ' + info.response);
+                console.log("[ERROR] Email doesn't exist!");
+                req.flash('error', 'Email không tồn tại.');
+                res.redirect('/sign-up');
               }
+
             });
-
-            // render new page
-            req.flash('success', 'Tạo tài khoản thành công!');
-            res.redirect('/login');
-
-          } catch (e) {
-            console.log(e);
           }
-
-        })
-        .catch((err) => {
-          console.log(err);
-          req.flash('error', 'Tạo tài khoản không thành công!');
-          res.redirect('/login');
         });
+
       }
     });
   }
+
   getConfirmEmail(req, res, next) {
     const user = jwt.verify(req.params.token, EMAIL_SECRET);
     customers.updateOne(
