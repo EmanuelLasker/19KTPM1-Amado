@@ -175,6 +175,7 @@ class UserController {
             productName: productResult.productName,
             productPrice: productResult.description.price,
             productImage: productResult.description.imageList[0],
+            productType: productResult.description.typeCode,
             amount: 1};
         tmp_user.listProduct.push(data)
 
@@ -209,6 +210,7 @@ class UserController {
                     productName: productResult.productName,
                     productPrice: productResult.description.price,
                     productImage: productResult.description.imageList[0],
+                    productType: productResult.description.typeCode,
                     amount: amount,
                   },
                 ],
