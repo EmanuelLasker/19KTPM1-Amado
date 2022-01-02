@@ -343,6 +343,78 @@
                         </div>
 
                         <div class="row">
+                            <div class="col-xl-9"> 
+                                <div class="card">
+                                    <h5 class="card-header">Danh mục sản phẩm</h5>
+                                    <div class="card-body">
+                                        <script type="text/javascript">
+                                            google.charts.load('current', { 'packages': ['corechart'] });
+                                            google.charts.setOnLoadCallback(drawChart);
+
+                                            var set = JSON.parse('<%- typeList %>')
+
+                                            function drawChart() {  
+                                                var data = google.visualization.arrayToDataTable(set);
+                                    
+                                                var options = {
+                                                    title: 'Thống kê số lượng sản phẩm theo danh mục',
+                                                    is3D: true,
+                                                };
+                                    
+                                                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                                    
+                                                chart.draw(data, options);
+                                            }
+                                        </script>
+                                        <div id="piechart" style="width: 900px; height: 500px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3 col-lg-12 col-md-6 col-sm-12 col-12">
+                                <!-- ============================================================== -->
+                                <!-- top perfomimg  -->
+                                <!-- ============================================================== -->
+                                <div class="card">
+                                    <h5 class="card-header">Top Sản Phẩm Bán Chạy</h5>
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <table class="table no-wrap p-table">
+                                                <thead class="bg-light">
+                                                    <tr class="border-0">
+                                                        <th class="border-0">Tên sản phẩm</th>
+                                                        <th class="border-0">Số lượng bán</th>
+                                                        <th class="border-0">Doanh thu</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% topList.every(e=> {%>
+                                                        <% if (e> 10) {%>
+                                                            <% return false; %>
+                                                                <%} %>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <%= e.productName %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= e.amount %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= e.price %>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <% return true; %>
+                                                                        <%}) %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ============================================================== -->
+                                <!-- end top perfomimg  -->
+                                <!-- ============================================================== -->
+                            </div>
+
                             <!-- ============================================================== -->
                             <!-- product category  -->
                             <!-- ============================================================== -->
@@ -396,76 +468,6 @@
                             <!-- ============================================================== -->
                             <!-- end product sales  -->
                             <!-- ============================================================== -->
-                            <div class="col-xl-3 col-lg-12 col-md-6 col-sm-12 col-12">
-                                <!-- ============================================================== -->
-                                <!-- top perfomimg  -->
-                                <!-- ============================================================== -->
-                                <div class="card">
-                                    <h5 class="card-header">Top Sản Phẩm Bán Chạy</h5>
-                                    <div class="card-body p-0">
-                                        <div class="table-responsive">
-                                            <table class="table no-wrap p-table">
-                                                <thead class="bg-light">
-                                                    <tr class="border-0">
-                                                        <th class="border-0">Tên sản phẩm</th>
-                                                        <th class="border-0">Số lượng bán</th>
-                                                        <th class="border-0">Doanh thu</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <% topList.every(e=> {%>
-                                                        <% if (e> 10) {%>
-                                                            <% return false; %>
-                                                                <%} %>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <%= e.productName %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= e.amount %>
-                                                                        </td>
-                                                                        <td>
-                                                                            <%= e.price %>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <% return true; %>
-                                                                        <%}) %>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- ============================================================== -->
-                                <!-- end top perfomimg  -->
-                                <!-- ============================================================== -->
-                            </div>
-
-                            <div>
-                                <div class="card">
-                                    <h5 class="card-header">Product Category</h5>
-                                    <div class="card-body">
-                                        <script type="text/javascript">
-                                            google.charts.load('current', { 'packages': ['corechart'] });
-                                            google.charts.setOnLoadCallback(drawChart);
-
-                                            var set = "<% typeList %>";
-
-                                            function drawChart() {  
-                                                var data = google.visualization.arrayToDataTable(set);
-                                    
-                                                var options = {
-                                                    title: 'My Daily Activities'
-                                                };
-                                    
-                                                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-                                    
-                                                chart.draw(data, options);
-                                            }
-                                        </script>
-                                        <div id="piechart" style="width: 900px; height: 500px;"></div>
-                                    </div>
-                                </div>
-                            </div>
 
                         </div>
                     </div>
