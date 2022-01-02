@@ -20,7 +20,6 @@ class UserController {
       if (req.isAuthenticated()) {
         customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
           res.render("index", { data: result, message: req.flash("success"), customer: customerResult, title: "Amado - Trang chủ" });
-          console.log(customerResult);
         })
       } else {
         let tmp_user = JSON.parse(localStorage.getItem(req.sessionID));
@@ -41,7 +40,6 @@ class UserController {
           tmp_user = new customers(data);
         }
         res.render("index", { data: result, message: req.flash("success"), customer: undefined, title: "Amado - Trang chủ" });
-        console.log(tmp_user);
       }
     });
   }
