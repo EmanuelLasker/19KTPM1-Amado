@@ -30,7 +30,7 @@
     <!-- Amado Nav -->
     <nav class="amado-nav">
         <ul>
-            <li><a href="/">Trang chủ</a></li>
+            <li class="active"><a href="/">Trang chủ</a></li>
             <li><a href="/product">Sản phẩm</a></li>
             <li><a href="#">Phí vận chuyển</a></li>
             <li><a href="#">Hỗ trợ</a></li>
@@ -40,9 +40,24 @@
     <!-- Cart Menu -->
     <div class="cart-fav-search mb-100">
         <a href="/cart" class="cart-nav"><img src="/public/img/core-img/cart.png" alt="" /> Giỏ hàng ( <span style="color: #FBB933;"><%= customer ? customer.listProduct.length : 0 %> </span> )</a>
-        <a href="/favorite" class="fav-nav"><img src="/public/img/core-img/favorites.png" alt="" /> Yêu
-            thích</a>
-        <a href="#" class="search-nav"><img src="/public/img/core-img/search.png" alt="" /> Tìm kiếm</a>
-    </div>
+        <a href="/favorite" class="fav-nav"
+        ><img src="/public/img/core-img/favorites.png" alt="" /> Yêu
+            thích</a
+        >
+        <a href="#" class="search-nav"
+        ><img src="/public/img/core-img/search.png" alt="" /> Tìm kiếm</a
+        >
+
+        <% if (customer != undefined) { %>
+            <a href="/user-info" class="logout-fav-nav"
+            ><img src="/public/img/core-img/profile.png" alt="" /> Người dùng</a
+            >
+            <a href="/logout" class="logout-fav-nav"
+            ><img src="/public/img/core-img/logout.png" alt="" /> Đăng xuất</a
+            >
+
+        <% }  %>
+
+
 </header>
 <!-- Header Area End -->
