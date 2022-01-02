@@ -22,7 +22,25 @@ class UserController {
           res.render("index", { data: result, message: req.flash("success"), customer: customerResult, title: "Amado - Trang chủ" });
         })
       } else {
-        res.render("index", { data: result, message: req.flash("success"), customer: undefined, title: "Amado - Trang chủ" });
+        let tmp_user = JSON.parse(localStorage.getItem(req.sessionID));
+        if (tmp_user == null) {
+          var data = {
+            'fullNameCustomer': null,
+            'dateOfBirth': null,
+            'sex': null,
+            'identityCardNumber': null,
+            'address': null,
+            'phoneNumber': null,
+            'email': null,
+            'listProduct': [],
+            'listFavorite': [],
+            'loginInformation': null,
+            'avatar': null
+          }
+          tmp_user = new customers(data);
+        }
+        res.render("index", { data: result, message: req.flash("success"), customer: tmp_user, title: "Amado - Trang chủ" });
+
       }
     });
   }
@@ -33,6 +51,7 @@ class UserController {
   }
   getLogout(req, res, next) {
     req.logout();
+    localStorage.setItem(req.sessionID, null);
     res.redirect('/');
   }
   getUserInformation(req, res, next) {
@@ -106,7 +125,7 @@ class UserController {
         }
       );
     } else {
-      var tmp_user = JSON.parse(localStorage.getItem('tmp_user'));
+      var tmp_user = JSON.parse(localStorage.getItem(req.sessionID));
 
       if (tmp_user == null) {
         var data = {
@@ -126,7 +145,7 @@ class UserController {
         tmp_user = new customers(data);
         // const LocalStorage = require('node-localstorage').LocalStorage,
         //     localStorage = new LocalStorage('./scratch');
-        localStorage.setItem('tmp_user', JSON.stringify(tmp_user));
+        localStorage.setItem(req.sessionID, JSON.stringify(tmp_user));
       }
 
       res.render("cart", { customer: tmp_user, message: req.flash('success') });
@@ -168,10 +187,26 @@ class UserController {
       });
     } else {
       var id = req.params.id;
-      let tmp_user = JSON.parse(localStorage.getItem('tmp_user'));
+      let tmp_user = JSON.parse(localStorage.getItem(req.sessionID));
+      if (tmp_user == null) {
+        let data = {
+          'fullNameCustomer': null,
+          'dateOfBirth': null,
+          'sex': null,
+          'identityCardNumber': null,
+          'address': null,
+          'phoneNumber': null,
+          'email': null,
+          'listProduct': [],
+          'listFavorite': [],
+          'loginInformation': null,
+          'avatar': null
+        }
+        tmp_user = new customers(data);
+      }
       //res.redirect("/login");
       product.findOne({ _id: id }, (err, productResult) => {
-        var data =
+        let data =
         {
           productID: productResult._id.toString(),
           productName: productResult.productName,
@@ -184,7 +219,7 @@ class UserController {
 
       }).then(() => {
         req.flash("success", "Sản phẩm đã thêm vào giỏ!");
-        localStorage.setItem('tmp_user', JSON.stringify(tmp_user));
+        localStorage.setItem(req.sessionID, JSON.stringify(tmp_user));
         res.redirect(`/product/`);
       })
         .catch((err) => {
@@ -237,14 +272,23 @@ class UserController {
   postUpdateQTYInCart(req, res, next) {
     var id = req.params.id;
     var quantity = parseInt(req.body.amount);
-    var user = req.session.passport.user.username;
-    customers.updateOne({ "loginInformation.userName": user, "listProduct.productID": id }, { $set: { "listProduct.$.amount": quantity } })
-      .then(() => {
-        res.redirect('/cart');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if(req.isAuthenticated()){
+      var user = req.session.passport.user.username;
+      customers.updateOne({ "loginInformation.userName": user, "listProduct.productID": id }, { $set: { "listProduct.$.amount": quantity } })
+          .then(() => {
+            res.redirect('/cart');
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+    }
+    else{
+      let tmp_user = JSON.parse(localStorage.getItem(req.sessionID));
+      let index = tmp_user.listProduct.findIndex(x => x.productID == id);
+      tmp_user.listProduct[index].amount = quantity;
+      localStorage.setItem(req.sessionID,JSON.stringify(tmp_user));
+      res.redirect('/cart');
+    }
   }
   getDeleteProductInCart(req, res, next) {
     if (req.isAuthenticated()) {
@@ -260,7 +304,11 @@ class UserController {
           next();
         });
     } else {
-      res.redirect('/login');
+      // res.redirect('/login');
+      var id = req.params.id;
+      let tmp_user = JSON.parse(localStorage.getItem(req.sessionID));
+      tmp_user.listProduct.remove(tmp_user.listProduct.findIndex(x => x.productID));
+      localStorage.setItem(req.sessionID,JSON.stringify(tmp_user));
     }
   }
   getCheckoutPage(req, res, next) {
