@@ -57,21 +57,77 @@ class AdminController {
     });
   }
   getDashboardPage(req, res, next) {
-    ;
     if (req.isAuthenticated()) {
       product.find({}, (err, productResult) => {
         bill.find({}, (err, billResult) => {
-          admin.findOne(
-            { "loginInformation.userName": req.session.passport.user.username },
-            (err, customerResult) => {
-              res.render("dashboard", {
-                message: req.flash("success"),
-                customer: customerResult,
-                abc: billResult,
-                products: productResult
-              });
-            }
-          );
+          type.find({}, (err, typeResult) => {
+            admin.findOne(
+              { "loginInformation.userName": req.session.passport.user.username },
+              (err, customerResult) => {
+
+                var list = [];
+                billResult.forEach(e => {
+                  e.listProduct.forEach(pro => {
+                    list.push(pro)
+                  })
+                })
+
+                var extractedList = [];
+                list.forEach(e => {
+                  if (!extractedList.includes(e.productID)) {
+                    extractedList.push(e.productID)
+                  }
+                })
+
+                var topList = [];
+                extractedList.forEach(eEL => {
+                  var totalAmount = 0;
+                  var totalPrice = 0;
+                  var name;
+                  var type;
+                  list.forEach(eL => {
+                    if (eL.productID == eEL) {
+                      name = eL.productName;
+                      type = eL.productType;
+                      totalAmount += parseInt(eL.amount);
+                      totalPrice += parseInt(eL.productPrice) * parseInt(eL.amount);
+                    }
+                  })
+                  topList.push({ productID: eEL, productName: name, amount: totalAmount, price: totalPrice, productType: type })
+                })
+
+                topList.sort(function (a, b) {
+                  return b.amount - a.amount;
+                })
+
+                var types = [];
+                typeResult.forEach(e => {
+                  var totalAmount = 0;
+                  topList.forEach(eTL => {
+                    if (e._id == eTL.productType) {
+                      totalAmount += parseInt(eTL.amount)
+                    }
+                  })
+                  types.push({_id: e._id, name: e.typeName, amount: totalAmount})
+                })
+
+                var typeList = []
+                typeList.push(['Phân loại', 'Số lượng'])
+                types.forEach(element => {
+                  typeList.push([element.name, element.amount]);
+                });
+
+                res.render("dashboard", {
+                  message: req.flash("success"),
+                  customer: customerResult,
+                  abc: billResult,
+                  products: productResult,
+                  topList: topList,
+                  typeList: JSON.stringify(typeList)
+                });
+              }
+            );
+          });
         });
       })
     } else {
