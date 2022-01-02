@@ -7,7 +7,7 @@ const bill = require('../../models/bills');
 const OjectId = require('mongodb').ObjectId;
 const bcrypt = require('bcrypt');
 const LocalStorage = require('node-localstorage').LocalStorage,
-    localStorage = new LocalStorage('./scratch');
+  localStorage = new LocalStorage('./scratch');
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const email_exist = require("email-existence");
@@ -29,25 +29,25 @@ class UserController {
   getLoginPage(req, res, next) {
     var messageError = req.flash("error");
     var messageSuccess = req.flash("success");
-    res.render("loginuser", { message: messageError.length != 0 ? messageError : messageSuccess, typeMessage:  messageSuccess.length != 0 ? 'success': 'error'});
+    res.render("loginuser", { message: messageError.length != 0 ? messageError : messageSuccess, typeMessage: messageSuccess.length != 0 ? 'success' : 'error' });
   }
   getLogout(req, res, next) {
     req.logout();
     res.redirect('/');
   }
-  getUserInformation(req, res, next  ){
+  getUserInformation(req, res, next) {
     if (req.isAuthenticated()) {
       customers.findOne(
-          { "loginInformation.userName": req.session.passport.user.username },
-          (err, customerResult) => {
-            res.render("user-profile", {title:"Thông tin người dùng", customer: customerResult, message: req.flash('success') });
-          }
+        { "loginInformation.userName": req.session.passport.user.username },
+        (err, customerResult) => {
+          res.render("user-profile", { title: "Thông tin người dùng", customer: customerResult, message: req.flash('success') });
+        }
       );
     } else {
       res.redirect("/login");
     }
   }
-  postUserInformation(req, res, next){
+  postUserInformation(req, res, next) {
     //console.log(req.session.passport.user.username);
     var firstname = req.body.firstName;
     var lastname = req.body.lastName;
@@ -55,7 +55,7 @@ class UserController {
     var phone = req.body.phone;
     var cmnd = req.body.cmnd;
     var email = req.body.email;
-    var sex = req.body.sex.toLowerCase()=="nam"?true:false;
+    var sex = req.body.sex.toLowerCase() == "nam" ? true : false;
     var address = req.body.addr;
     var avatar = req.body.avatar;
     //console.log(req.params.id);
@@ -66,10 +66,10 @@ class UserController {
     // var hashed_password = bcrypt.hashSync(password, 10);
 
     if (req.isAuthenticated()) {
-     // var idProduct = req.params.id;
+      // var idProduct = req.params.id;
       customers.findOne({ 'loginInformation.userName': username }, (err, customerResult) => {
         var data = {
-          'fullNameCustomer': {'firstName': firstname, 'lastName': lastname},
+          'fullNameCustomer': { 'firstName': firstname, 'lastName': lastname },
           // 'dateOfBirth': customerResult.dateOfBirth,
           'sex': sex,
           'identityCardNumber': cmnd,
@@ -79,19 +79,19 @@ class UserController {
           'avatar': avatar
         }
         customers
-            .findOneAndUpdate({ 'loginInformation.userName': username }, data, { new: true })
-            .then(() => {
-              req.flash("success", "Cập nhật thông tin thành công!");
-              res.redirect("/user-info");
-            })
-            .catch((err) => {
-              console.log(err);
-              req.flash(
-                  "err",
-                  "Cập nhật thông tin không thành công! Có lỗi xảy ra!"
-              );
-              next();
-            });
+          .findOneAndUpdate({ 'loginInformation.userName': username }, data, { new: true })
+          .then(() => {
+            req.flash("success", "Cập nhật thông tin thành công!");
+            res.redirect("/user-info");
+          })
+          .catch((err) => {
+            console.log(err);
+            req.flash(
+              "err",
+              "Cập nhật thông tin không thành công! Có lỗi xảy ra!"
+            );
+            next();
+          });
       });
     } else {
       res.redirect("/login");
@@ -108,7 +108,7 @@ class UserController {
     } else {
       var tmp_user = JSON.parse(localStorage.getItem('tmp_user'));
 
-      if(tmp_user == null){
+      if (tmp_user == null) {
         var data = {
           'fullNameCustomer': null,
           'dateOfBirth': null,
@@ -126,7 +126,7 @@ class UserController {
         tmp_user = new customers(data);
         // const LocalStorage = require('node-localstorage').LocalStorage,
         //     localStorage = new LocalStorage('./scratch');
-        localStorage.setItem('tmp_user',JSON.stringify(tmp_user));
+        localStorage.setItem('tmp_user', JSON.stringify(tmp_user));
       }
 
       res.render("cart", { customer: tmp_user, message: req.flash('success') });
@@ -172,24 +172,26 @@ class UserController {
       //res.redirect("/login");
       product.findOne({ _id: id }, (err, productResult) => {
         var data =
-            {productID: productResult._id.toString(),
-            productName: productResult.productName,
-            productPrice: productResult.description.price,
-            productImage: productResult.description.imageList[0],
-            productType: productResult.description.typeCode,
-            amount: 1};
+        {
+          productID: productResult._id.toString(),
+          productName: productResult.productName,
+          productPrice: productResult.description.price,
+          productImage: productResult.description.imageList[0],
+          productType: productResult.description.typeCode,
+          amount: 1
+        };
         tmp_user.listProduct.push(data)
 
       }).then(() => {
         req.flash("success", "Sản phẩm đã thêm vào giỏ!");
-        localStorage.setItem('tmp_user',JSON.stringify(tmp_user));
+        localStorage.setItem('tmp_user', JSON.stringify(tmp_user));
         res.redirect(`/product/`);
       })
-          .catch((err) => {
-            console.log(err);
-            req.flash("error", "Lỗi khi thêm sản phẩm vào giỏ!");
-            next();
-          });
+        .catch((err) => {
+          console.log(err);
+          req.flash("error", "Lỗi khi thêm sản phẩm vào giỏ!");
+          next();
+        });
 
 
     }
@@ -278,12 +280,26 @@ class UserController {
       var district = req.body.district;
       var ward = req.body.ward;
       var address = req.body.address;
+
+      var today = new Date();
+      var year = today.getFullYear()
+      var month = today.getMonth() + 1
+      var day = today.getDate()
+
       customers.findOne({ 'loginInformation.userName': user }, (err, customerResult) => {
-        region.findOne({Id: city}, (err, cityResult) => {
+        region.findOne({ Id: city }, (err, cityResult) => {
           var cityName = cityResult.Name;
           var districtData = cityResult.Districts.filter(e => e.Id == district);
           var districtName = districtData[0].Name;
           var wardName = districtData[0].Wards.filter(e => e.Id == ward)[0].Name;
+
+          var currentDate =
+          {
+            day: day,
+            month: month,
+            year: year
+          }
+
           var data = {
             'userID': customerResult._id,
             'displayName': customerResult.fullNameCustomer,
@@ -291,6 +307,7 @@ class UserController {
             'address': `${address}, ${wardName}, ${districtName}, ${cityName}`,
             'paymentMethod': parseInt(req.body.payment) == 1 ? "Thanh toán khi nhận hàng" : "Paypal",
             'resquest': req.body.comment,
+            'date': currentDate,
             'status': 'Chờ xác nhận'
           }
           var newBill = new bill(data);
@@ -302,7 +319,7 @@ class UserController {
             .catch((err) => {
               console.log(err);
               next();
-          });
+            });
         })
       })
     } else {
@@ -344,7 +361,7 @@ class UserController {
     });
   }
   getRegisterPage(req, res, next) {
-    res.render('sign-up', {message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error')});
+    res.render('sign-up', { message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error') });
   }
   postRegisterUser(req, res, next) {
     var firstname = req.body.firstname;
@@ -365,7 +382,7 @@ class UserController {
         res.redirect('/sign-up');
       } else {
         var data = {
-          'fullNameCustomer': {'firstName': firstname, 'lastName': lastname},
+          'fullNameCustomer': { 'firstName': firstname, 'lastName': lastname },
           'dateOfBirth': null,
           'sex': null,
           'identityCardNumber': cmnd,
@@ -374,19 +391,19 @@ class UserController {
           'email': email,
           'listProduct': [],
           'listFavorite': [],
-          'loginInformation': {'userName': username, 'password': hashed_password, 'type': 'User', roles: []},
+          'loginInformation': { 'userName': username, 'password': hashed_password, 'type': 'User', roles: [] },
           'avatar': '/uploads/user-01.png',
           'verified': 'false'
         }
 
-        customers.findOne({'email': email}, (err, emailDBResult) => {
+        customers.findOne({ 'email': email }, (err, emailDBResult) => {
           // email already exists in database
           if (emailDBResult) {
             console.log("[ERROR] Email has already been used!");
             req.flash('error', 'Email này đã được sử dụng.');
             res.redirect('/sign-up');
-          
-          // email doesn't exist in database
+
+            // email doesn't exist in database
           } else {
             email_exist.check(email, (err, emailExistResult) => {
 
@@ -396,64 +413,64 @@ class UserController {
                 // == Account registration section start ===========================
                 var newUser = new customers(data);
                 newUser.save()
-                .then(() => {
-        
-                  // Send verification email
-                  try {
-                    
-                    // Generate token
-                    const token = jwt.sign(
-                      {
-                        user: data.loginInformation.userName,
-                      },
-                      EMAIL_SECRET,
-                      {
-                        expiresIn: '1d',
-                      },
-                    );
-        
-                    const url = `http://localhost:3000/confirmation/${token}`;
-        
-                    var transporter = nodemailer.createTransport({
-                      service: 'gmail',
-                      auth: {
-                        user: 'johndoe.alexa.19clc5@gmail.com',
-                        pass: 'helloiamjohn123'
+                  .then(() => {
+
+                    // Send verification email
+                    try {
+
+                      // Generate token
+                      const token = jwt.sign(
+                        {
+                          user: data.loginInformation.userName,
+                        },
+                        EMAIL_SECRET,
+                        {
+                          expiresIn: '1d',
+                        },
+                      );
+
+                      const url = `http://localhost:3000/confirmation/${token}`;
+
+                      var transporter = nodemailer.createTransport({
+                        service: 'gmail',
+                        auth: {
+                          user: 'johndoe.alexa.19clc5@gmail.com',
+                          pass: 'helloiamjohn123'
+                        }
+                      });
+
+                      var mailOptions = {
+                        from: 'johndoe.alexa.19clc5@gmail.com',
+                        to: email,
+                        subject: 'Confirm your email',
+                        html: `Please click the following link to confirm your email: <a href="${url}">${url}</a>`
                       }
-                    });
-        
-                    var mailOptions = {
-                      from: 'johndoe.alexa.19clc5@gmail.com',
-                      to: email,
-                      subject: 'Confirm your email',
-                      html: `Please click the following link to confirm your email: <a href="${url}">${url}</a>`
+
+                      transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                          console.log(error);
+                        } else {
+                          console.log('Email sent: ' + info.response);
+                        }
+                      });
+
+                      // render new page
+                      req.flash('success', 'Tạo tài khoản thành công!');
+                      res.redirect('/login');
+
+                    } catch (e) {
+                      console.log(e);
                     }
-                
-                    transporter.sendMail(mailOptions, function(error, info) {
-                      if (error) {
-                        console.log(error);
-                      } else {
-                        console.log('Email sent: ' + info.response);
-                      }
-                    });
-        
-                    // render new page
-                    req.flash('success', 'Tạo tài khoản thành công!');
+
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                    req.flash('error', 'Tạo tài khoản không thành công!');
                     res.redirect('/login');
-        
-                  } catch (e) {
-                    console.log(e);
-                  }
-        
-                })
-                .catch((err) => {
-                  console.log(err);
-                  req.flash('error', 'Tạo tài khoản không thành công!');
-                  res.redirect('/login');
-                });
+                  });
                 // == Account registration section end =============================
 
-              // email doesn't exist on the internet
+                // email doesn't exist on the internet
               } else {
                 console.log("[ERROR] Email doesn't exist!");
                 req.flash('error', 'Email không tồn tại.');
@@ -471,11 +488,11 @@ class UserController {
   getConfirmEmail(req, res, next) {
     const user = jwt.verify(req.params.token, EMAIL_SECRET);
     customers.updateOne(
-      { "loginInformation.userName": user.user }, 
-      { $set: {"verified" : true}}
-    , (err, res) => {
-      console.log(res);
-    });
+      { "loginInformation.userName": user.user },
+      { $set: { "verified": true } }
+      , (err, res) => {
+        console.log(res);
+      });
     console.log(user.user);
     res.send('sucess');
   }
@@ -511,8 +528,8 @@ class UserController {
   }
   getFavoritePage(req, res, next) {
     var itemsPerPage = 6;
-    if(req.isAuthenticated()) {
-      customers.findOne({'loginInformation.userName': req.session.passport.user.username}, (err, customerResult) => {
+    if (req.isAuthenticated()) {
+      customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
         type.find({}, (err, data) => {
           supplier.find({}, (err, supplier) => {
             res.render("favorites", {
@@ -534,8 +551,8 @@ class UserController {
   getFavoriteAtPage(req, res, next) {
     var itemsPerPage = 6;
     var page = req.params.page;
-    if(req.isAuthenticated()) {
-      customers.findOne({'loginInformation.userName': req.session.passport.user.username}, (err, customerResult) => {
+    if (req.isAuthenticated()) {
+      customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
         type.find({}, (err, data) => {
           supplier.find({}, (err, supplier) => {
             res.render("favorites", {
