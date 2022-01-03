@@ -542,8 +542,36 @@ class UserController {
   }
   postResetPassword(req, res, next) {
     var password = req.body.password;
-    var re_password = req.body.repassword;
+    var repassword = req.body.repassword;
+    var email = req.body.email;
 
+    // check for password matching
+    if (password != repassword) {
+      req.flash('error', 'Mật khẩu không khớp.');
+      res.render('confirm', { type: 3, message: req.flash('error'), email: email, typeMessage: 'error' });
+    }
+
+    var hashed_password = bcrypt.hashSync(password, 10);
+
+    customers.findOne({ 'email': email}, (err, customerResult) => {
+      // email found
+      if (customerResult) {
+        customers.updateOne(
+          { "email": email },
+          { $set: { "loginInformation.password": hashed_password } }
+          , (err, res) => {
+            console.log(res);
+          });
+          req.flash('success', 'Đặt lại mật khẩu thành công.')
+          res.render('loginuser', { 
+            message: req.flash('success'), typeMessage: 'success' });
+
+      // email not found
+      } else {
+        req.flash('error', 'Tài khoản chứa email này không tồn tại.');
+        res.render('confirm', { type: 2, message: req.flash('error'), email: undefined, typeMessage: 'error' });
+      }
+    });
   }
   getConfirmEmail(req, res, next) {
     const user = jwt.verify(req.params.token, EMAIL_SECRET);
