@@ -76,9 +76,9 @@ class AdminController {
                 function containsDate(list, date) {
                   for (var i = 0; i < list.length; i++) {
                     if (list[i][0] == date)
-                      return true
+                      return i
                   }
-                  return false
+                  return -1
                 }
 
                 var currentYear = new Date().getFullYear() - 1
@@ -94,8 +94,12 @@ class AdminController {
                 for (var j = 0; j < 4; j++)
                   countQuarter.push(0)
 
+                var years = []
+                years.push(['Năm', 'Doanh thu'])
+
                 billResult.forEach(e => {
                   var countDay = 0
+                  var countYear = 0
                   e.listProduct.forEach(pro => {
                     var index = containsProduct(proList, pro.productID)
                     if (index < 0) {
@@ -103,6 +107,13 @@ class AdminController {
                     } else {
                       proList[index][2] += parseInt(pro.amount)
                       proList[index][3] += parseInt(pro.productPrice)*parseInt(pro.amount)
+                    }
+
+                    var index1 = containsDate(years, e.date.year)
+                    if (index1 < 0) {
+                      years.push([`${e.date.year}`, parseInt(pro.productPrice)*parseInt(pro.amount)])
+                    } else {
+                      years[index1][1] += parseInt(pro.productPrice)*parseInt(pro.amount)
                     }
                     
                     countDay += parseInt(pro.productPrice)*parseInt(pro.amount)
@@ -121,8 +132,12 @@ class AdminController {
                     }  
                   })
 
-                  if (!containsDate(dayList, e.date.day + "/" + e.date.month + "/" + e.date.year) && e.date.year == currentYear) {
+                  var index2 = containsDate(dayList, e.date.day + "/" + e.date.month + "/" + e.date.year)
+                  if (index2 < 0 && e.date.year == currentYear) {
                     dayList.push([e.date.day + "/" + e.date.month + "/" + e.date.year, countDay])
+                  }
+                  else if (index2 >= 0 && e.date.year == currentYear) {
+                    dayList[index2][1] += parseInt(pro.productPrice)*parseInt(pro.amount)
                   }
                 })
 
@@ -142,6 +157,8 @@ class AdminController {
                   })
                   typeList.push([e.typeName, totalAmount]);
                 })
+
+                console.log(years)
 
                 dayList.sort(function (a, b) {
                   var t1 = a[0].split("/")
@@ -185,7 +202,8 @@ class AdminController {
                   typeList: JSON.stringify(typeList),
                   monthList: JSON.stringify(monthList),
                   dayList: JSON.stringify(dayList),
-                  quarterList: JSON.stringify(quarterList)
+                  quarterList: JSON.stringify(quarterList),
+                  yearList: JSON.stringify(years)
                 });
               }
             );

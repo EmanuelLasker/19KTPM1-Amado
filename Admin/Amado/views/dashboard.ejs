@@ -431,7 +431,7 @@
 
                                                     var options = {
                                                         title: 'Doanh thu sản phẩm theo Ngày',
-                                                        curveType: 'function',
+                                                        
                                                         legend: { position: 'bottom' }
                                                     };
 
@@ -503,6 +503,37 @@
                                                 }
                                             </script>
                                             <div id="columnchart_material_1" style="width: 900px; height: 500px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <h5 class="card-header">Thống kê doanh thu sản phẩm</h5>
+                                        <div class="card-body">
+                                            <script type="text/javascript">
+                                                google.charts.load('current', { 'packages': ['corechart'] });
+                                                google.charts.setOnLoadCallback(drawChart);
+
+                                                var set4 = JSON.parse('<%- yearList %>')
+
+                                                function drawChart() {
+                                                    var data = google.visualization.arrayToDataTable(set4);
+
+                                                    var options = {
+                                                        title: 'Doanh thu sản phẩm theo Năm',
+                                                        curveType: 'function',
+                                                        legend: { position: 'bottom' }
+                                                    };
+
+                                                    var chart = new google.visualization.LineChart(document.getElementById('curve_chart1'));
+
+                                                    chart.draw(data, options);
+                                                }
+                                            </script>
+                                            <div id="curve_chart1" style="width: 900px; height: 500px"></div>
                                         </div>
                                     </div>
                                 </div>
