@@ -44,17 +44,14 @@ class UserController {
                 (err, resultQuery)=>{
                     //console.log(resultQuery);
                 });
-
           }
-
         })
 
         customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err,result ) => {
           tmp_user = result;
-
           //res.render("index", { data: result, message: req.flash("success"), customer: customerResult, title: "Amado - Trang chủ" });
         })
-        console.log("TMp_useser ",tmp_user);
+        //console.log("TMp_useser ",tmp_user);
 
         localStorage.setItem(req.sessionID,null);
         customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
@@ -78,7 +75,7 @@ class UserController {
           }
           tmp_user = new customers(data);
         }
-        res.render("index", { data: result, message: req.flash("success"), customer: undefined, title: "Amado - Trang chủ" });
+        res.render("index", { data: result, message: req.flash("success"), customer: tmp_user, title: "Amado - Trang chủ" });
       }
     });
   }
