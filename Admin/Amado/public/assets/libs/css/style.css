@@ -7089,6 +7089,10 @@ Media Query
     transition: ease .5s;
     color: white;
 }
+.forgot-password {
+  margin-top: 12px;
+  text-align: right;
+}
 
 /* Custom, iPhone Retina */
 @media only screen and (max-width: 320px) {
