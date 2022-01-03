@@ -10,6 +10,7 @@ const LocalStorage = require('node-localstorage').LocalStorage,
   localStorage = new LocalStorage('./scratch');
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
+const jwt_decoder = require("jwt-decode");
 const email_exist = require("email-existence");
 
 const EMAIL_SECRET = 'asdf1093KMnzxcvnkljvasdu09123nlasdasdf';
@@ -538,12 +539,12 @@ class UserController {
     res.render('confirm', { type: 2, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error'), email: undefined });
   }
   getResetPasswordPage(req, res, next) {
-      res.render('confirm', { type: 3, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error'), email: req.params.email });
+      res.render('confirm', { type: 3, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error'), email_token: req.params.email_token });
   }
   postResetPassword(req, res, next) {
     var password = req.body.password;
     var repassword = req.body.repassword;
-    var email = req.body.email;
+    var email = jwt_decoder(req.body.email).original;
 
     // check for password matching
     if (password != repassword) {
@@ -587,13 +588,23 @@ class UserController {
   }
   postSendPasswordEmail(req, res, next) {
     var email = req.body.email;
+
+    const email_token = jwt.sign(
+      {
+        original: email,
+      },
+      EMAIL_SECRET,
+      {
+        expiresIn: '1d',
+      },
+    );
     
     customers.findOne({ 'email': email}, (err, customerResult) => {
 
       // email found
       if (customerResult) {
         
-        const url = `http://localhost:3000/reset-password/${email}`;
+        const url = `http://localhost:3000/reset-password/${email_token}`;
 
         var transporter = nodemailer.createTransport({
           service: 'gmail',
