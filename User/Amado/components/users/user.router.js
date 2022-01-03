@@ -11,6 +11,7 @@ router.get('/sign-up', userController.getRegisterPage);
 router.post('/sign-up', userController.postRegisterUser);
 router.get('/confirmation/:token', userController.getConfirmEmail);
 router.get('/confirm', userController.getConfirmPage);
+router.get('/forgot-password', userController.getForgotPasswordPage);
 router.post(
   '/login',
   passport.authenticate('user-local', {

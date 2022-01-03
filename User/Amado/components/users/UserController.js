@@ -534,6 +534,9 @@ class UserController {
   getConfirmPage(req, res, next) {
     res.render('confirm', { type: 0, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error') });
   }
+  getForgotPasswordPage(req, res, next) {
+    res.render('confirm', { type: 2, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error') });
+  }
   getConfirmEmail(req, res, next) {
     const user = jwt.verify(req.params.token, EMAIL_SECRET);
     customers.updateOne(
