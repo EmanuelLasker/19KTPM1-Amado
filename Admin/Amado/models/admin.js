@@ -9,7 +9,8 @@ const admin = new mongoose.Schema({
     phoneNumber: String,
     email: String,
     loginInformation: Object,
-    avatar: String
+    avatar: String,
+    locked: Boolean
 },{ versionKey: null });
 
 module.exports = mongoose.model('admins', admin);

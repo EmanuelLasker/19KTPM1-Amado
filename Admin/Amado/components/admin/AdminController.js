@@ -40,7 +40,8 @@ class AdminController {
           'phoneNumber': phone,
           'email': email,
           'loginInformation': { 'userName': username, 'password': hash, 'type': 'Admin', roles: ["All"] },
-          'avatar': '/uploads/user-01.png'
+          'avatar': '/uploads/user-01.png',
+          'locked': false
         }
         var newUser = new admin(data);
         newUser.save()
@@ -961,6 +962,54 @@ class AdminController {
     
         req.flash("success", "Mở khóa tài khoản thành công!");
         res.redirect("/admin/dashboard/users-manager");
+      });
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
+  getLockAdmin(req, res, next) {
+    if (req.isAuthenticated()) {
+      var idAdmin = req.params.id;
+      admin.findOne({ _id: idAdmin }, (err, result) => {
+        if (err) {
+          console.log(err);
+          req.flash("error", "Khóa tài khoản không thành công!");
+          next();
+        }
+
+        admin.updateOne(
+          { "_id": idAdmin },
+          { $set: { "locked": true } }
+          , (err, res) => {
+            console.log(res);
+          });
+    
+        req.flash("success", "Khóa tài khoản thành công!");
+        res.redirect("/admin/dashboard/admin-list");
+      });
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
+  getUnlockAdmin(req, res, next) {
+    if (req.isAuthenticated()) {
+      var idAdmin = req.params.id;
+      admin.findOne({ _id: idAdmin }, (err, result) => {
+        if (err) {
+          console.log(err);
+          req.flash("error", "Mở khóa tài khoản không thành công!");
+          next();
+        }
+
+        admin.updateOne(
+          { "_id": idAdmin },
+          { $set: { "locked": false } }
+          , (err, res) => {
+            console.log(res);
+          });
+    
+        req.flash("success", "Mở khóa tài khoản thành công!");
+        res.redirect("/admin/dashboard/admin-list");
       });
     } else {
       res.redirect("/admin/login");

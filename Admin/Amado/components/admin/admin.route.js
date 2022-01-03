@@ -87,6 +87,10 @@ router.get('/dashboard/users-manager/delete/:id', adminController.getDeleteUserI
 router.get('/dashboard/users-manager/lock/:id', adminController.getLockUser);
 router.get('/dashboard/users-manager/unlock/:id', adminController.getUnlockUser);
 
+// Admin Manager
+router.get('/dashboard/admin-list/lock/:id', adminController.getLockAdmin);
+router.get('/dashboard/admin-list/unlock/:id', adminController.getUnlockAdmin);
+
 // Logout
 router.get('/dashboard/logout', getLogout);
 
