@@ -302,7 +302,7 @@ class AdminController {
       var data = {
         productName: req.body.productname,
         description: {
-          imageList: req.files.map((image) => `/${image.path}`),
+          imageList: req.files.map((image) => `/uploads/${image.filename}`),
           productDescription: req.body.description,
           price: req.body.price,
           unit: "Cái",
@@ -482,7 +482,7 @@ class AdminController {
           productName: req.body.productname,
           "description.imageList":
             req.files.length > 0
-              ? req.files.map((img) => `/${img.path}`)
+              ? req.files.map((img) => `/uploads/${img.filename}`)
               : productResult.description.imageList,
           "description.productDescription": req.body.description,
           "description.price": req.body.price,
