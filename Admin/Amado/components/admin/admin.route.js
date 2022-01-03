@@ -84,6 +84,8 @@ router.post('/dashboard/users-manager/update/:id', uploadSingle.single('thumbnai
 router.get('/dashboard/users-manager/update/:id', adminController.getUpdateUserPage);
 
 router.get('/dashboard/users-manager/delete/:id', adminController.getDeleteUserInfo);
+router.get('/dashboard/users-manager/lock/:id', adminController.getLockUser);
+router.get('/dashboard/users-manager/unlock/:id', adminController.getUnlockUser);
 
 // Logout
 router.get('/dashboard/logout', getLogout);

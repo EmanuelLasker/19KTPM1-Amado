@@ -99,10 +99,10 @@
                                             </div>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/admin/dashboard/users-manager">Quản lý người dùng</a>
+                                            <a class="nav-link active" href="/admin/dashboard/users-manager">Quản lý người dùng</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link active" href="/admin/dashboard/admin-list">Danh sách tài khoản quản trị</a>
+                                            <a class="nav-link" href="/admin/dashboard/admin-list">Danh sách tài khoản quản trị</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link " href="/sign-up">Thêm tài khoản quản trị</a>
@@ -168,6 +168,7 @@
                                                         <th class="border-0">Địa chỉ</th>
                                                         <th class="border-0">SĐT</th>
                                                         <th class="border-0">Email</th>
+                                                        <th class="border-0">Thao tác</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -176,7 +177,12 @@
                                                     users %> 
                                                     <% i = 1 %> 
                                                         <% listAdmin.forEach(element => {%>
-                                                            <tr>
+                                                            <% if (element.locked == false) {%>
+                                                                <tr class="bg-light">
+                                                            <% } else {%> 
+                                                                <tr class="bg-lock">
+                                                            <% }%>
+
                                                                 <td><%= i %> </td>
                                                                 <td> <%= element.loginInformation.userName %>  </td>
                                                                 <td> <%= element.fullNameCustomer.lastName %>  </td>
@@ -188,7 +194,12 @@
                                                                 <td> <%= element.email %>  </td>
                                                                 <td>
                                                                     <a style="margin-right: 5px;" href="/admin/dashboard/users-manager/update/<%= element._id %>"><i class="fas fa-edit"></i></a>
-                                                                    <a onclick="comfirmDelete('Bạn có muốn thông tin khách hàng này?',event)" style="margin-right: 5px;" href="/admin/dashboard/users-manager/delete/<%= element._id %>"><i class="fas fa-trash"></i></a>
+                                                                    <a onclick="comfirmDelete('Bạn có muốn xóa thông tin khách hàng này?',event)" style="margin-right: 5px;" href="/admin/dashboard/users-manager/delete/<%= element._id %>"><i class="fas fa-trash"></i></a>
+                                                                    <% if (element.locked == false) {%>
+                                                                        <a onclick="comfirmDelete('Bạn có muốn khóa tài khoản khách hàng này?',event)" style="margin-right: 5px;" href="/admin/dashboard/users-manager/lock/<%= element._id %>"><i class="fas fa-lock"></i></a>
+                                                                    <% } else {%>
+                                                                        <a onclick="comfirmDelete('Bạn có muốn mở khóa tài khoản khách hàng này?',event)" style="margin-right: 5px;" href="/admin/dashboard/users-manager/unlock/<%= element._id %>"><i class="fas fa-unlock"></i></a>
+                                                                    <% }%>
                                                                 </td>
                                                                 <% i++ %>
                                                             </tr>

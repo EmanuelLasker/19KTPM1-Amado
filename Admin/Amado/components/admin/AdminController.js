@@ -918,5 +918,53 @@ class AdminController {
       res.redirect("/admin/login");
     }
   }
+  getLockUser(req, res, next) {
+    if (req.isAuthenticated()) {
+      var idCustomer = req.params.id;
+      customers.findOne({ _id: idCustomer }, (err, result) => {
+        if (err) {
+          console.log(err);
+          req.flash("error", "Khóa tài khoản không thành công!");
+          next();
+        }
+
+        customers.updateOne(
+          { "_id": idCustomer },
+          { $set: { "locked": true } }
+          , (err, res) => {
+            console.log(res);
+          });
+    
+        req.flash("success", "Khóa tài khoản thành công!");
+        res.redirect("/admin/dashboard/users-manager");
+      });
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
+  getUnlockUser(req, res, next) {
+    if (req.isAuthenticated()) {
+      var idCustomer = req.params.id;
+      customers.findOne({ _id: idCustomer }, (err, result) => {
+        if (err) {
+          console.log(err);
+          req.flash("error", "Mở khóa tài khoản không thành công!");
+          next();
+        }
+
+        customers.updateOne(
+          { "_id": idCustomer },
+          { $set: { "locked": false } }
+          , (err, res) => {
+            console.log(res);
+          });
+    
+        req.flash("success", "Mở khóa tài khoản thành công!");
+        res.redirect("/admin/dashboard/users-manager");
+      });
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
 }
 module.exports = new AdminController();
