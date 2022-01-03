@@ -441,7 +441,8 @@ class UserController {
           'listFavorite': [],
           'loginInformation': { 'userName': username, 'password': hashed_password, 'type': 'User', roles: [] },
           'avatar': '/uploads/user-01.png',
-          'verified': 'false'
+          'verified': false,
+          'locked': false
         }
 
         customers.findOne({ 'email': email }, (err, emailDBResult) => {

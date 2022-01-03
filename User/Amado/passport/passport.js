@@ -24,6 +24,10 @@ passport.use(
             return done(null, false, {message: 'Tài khoản chưa được kích hoạt!'});
           }
 
+          if (user.locked == true) {
+            return done(null, false, {message: 'Tài khoản đã bị khóa!'});
+          }
+
           return done(null, user, { message: 'Đăng nhập thành công!' });
         }
       );
