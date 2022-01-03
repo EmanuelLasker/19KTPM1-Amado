@@ -40,16 +40,32 @@
     <div class="splash-container">
         <div class="card ">
             <div class="card-header text-center"><a href="/"><img class="logo-img" src="/public/img/core-img/logo.png" alt="logo"></a><span class="splash-description my-3">
-                <% if (check == true) {%>
-                    Tài khoản của bạn đã được kích hoạt!
-                <% } else {%>
+                <% if (type == 0) {%>
                     Vui lòng kiểm tra email để kích hoạt tài khoản.
+                <% } else if (type == 1) {%>
+                    Tài khoản của bạn đã được kích hoạt!
+                <% } else if (type == 2) {%>
+                    Vui lòng kiểm tra email để đặt lại mật khẩu.
+                <% } else if (type == 3) {%>
+                    Đặt lại mật khẩu.
                 <% }%>
             </span></div>
             <div class="card-body">
-                <form method="GET" action="/login">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">Đăng nhập</button>
-                </form>
+                <% if (type < 3) {%>
+                    <form method="GET" action="/login">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Đăng nhập</button>
+                    </form>
+                <% } else {%>
+                    <form method="POST" action="/new-pass">
+                        <div class="form-group">
+                            <input class="form-control form-control-lg" name="password" id="password" type="password" placeholder="Mật khẩu mới" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control form-control-lg" name="repassword" id="repassword" type="password" placeholder="Xác nhận mật khẩu mới" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Đặt lại mật khẩu</button>
+                    </form>
+                <% }%>
             </div>
         </div>
     </div>
