@@ -503,7 +503,7 @@ class UserController {
 
                       // render new page
                       req.flash('success', 'Tạo tài khoản thành công!');
-                      res.render('confirm', { check: false, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error') });
+                      res.render('confirm', { type: 0, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error') });
         
                     } catch (e) {
                       console.log(e);
@@ -532,7 +532,7 @@ class UserController {
     });
   }
   getConfirmPage(req, res, next) {
-    res.render('confirm', { check: true, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error') });
+    res.render('confirm', { type: 0, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error') });
   }
   getConfirmEmail(req, res, next) {
     const user = jwt.verify(req.params.token, EMAIL_SECRET);
@@ -542,7 +542,7 @@ class UserController {
       , (err, res) => {
         console.log(res);
       });
-      res.render('confirm', { check: true, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error') });
+      res.render('confirm', { type: 1, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error') });
   }
   getAddFavorite(req, res, next) {
     if (req.isAuthenticated()) {
