@@ -365,13 +365,13 @@
                                                             <%} %>
                                                                 <tr>
                                                                     <td>
-                                                                        <%= e.productName %>
+                                                                        <%= e[1] %>
                                                                     </td>
                                                                     <td>
-                                                                        <%= e.amount %>
+                                                                        <%= e[2] %>
                                                                     </td>
                                                                     <td>
-                                                                        <%= e.price %>
+                                                                        <%= e[3] %>
                                                                     </td>
                                                                 </tr>
                                                                 <% return true; %>
@@ -418,7 +418,7 @@
                             <div class="row">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                     <div class="card">
-                                        <h5 class="card-header">Thống kê số lượng sản phẩm</h5>
+                                        <h5 class="card-header">Thống kê doanh thu sản phẩm</h5>
                                         <div class="card-body">
                                             <script type="text/javascript">
                                                 google.charts.load('current', { 'packages': ['bar'] });
@@ -431,7 +431,7 @@
 
                                                     var options = {
                                                         chart: {
-                                                            title: 'Số lượng sản phẩm bán ra theo Tháng'
+                                                            title: 'Doanh thu sản phẩm theo Tháng'
                                                         }
                                                     };
 
@@ -440,7 +440,7 @@
                                                     chart.draw(data, google.charts.Bar.convertOptions(options));
                                                 }
                                             </script>
-                                            <div id="columnchart_material" style="width: 500px; height: 300px;"></div>
+                                            <div id="columnchart_material" style="width: 900px; height: 500px;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -449,7 +449,7 @@
                             <div class="row">
                                 <div class="col-xl-12">
                                     <div class="card">
-                                        <h5 class="card-header">Thống kê số lượng sản phẩm</h5>
+                                        <h5 class="card-header">Thống kê doanh thu sản phẩm</h5>
                                         <div class="card-body">
                                             <script type="text/javascript">
                                                 google.charts.load('current', { 'packages': ['corechart'] });
@@ -461,7 +461,7 @@
                                                     var data = google.visualization.arrayToDataTable(set2);
 
                                                     var options = {
-                                                        title: 'Số lượng sản phẩm bán ra theo Ngày',
+                                                        title: 'Doanh thu sản phẩm theo Ngày',
                                                         curveType: 'function',
                                                         legend: { position: 'bottom' }
                                                     };
