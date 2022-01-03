@@ -45,15 +45,22 @@
                 <% } else if (type == 1) {%>
                     Tài khoản của bạn đã được kích hoạt!
                 <% } else if (type == 2) {%>
-                    Vui lòng kiểm tra email để đặt lại mật khẩu.
+                    Vui lòng nhập email để lấy link đặt lại mật khẩu.
                 <% } else if (type == 3) {%>
                     Đặt lại mật khẩu.
                 <% }%>
             </span></div>
             <div class="card-body">
-                <% if (type < 3) {%>
+                <% if (type < 2) {%>
                     <form method="GET" action="/login">
                         <button type="submit" class="btn btn-primary btn-lg btn-block">Đăng nhập</button>
+                    </form>
+                <% } else if (type == 2) {%>
+                    <form method="POST" action="/send-password-email">
+                        <div class="form-group">
+                            <input class="form-control form-control-lg" name="email" id="email" type="email" placeholder="E-mail" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Gửi email</button>
                     </form>
                 <% } else {%>
                     <form method="POST" action="/new-pass">
