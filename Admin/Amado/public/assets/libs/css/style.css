@@ -891,6 +891,11 @@ Background Color / Color
   background-color: #f9f9ff !important;
 }
 
+.bg-lock {
+  background-color: #dadae2 !important;
+  color: #b1b1bb !important;
+}
+
 .bg-dark {
   background-color: #2e2f39 !important;
 }
@@ -7083,6 +7088,10 @@ Media Query
     background-color: green;
     transition: ease .5s;
     color: white;
+}
+.forgot-password {
+  margin-top: 12px;
+  text-align: right;
 }
 
 /* Custom, iPhone Retina */

@@ -168,6 +168,7 @@
                                                         <th class="border-0">Địa chỉ</th>
                                                         <th class="border-0">SĐT</th>
                                                         <th class="border-0">Email</th>
+                                                        <th class="border-0">Thao tác</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -176,7 +177,11 @@
                                                      admins %> 
                                                     <% i = 1 %> 
                                                         <% listAdmin.forEach(element => {%>
-                                                            <tr>
+                                                            <% if (element.locked == false) {%>
+                                                                <tr class="bg-light">
+                                                            <% } else {%> 
+                                                                <tr class="bg-lock">
+                                                            <% }%>
                                                                 <td><%= i %> </td>
                                                                 <td> <%= element.loginInformation.userName %>  </td>
                                                                 <td> <%= element.fullNameCustomer.lastName %>  </td>
@@ -186,6 +191,15 @@
                                                                 <td> <%= element.address %>  </td>
                                                                 <td> <%= element.phoneNumber %>  </td>
                                                                 <td> <%= element.email %>  </td>
+                                                                <td>
+                                                                    <% if (customer.loginInformation.userName != element.loginInformation.userName) {%>
+                                                                        <% if (element.locked == false) {%>
+                                                                            <a onclick="comfirmDelete('Bạn có muốn khóa tài khoản quản trị viên này?',event)" style="margin-right: 5px;" href="/admin/dashboard/admin-list/lock/<%= element._id %>"><i class="fas fa-lock"></i></a>
+                                                                        <% } else {%>
+                                                                            <a onclick="comfirmDelete('Bạn có muốn mở khóa tài khoản quản trị viên này?',event)" style="margin-right: 5px;" href="/admin/dashboard/admin-list/unlock/<%= element._id %>"><i class="fas fa-unlock"></i></a>
+                                                                        <% }%>
+                                                                    <% }%>
+                                                                </td>
                                                                 <% i++ %>
                                                             </tr>
                                                         <%}) %> 

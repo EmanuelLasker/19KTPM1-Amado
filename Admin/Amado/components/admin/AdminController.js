@@ -6,6 +6,13 @@ const bill = require('../../models/bills');
 const region = require("../../models/region");
 const bcrypt = require('bcrypt'); // !HASH_HERE
 const customers = require("../../models/customers");
+const jwt = require("jsonwebtoken");
+const jwt_decoder = require("jwt-decode");
+const email_exist = require("email-existence");
+const nodemailer = require("nodemailer");
+
+const EMAIL_SECRET = 'asdf1093KMnzxcvnkljvasdu09123nlasdasdf';
+
 class AdminController {
   getLoginPage(req, res, next) {
     res.render("login", { message: req.flash("error") });
@@ -40,7 +47,8 @@ class AdminController {
           'phoneNumber': phone,
           'email': email,
           'loginInformation': { 'userName': username, 'password': hash, 'type': 'Admin', roles: ["All"] },
-          'avatar': '/uploads/user-01.png'
+          'avatar': '/uploads/user-01.png',
+          'locked': false
         }
         var newUser = new admin(data);
         newUser.save()
@@ -927,7 +935,6 @@ class AdminController {
       res.redirect("/admin/login");
     }
   }
-
   getDeleteUserInfo(req, res, next) {
     if (req.isAuthenticated()) {
       var idCustomer = req.params.id;
@@ -943,6 +950,198 @@ class AdminController {
     } else {
       res.redirect("/admin/login");
     }
+  }
+  getLockUser(req, res, next) {
+    if (req.isAuthenticated()) {
+      var idCustomer = req.params.id;
+      customers.findOne({ _id: idCustomer }, (err, result) => {
+        if (err) {
+          console.log(err);
+          req.flash("error", "Khóa tài khoản không thành công!");
+          next();
+        }
+
+        customers.updateOne(
+          { "_id": idCustomer },
+          { $set: { "locked": true } }
+          , (err, res) => {
+            console.log(res);
+          });
+    
+        req.flash("success", "Khóa tài khoản thành công!");
+        res.redirect("/admin/dashboard/users-manager");
+      });
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
+  getUnlockUser(req, res, next) {
+    if (req.isAuthenticated()) {
+      var idCustomer = req.params.id;
+      customers.findOne({ _id: idCustomer }, (err, result) => {
+        if (err) {
+          console.log(err);
+          req.flash("error", "Mở khóa tài khoản không thành công!");
+          next();
+        }
+
+        customers.updateOne(
+          { "_id": idCustomer },
+          { $set: { "locked": false } }
+          , (err, res) => {
+            console.log(res);
+          });
+    
+        req.flash("success", "Mở khóa tài khoản thành công!");
+        res.redirect("/admin/dashboard/users-manager");
+      });
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
+  getLockAdmin(req, res, next) {
+    if (req.isAuthenticated()) {
+      var idAdmin = req.params.id;
+      admin.findOne({ _id: idAdmin }, (err, result) => {
+        if (err) {
+          console.log(err);
+          req.flash("error", "Khóa tài khoản không thành công!");
+          next();
+        }
+
+        admin.updateOne(
+          { "_id": idAdmin },
+          { $set: { "locked": true } }
+          , (err, res) => {
+            console.log(res);
+          });
+    
+        req.flash("success", "Khóa tài khoản thành công!");
+        res.redirect("/admin/dashboard/admin-list");
+      });
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
+  getUnlockAdmin(req, res, next) {
+    if (req.isAuthenticated()) {
+      var idAdmin = req.params.id;
+      admin.findOne({ _id: idAdmin }, (err, result) => {
+        if (err) {
+          console.log(err);
+          req.flash("error", "Mở khóa tài khoản không thành công!");
+          next();
+        }
+
+        admin.updateOne(
+          { "_id": idAdmin },
+          { $set: { "locked": false } }
+          , (err, res) => {
+            console.log(res);
+          });
+    
+        req.flash("success", "Mở khóa tài khoản thành công!");
+        res.redirect("/admin/dashboard/admin-list");
+      });
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
+  getForgotPasswordPage(req, res, next) {
+    res.render('confirm', { type: 2, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error'), email: undefined });
+  }
+  getResetPasswordPage(req, res, next) {
+    res.render('confirm', { type: 3, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error'), email_token: req.params.email_token });
+  }
+  postResetPassword(req, res, next) {
+    var password = req.body.password;
+    var repassword = req.body.repassword;
+    var email = jwt_decoder(req.body.email).original;
+
+    // check for password matching
+    if (password != repassword) {
+      req.flash('error', 'Mật khẩu không khớp.');
+      res.render('confirm', { type: 3, message: req.flash('error'), email_token: req.body.email, typeMessage: 'error' });
+    } else {
+
+      var hashed_password = bcrypt.hashSync(password, 10);
+
+      admin.findOne({ 'email': email}, (err, customerResult) => {
+        // email found
+        if (customerResult) {
+          admin.updateOne(
+            { "email": email },
+            { $set: { "loginInformation.password": hashed_password } }
+            , (err, res) => {
+              console.log(res);
+            });
+            req.flash('success', 'Đặt lại mật khẩu thành công.')
+            res.render('loginuser', { 
+              message: req.flash('success'), typeMessage: 'success' });
+  
+        // email not found
+        } else {
+          req.flash('error', 'Tài khoản chứa email này không tồn tại.');
+          res.render('confirm', { type: 2, message: req.flash('error'), email: undefined, typeMessage: 'error' });
+        }
+      });
+    }
+
+  }
+  postSendPasswordEmail(req, res, next) {
+    var email = req.body.email;
+
+    const email_token = jwt.sign(
+      {
+        original: email,
+      },
+      EMAIL_SECRET,
+      {
+        expiresIn: '1d',
+      },
+    );
+    
+    admin.findOne({ 'email': email}, (err, customerResult) => {
+
+      // email found
+      if (customerResult) {
+        
+        const url = `http://localhost:3000/admin/reset-password/${email_token}`;
+
+        var transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: 'johndoe.alexa.19clc5@gmail.com',
+            pass: 'helloiamjohn123'
+          }
+        });
+
+        var mailOptions = {
+          from: 'johndoe.alexa.19clc5@gmail.com',
+          to: email,
+          subject: 'Đặt lại mật khẩu Amado',
+          html: `Bạn vừa gửi yêu cầu đặt lại mật khẩu. Đặt lại mật khẩu cho tài khoản <a href="${url}">tại đây</a>`
+        }
+        
+        transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+
+        // render new page
+        req.flash('success', 'Đã gửi email đặt lại mật khẩu!');
+        res.render('confirm', { type: 2, message: req.flash('success'), email: undefined, typeMessage: 'success' });
+
+      // email not found
+      } else {
+        req.flash('error', 'Tài khoản chứa email này không tồn tại.');
+        res.render('confirm', { type: 2, message: req.flash('error'), email: undefined, typeMessage: 'error' });
+      }
+
+    });
   }
 }
 module.exports = new AdminController();
