@@ -86,9 +86,13 @@ class AdminController {
                 var dayList = []
                 dayList.push(['Ngày', 'Doanh thu'])
                 var months = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']
+                var quarters = ['Quý 1', 'Quý 2', 'Quý 3', 'Quý 4']
                 var countMonth = []
+                var countQuarter = []
                 for (var j = 0; j < 12; j++)
                   countMonth.push(0)
+                for (var j = 0; j < 4; j++)
+                  countQuarter.push(0)
 
                 billResult.forEach(e => {
                   var countDay = 0
@@ -103,8 +107,18 @@ class AdminController {
                     
                     countDay += parseInt(pro.productPrice)*parseInt(pro.amount)
 
-                    if (e.date.year == currentYear)
+                    if (e.date.year == currentYear) {
                       countMonth[parseInt(e.date.month - 1)] += parseInt(pro.amount)*parseInt(pro.productPrice)
+                      
+                      if (e.date.month <= 3)
+                        countQuarter[0] += parseInt(pro.amount)*parseInt(pro.productPrice)
+                      else if (e.date.month <= 6)
+                        countQuarter[1] += parseInt(pro.amount)*parseInt(pro.productPrice)
+                      else if (e.date.month <= 9)
+                        countQuarter[2] += parseInt(pro.amount)*parseInt(pro.productPrice)
+                      else
+                        countQuarter[3] += parseInt(pro.amount)*parseInt(pro.productPrice)
+                    }  
                   })
 
                   if (!containsDate(dayList, e.date.day + "/" + e.date.month + "/" + e.date.year) && e.date.year == currentYear) {
@@ -157,6 +171,11 @@ class AdminController {
                 for (var j = 0; j < 12; j++)
                   monthList.push([months[j], countMonth[j]])
 
+                var quarterList = []
+                quarterList.push(['Quý', 'Doanh thu'])
+                for (var j = 0; j < 4; j++)
+                  quarterList.push([quarters[j], countQuarter[j]])
+
                 res.render("dashboard", {
                   message: req.flash("success"),
                   customer: customerResult,
@@ -165,7 +184,8 @@ class AdminController {
                   topList: proList,
                   typeList: JSON.stringify(typeList),
                   monthList: JSON.stringify(monthList),
-                  dayList: JSON.stringify(dayList)
+                  dayList: JSON.stringify(dayList),
+                  quarterList: JSON.stringify(quarterList)
                 });
               }
             );
