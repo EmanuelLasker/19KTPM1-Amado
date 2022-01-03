@@ -503,7 +503,7 @@ class UserController {
 
                       // render new page
                       req.flash('success', 'Tạo tài khoản thành công!');
-                      res.render('confirm', { type: 0, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error') });
+                      res.render('confirm', { type: 0, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error'), email: undefined });
         
                     } catch (e) {
                       console.log(e);
@@ -532,10 +532,18 @@ class UserController {
     });
   }
   getConfirmPage(req, res, next) {
-    res.render('confirm', { type: 0, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error') });
+    res.render('confirm', { type: 0, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error'), email: undefined });
   }
   getForgotPasswordPage(req, res, next) {
-    res.render('confirm', { type: 2, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error') });
+    res.render('confirm', { type: 2, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error'), email: undefined });
+  }
+  getResetPasswordPage(req, res, next) {
+      res.render('confirm', { type: 3, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error'), email: req.params.email });
+  }
+  postResetPassword(req, res, next) {
+    var password = req.body.password;
+    var re_password = req.body.repassword;
+
   }
   getConfirmEmail(req, res, next) {
     const user = jwt.verify(req.params.token, EMAIL_SECRET);
@@ -545,7 +553,52 @@ class UserController {
       , (err, res) => {
         console.log(res);
       });
-      res.render('confirm', { type: 1, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error') });
+      res.render('confirm', { type: 1, message: req.flash('success').length != 0 ? req.flash('success') : req.flash('error'), email: undefined });
+  }
+  postSendPasswordEmail(req, res, next) {
+    var email = req.body.email;
+    
+    customers.findOne({ 'email': email}, (err, customerResult) => {
+
+      // email found
+      if (customerResult) {
+        
+        const url = `http://localhost:3000/reset-password/${email}`;
+
+        var transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: 'johndoe.alexa.19clc5@gmail.com',
+            pass: 'helloiamjohn123'
+          }
+        });
+
+        var mailOptions = {
+          from: 'johndoe.alexa.19clc5@gmail.com',
+          to: email,
+          subject: 'Đặt lại mật khẩu Amado',
+          html: `Bạn vừa gửi yêu cầu đặt lại mật khẩu. Đặt lại mật khẩu cho tài khoản <a href="${url}">tại đây</a>`
+        }
+        
+        transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+
+        // render new page
+        req.flash('success', 'Đã gửi email đặt lại mật khẩu!');
+        res.render('confirm', { type: 2, message: req.flash('success'), email: undefined, typeMessage: 'success' });
+
+      // email not found
+      } else {
+        req.flash('error', 'Tài khoản chứa email này không tồn tại.');
+        res.render('confirm', { type: 2, message: req.flash('error'), email: undefined, typeMessage: 'error' });
+      }
+
+    });
   }
   getAddFavorite(req, res, next) {
     if (req.isAuthenticated()) {

@@ -12,6 +12,9 @@ router.post('/sign-up', userController.postRegisterUser);
 router.get('/confirmation/:token', userController.getConfirmEmail);
 router.get('/confirm', userController.getConfirmPage);
 router.get('/forgot-password', userController.getForgotPasswordPage);
+router.post('/send-password-email', userController.postSendPasswordEmail);
+router.get('/reset-password/:email', userController.getResetPasswordPage);
+router.post('/reset-password', userController.postResetPassword);
 router.post(
   '/login',
   passport.authenticate('user-local', {
