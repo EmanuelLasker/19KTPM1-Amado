@@ -403,6 +403,10 @@ class UserController {
               console.log(err);
               next();
             });
+          customers.findOneAndUpdate({ 'loginInformation.userName': user }, { "listProduct": []},
+              {new: false},(err, result)=>{
+                  console.log("result: ",result);
+              });
         })
       })
     } else {
