@@ -17,8 +17,46 @@ const EMAIL_SECRET = 'asdf1093KMnzxcvnkljvasdu09123nlasdasdf';
 
 class UserController {
   index(req, res, next) {
+
     type.find({}, (err, result) => {
       if (req.isAuthenticated()) {
+        let tmp_user = JSON.parse(localStorage.getItem(req.sessionID));
+
+        customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
+          let curUser = customerResult;
+
+          if(tmp_user != undefined && tmp_user.listProduct){
+            tmp_user.listProduct.forEach(x => {
+              // console.log(userListProduct);
+              curUser.listProduct.forEach(y=>{
+                if(x.productID==y.productID){
+                  x.amount += y.amount;
+                }
+                else{
+                  tmp_user.listProduct.push(y);
+                }
+              })
+            })
+            curUser.listProduct = tmp_user.listProduct;
+            tmp_user = curUser;
+            let x = tmp_user;
+            customers.findOneAndUpdate({ 'loginInformation.userName': req.session.passport.user.username },x,{upsert: true},
+                (err, resultQuery)=>{
+                    //console.log(resultQuery);
+                });
+
+          }
+
+        })
+
+        customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err,result ) => {
+          tmp_user = result;
+
+          //res.render("index", { data: result, message: req.flash("success"), customer: customerResult, title: "Amado - Trang chủ" });
+        })
+        console.log("TMp_useser ",tmp_user);
+
+        localStorage.setItem(req.sessionID,null);
         customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
           res.render("index", { data: result, message: req.flash("success"), customer: customerResult, title: "Amado - Trang chủ" });
         })
