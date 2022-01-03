@@ -91,6 +91,12 @@ router.get('/dashboard/users-manager/unlock/:id', adminController.getUnlockUser)
 router.get('/dashboard/admin-list/lock/:id', adminController.getLockAdmin);
 router.get('/dashboard/admin-list/unlock/:id', adminController.getUnlockAdmin);
 
+// Reset Password
+router.get('/forgot-password', adminController.getForgotPasswordPage);
+router.post('/send-password-email', adminController.postSendPasswordEmail);
+router.get('/reset-password/:email_token', adminController.getResetPasswordPage);
+router.post('/reset-password', adminController.postResetPassword);
+
 // Logout
 router.get('/dashboard/logout', getLogout);
 

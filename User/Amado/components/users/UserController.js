@@ -550,7 +550,7 @@ class UserController {
     // check for password matching
     if (password != repassword) {
       req.flash('error', 'Mật khẩu không khớp.');
-      res.render('confirm', { type: 3, message: req.flash('error'), email: email, typeMessage: 'error' });
+      res.render('confirm', { type: 3, message: req.flash('error'), email_token: req.body.email, typeMessage: 'error' });
     } else {
 
       var hashed_password = bcrypt.hashSync(password, 10);
