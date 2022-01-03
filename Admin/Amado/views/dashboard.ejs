@@ -421,6 +421,38 @@
                                         <h5 class="card-header">Thống kê doanh thu sản phẩm</h5>
                                         <div class="card-body">
                                             <script type="text/javascript">
+                                                google.charts.load('current', {'packages':['bar']});
+                                                google.charts.setOnLoadCallback(drawChart);
+
+                                                var set0 = JSON.parse('<%- weekList %>')
+                                          
+                                                function drawChart() {
+                                                  var data = google.visualization.arrayToDataTable(set0);
+                                          
+                                                  var options = {
+                                                    chart: {
+                                                      title: 'Doanh thu sản phẩm trong Tuần'
+                                                    },
+                                                    bars: 'horizontal' 
+                                                  };
+                                          
+                                                  var chart = new google.charts.Bar(document.getElementById('barchart_material'));
+                                          
+                                                  chart.draw(data, google.charts.Bar.convertOptions(options));
+                                                }
+                                              </script>
+                                            <div id="barchart_material" style="width: 1340px; height: 500px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <h5 class="card-header">Thống kê doanh thu sản phẩm</h5>
+                                        <div class="card-body">
+                                            <script type="text/javascript">
                                                 google.charts.load('current', { 'packages': ['corechart'] });
                                                 google.charts.setOnLoadCallback(drawChart);
 
@@ -440,7 +472,7 @@
                                                     chart.draw(data, options);
                                                 }
                                             </script>
-                                            <div id="curve_chart" style="width: 900px; height: 500px"></div>
+                                            <div id="curve_chart" style="width: 650px; height: 361px"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -471,7 +503,7 @@
                                                     chart.draw(data, google.charts.Bar.convertOptions(options));
                                                 }
                                             </script>
-                                            <div id="columnchart_material" style="width: 900px; height: 500px;"></div>
+                                            <div id="columnchart_material" style="width: 650px; height: 361px;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -502,7 +534,7 @@
                                                     chart.draw(data, google.charts.Bar.convertOptions(options));
                                                 }
                                             </script>
-                                            <div id="columnchart_material_1" style="width: 900px; height: 500px;"></div>
+                                            <div id="columnchart_material_1" style="width: 650px; height: 361px;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -533,7 +565,7 @@
                                                     chart.draw(data, options);
                                                 }
                                             </script>
-                                            <div id="curve_chart1" style="width: 900px; height: 500px"></div>
+                                            <div id="curve_chart1" style="width: 650px; height: 361px"></div>
                                         </div>
                                     </div>
                                 </div>

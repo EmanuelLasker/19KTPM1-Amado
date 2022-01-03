@@ -81,7 +81,8 @@ class AdminController {
                   return -1
                 }
 
-                var currentYear = new Date().getFullYear() - 1
+                var today = new Date()
+                var currentYear = today.getFullYear() - 1
                 var proList = []
                 var dayList = []
                 dayList.push(['Ngày', 'Doanh thu'])
@@ -97,39 +98,61 @@ class AdminController {
                 var years = []
                 years.push(['Năm', 'Doanh thu'])
 
+                function getWeekDates(current) {
+                  var week = new Array();
+                  current.setDate((current.getDate() - current.getDay() + 1));
+                  for (var i = 0; i < 7; i++) {
+                    week.push(new Date(current));
+                    current.setDate(current.getDate() + 1);
+                  }
+                  return week;
+                }
+                var week = getWeekDates(new Date(today.getFullYear(), today.getMonth(), today.getDate()));
+                var weeks = ['Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy', 'Chủ Nhật']
+                var weekList = []
+                var countWeek = []
+                for (var j = 0; j < 7; j++)
+                  countWeek.push(0)
+
                 billResult.forEach(e => {
+                  for (var i = 0; i < week.length; i++)
+                    if (week[i].getFullYear() == e.date.year && (week[i].getMonth() + 1) == e.date.month && week[i].getDate() == e.date.day)
+                      e.listProduct.forEach(pro => {
+                        countWeek[i] += parseInt(pro.productPrice) * parseInt(pro.amount)
+                      })
+
                   var countDay = 0
                   var countYear = 0
                   e.listProduct.forEach(pro => {
                     var index = containsProduct(proList, pro.productID)
                     if (index < 0) {
-                      proList.push([pro.productID, pro.productName, parseInt(pro.amount), parseInt(pro.productPrice)*parseInt(pro.amount), pro.productType])
+                      proList.push([pro.productID, pro.productName, parseInt(pro.amount), parseInt(pro.productPrice) * parseInt(pro.amount), pro.productType])
                     } else {
                       proList[index][2] += parseInt(pro.amount)
-                      proList[index][3] += parseInt(pro.productPrice)*parseInt(pro.amount)
+                      proList[index][3] += parseInt(pro.productPrice) * parseInt(pro.amount)
                     }
 
                     var index1 = containsDate(years, e.date.year)
                     if (index1 < 0) {
-                      years.push([`${e.date.year}`, parseInt(pro.productPrice)*parseInt(pro.amount)])
+                      years.push([`${e.date.year}`, parseInt(pro.productPrice) * parseInt(pro.amount)])
                     } else {
-                      years[index1][1] += parseInt(pro.productPrice)*parseInt(pro.amount)
+                      years[index1][1] += parseInt(pro.productPrice) * parseInt(pro.amount)
                     }
-                    
-                    countDay += parseInt(pro.productPrice)*parseInt(pro.amount)
+
+                    countDay += parseInt(pro.productPrice) * parseInt(pro.amount)
 
                     if (e.date.year == currentYear) {
-                      countMonth[parseInt(e.date.month - 1)] += parseInt(pro.amount)*parseInt(pro.productPrice)
-                      
+                      countMonth[parseInt(e.date.month - 1)] += parseInt(pro.amount) * parseInt(pro.productPrice)
+
                       if (e.date.month <= 3)
-                        countQuarter[0] += parseInt(pro.amount)*parseInt(pro.productPrice)
+                        countQuarter[0] += parseInt(pro.amount) * parseInt(pro.productPrice)
                       else if (e.date.month <= 6)
-                        countQuarter[1] += parseInt(pro.amount)*parseInt(pro.productPrice)
+                        countQuarter[1] += parseInt(pro.amount) * parseInt(pro.productPrice)
                       else if (e.date.month <= 9)
-                        countQuarter[2] += parseInt(pro.amount)*parseInt(pro.productPrice)
+                        countQuarter[2] += parseInt(pro.amount) * parseInt(pro.productPrice)
                       else
-                        countQuarter[3] += parseInt(pro.amount)*parseInt(pro.productPrice)
-                    }  
+                        countQuarter[3] += parseInt(pro.amount) * parseInt(pro.productPrice)
+                    }
                   })
 
                   var index2 = containsDate(dayList, e.date.day + "/" + e.date.month + "/" + e.date.year)
@@ -137,9 +160,13 @@ class AdminController {
                     dayList.push([e.date.day + "/" + e.date.month + "/" + e.date.year, countDay])
                   }
                   else if (index2 >= 0 && e.date.year == currentYear) {
-                    dayList[index2][1] += parseInt(pro.productPrice)*parseInt(pro.amount)
+                    dayList[index2][1] += parseInt(pro.productPrice) * parseInt(pro.amount)
                   }
                 })
+
+                weekList.push(['Thứ', 'Doanh thu'])
+                for (var i = 0; i < week.length; i++)
+                  weekList.push([weeks[i], countWeek[i]])
 
                 proList.sort(function (a, b) {
                   return parseInt(b[2]) - parseInt(a[2]);
@@ -157,8 +184,6 @@ class AdminController {
                   })
                   typeList.push([e.typeName, totalAmount]);
                 })
-
-                console.log(years)
 
                 dayList.sort(function (a, b) {
                   var t1 = a[0].split("/")
@@ -203,7 +228,8 @@ class AdminController {
                   monthList: JSON.stringify(monthList),
                   dayList: JSON.stringify(dayList),
                   quarterList: JSON.stringify(quarterList),
-                  yearList: JSON.stringify(years)
+                  yearList: JSON.stringify(years),
+                  weekList: JSON.stringify(weekList)
                 });
               }
             );
