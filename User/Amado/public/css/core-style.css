@@ -676,7 +676,7 @@ img {
   padding: 100px 40px;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-  .main-content-wrapper .shop_sidebar_area {
+  .order-table-area {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 180px;
     flex: 0 0 180px;
@@ -686,7 +686,7 @@ img {
   }
 }
 @media only screen and (max-width: 767px) {
-  .main-content-wrapper .shop_sidebar_area {
+  .order-table-area {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 100%;
     flex: 0 0 100%;
@@ -697,7 +697,7 @@ img {
     order: 2;
   }
 }
-.main-content-wrapper .amado_product_area {
+.order-table-area {
   position: relative;
   z-index: 1;
   -webkit-box-flex: 0;
@@ -707,7 +707,7 @@ img {
   max-width: calc(95% - 550px);
 }
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
-  .main-content-wrapper .amado_product_area {
+  .order-table-area {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 calc(100% - 550px);
     flex: 0 0 calc(100% - 550px);
@@ -716,7 +716,7 @@ img {
   }
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-  .main-content-wrapper .amado_product_area {
+  .order-table-area {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 calc(100% - 460px);
     flex: 0 0 calc(100% - 460px);
@@ -725,7 +725,7 @@ img {
   }
 }
 @media only screen and (max-width: 767px) {
-  .main-content-wrapper .amado_product_area {
+  .order-table-area {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 100%;
     flex: 0 0 100%;
@@ -737,6 +737,136 @@ img {
     padding-top: 50px;
   }
 }
+
+.order-table-area {
+  position: relative;
+  z-index: 1;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 calc(95% - 320px);
+  flex: 0 0 calc(95% - 320px);
+  width: calc(95% - 320px);
+  max-width: calc(95% - 320px);
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .order-table-area .order-table-area {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 calc(100% - 320px);
+    flex: 0 0 calc(100% - 320px);
+    width: calc(100% - 320px);
+    max-width: calc(100% - 320px);
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .order-table-area .order-table-area {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 calc(100% - 280px);
+    flex: 0 0 calc(100% - 280px);
+    width: calc(100% - 280px);
+    max-width: calc(100% - 280px);
+  }
+}
+@media only screen and (max-width: 767px) {
+  .order-table-area {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    padding-top: 0;
+  }
+}
+.order-table-area .order-title h2 {
+  font-size: 30px;
+  margin-bottom: 30px;
+  color: #242424;
+}
+.order-table-area table thead {
+  width: 100%;
+  display: block;
+}
+.order-table-area table thead tr {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 40px;
+  background-color: #f5f7fa;
+}
+.order-table-area table thead tr th {
+  border-top: none;
+  border-bottom: none;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 20%;
+  flex: 0 0 20%;
+  width: 20%;
+  max-width: 20%;
+  font-size: 12px;
+  color: #242424;
+  text-transform: capitalize;
+  font-weight: 400;
+}
+.order-table-area table tbody {
+  width: 100%;
+  display: block;
+}
+.order-table-area table tbody tr {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -ms-grid-row-align: center;
+  align-items: center;
+  width: 100%;
+}
+.order-table-area table tbody tr td {
+  border: none;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 20%;
+  flex: 0 0 20%;
+  width: 20%;
+  max-width: 20%;
+}
+.order-table-area table tbody tr td h5 {
+  font-size: 16px;
+  color: #252525;
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .order-table-area table tbody tr td h5 {
+    font-size: 14px;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .order-table-area table tbody tr td h5 {
+    font-size: 14px;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .order-table-area table tbody tr td h5 {
+    font-size: 12px;
+  }
+}
+.order-table-area table tbody tr td .qty-btn p {
+  margin-bottom: 0;
+  line-height: 40px;
+  height: 40px;
+  padding: 0 15px;
+  background-color: #f5f7fa;
+  color: #242424;
+  font-size: 14px;
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .order-table-area table tbody tr td .qty-btn p {
+    padding: 0 10px;
+  }
+}
+.order-table-area table tbody tr td .qty-btn .quantity {
+  position: relative;
+  z-index: 1;
+}
+
+
+
 .main-content-wrapper .cart-table-area {
   position: relative;
   z-index: 1;
