@@ -237,6 +237,63 @@
       </div>
       <!-- Product Comment List Area End -->
 
+      <hr>
+
+      <!-- Related Products start -->
+
+      <div><h6>Sản phẩm liên quan</h6></div>
+
+      <div class="row">
+        <!-- Single Product Area -->
+          <% related.forEach(element=> {%>
+            <% if(element.description.status==true){%>
+              <div class="col-12 col-sm-6 col-md-12 col-xl-6">
+                <div class="single-product-wrapper">
+                  <!-- Product Image -->
+                  <div class="product-img">
+                    <img src="<%= element.description.imageList[0] %> " alt="Image" />
+                    <!-- Hover Thumb -->
+                    <img class="hover-img" src="<%= element.description.imageList[1] %> " alt="Image" />
+                  </div>
+
+                  <!-- Product Description -->
+                  <div class="product-description d-flex align-items-center justify-content-between">
+                    <!-- Product Meta Data -->
+                    <div class="product-meta-data">
+                      <div class="line"></div>
+                      <p class="product-price">
+                        <%= element.description.price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,' ) %>đ
+                      </p>
+                      <a href="/product/<%= element._id %> ">
+                        <h6>
+                          <%= element.productName %>
+                        </h6>
+                      </a>
+                    </div>
+                    <!-- Ratings & Cart -->
+                    <div class="ratings-cart text-right">
+                      <div class="ratings">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                      </div>
+                      <div class="cart" style="display: flex; justify-content: center; align-items: center;">
+                        <a class="mr-2" href="/product/favorite/<%= element._id %>" data-toggle="tooltip" data-placement="left"
+                          title="Yêu thích"><img width="20px" src="/public/img/core-img/like.svg" alt="" /></a>
+                        <a href="/cart/<%= element._id %>" data-toggle="tooltip" data-placement="left"
+                          title="Thêm vào giỏ hàng"><img src="/public/img/core-img/cart.png" alt="" /></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <%} %>
+                <%}) %>
+      </div>
+      
+      <!-- Related Products start -->
 
     </div>
     <!-- Product Details Area End -->

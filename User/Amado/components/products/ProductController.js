@@ -3,6 +3,7 @@ const comments = require("../../models/comments");
 const type = require("../../models/types");
 const supplier = require("../../models/suppliers");
 const customers = require("../../models/customers");
+const bills = require("../../models/bills");
 const LocalStorage = require('node-localstorage').LocalStorage,
     localStorage = new LocalStorage('./scratch');
 
@@ -11,27 +12,90 @@ class ProductController {
         var id = req.params.id;
         var numberItemPerpage = 5;
         product.findOne({ _id: id }, (err, result) => {
-            var name = result.productName;
-            comments.find({ productName: name }, (err, commentResult) => {
-                if (req.isAuthenticated()) {
-                    customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
-                        res.render("product-details", {
-                            data: result,
-                            customer: customerResult,
-                            comments: commentResult,
-                            currentPage: 1,
-                            itemsPerPage: numberItemPerpage
-                        });
+            bills.find({}, (err, billResult) => {
+                product.find({}, (err, productResult) => {
+                    var name = result.productName;
+                    comments.find({ productName: name }, (err, commentResult) => {
+                        
+                        var count_list = []; // list of related products with count
+                        var bill_list = []; // bills with the target product
+
+                        // find the bills that contain the target product
+                        for (let j = 0; j < billResult.length; j++) {
+                            for (let k = 0; k < billResult[j].listProduct.length; k++) {
+                                if (billResult[j].listProduct[k].productID == result._id) {
+                                    bill_list.push(billResult[j]);
+                                    break;
+                                }
+                            }
+                        }
+
+                        // create the list of products with count of appearances 
+                        // related to the target product
+                        for (let i = 0; i < productResult.length; i++) {
+                            if (productResult[i]._id == String(result._id)) continue;
+
+                            var count = 0;
+
+                            // increase the count with each appearance in each bill
+                            for (let j = 0; j < bill_list.length; j++) {
+                                for (let k = 0; k < bill_list[j].listProduct.length; k++) {
+                                    if (bill_list[j].listProduct[k].productID == productResult[i]._id) {
+                                        count++;
+                                    }
+                                }
+                            }
+                            if (count == 0) continue;
+
+                            count_list.push(
+                                {
+                                    product: productResult[i],
+                                    count: count
+                                });
+                        }
+
+                        if (count_list.length > 1) {
+                            // sort product list
+                            for (let i = 0; i < count_list.length; i++) {
+                                let max = i;
+                                for (let j = i + 1; j < count_list.length - 1; j++) {
+                                    if (count_list[j].count > count_list[max].count) {
+                                        max = j;
+                                    }
+                                }
+                                count_list[max] = [count_list[i], count_list[i] = count_list[max]][0];
+                            }
+                        }
+
+                        // create related list
+                        var related_list = []; // LIST OF RELATED PRODUCTS
+                        for (let i = 0; i < count_list.length; i++) {
+                            related_list.push(count_list[i].product);
+                        }
+                        
+                        if (req.isAuthenticated()) {
+                            customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
+                                res.render("product-details", {
+                                    data: result,
+                                    customer: customerResult,
+                                    comments: commentResult,
+                                    currentPage: 1,
+                                    itemsPerPage: numberItemPerpage,
+                                    related: related_list
+                                });
+                            });
+                        } else {
+                            res.render("product-details", {
+                                data: result,
+                                customer: undefined,
+                                comments: commentResult,
+                                currentPage: 1,
+                                itemsPerPage: numberItemPerpage,
+                                related: related_list
+                            });
+                        }
                     });
-                } else {
-                    res.render("product-details", {
-                        data: result,
-                        customer: undefined,
-                        comments: commentResult,
-                        currentPage: 1,
-                        itemsPerPage: numberItemPerpage
-                    });
-                }
+                });
             });
         });
     }
@@ -40,27 +104,90 @@ class ProductController {
         var numberItemPerpage = 5;
         var page = req.params.page;
         product.findOne({ _id: id }, (err, result) => {
-            var name = result.productName;
-            comments.find({ productName: name }, (err, commentResult) => {
-                if (req.isAuthenticated()) {
-                    customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
-                        res.render("product-details", {
-                            data: result,
-                            customer: customerResult,
-                            comments: commentResult,
-                            currentPage: page,
-                            itemsPerPage: numberItemPerpage
-                        });
+            bills.find({}, (err, billResult) => {
+                product.find({}, (err, productResult) => {
+                    var name = result.productName;
+                    comments.find({ productName: name }, (err, commentResult) => {
+                        
+                        var count_list = []; // list of related products with count
+                        var bill_list = []; // bills with the target product
+
+                        // find the bills that contain the target product
+                        for (let j = 0; j < billResult.length; j++) {
+                            for (let k = 0; k < billResult[j].listProduct.length; k++) {
+                                if (billResult[j].listProduct[k].productID == result._id) {
+                                    bill_list.push(billResult[j]);
+                                    break;
+                                }
+                            }
+                        }
+
+                        // create the list of products with count of appearances 
+                        // related to the target product
+                        for (let i = 0; i < productResult.length; i++) {
+                            if (productResult[i]._id == String(result._id)) continue;
+
+                            var count = 0;
+
+                            // increase the count with each appearance in each bill
+                            for (let j = 0; j < bill_list.length; j++) {
+                                for (let k = 0; k < bill_list[j].listProduct.length; k++) {
+                                    if (bill_list[j].listProduct[k].productID == productResult[i]._id) {
+                                        count++;
+                                    }
+                                }
+                            }
+                            if (count == 0) continue;
+
+                            count_list.push(
+                                {
+                                    product: productResult[i],
+                                    count: count
+                                });
+                        }
+
+                        if (count_list.length > 1) {
+                            // sort product list
+                            for (let i = 0; i < count_list.length; i++) {
+                                let max = i;
+                                for (let j = i + 1; j < count_list.length - 1; j++) {
+                                    if (count_list[j].count > count_list[max].count) {
+                                        max = j;
+                                    }
+                                }
+                                count_list[max] = [count_list[i], count_list[i] = count_list[max]][0];
+                            }
+                        }
+
+                        // create related list
+                        var related_list = []; // LIST OF RELATED PRODUCTS
+                        for (let i = 0; i < count_list.length; i++) {
+                            related_list.push(count_list[i].product);
+                        }
+                        
+                        if (req.isAuthenticated()) {
+                            customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
+                                res.render("product-details", {
+                                    data: result,
+                                    customer: customerResult,
+                                    comments: commentResult,
+                                    currentPage: page,
+                                    itemsPerPage: numberItemPerpage,
+                                    related: related_list
+                                });
+                            });
+                        } else {
+                            res.render("product-details", {
+                                data: result,
+                                customer: undefined,
+                                comments: commentResult,
+                                currentPage: page,
+                                itemsPerPage: numberItemPerpage,
+                                related: related_list
+                            });
+                        }
                     });
-                } else {
-                    res.render("product-details", {
-                        data: result,
-                        customer: undefined,
-                        comments: commentResult,
-                        currentPage: page,
-                        itemsPerPage: numberItemPerpage
-                    });
-                }
+                });
             });
         });
     }
