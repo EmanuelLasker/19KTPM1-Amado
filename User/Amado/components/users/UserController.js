@@ -811,6 +811,22 @@ class UserController {
       res.redirect('/login');
     }
   }
+  getOrderDetails(req, res, next) {
+    var id = req.params.id;
+    if (req.isAuthenticated()) {
+      customers.findOne({ "loginInformation.userName": req.session.passport.user.username }, (err, customerResult) => {
+        bill.findOne({_id: id}, (err, billResult) => {
+          res.render('order-details', {
+            customer: customerResult,
+            bills: billResult,
+            message: req.flash("success")
+          });
+        });
+      });
+    } else {
+      res.redirect('/orders-manager');
+    }
+  }
 }
 
 module.exports = new UserController();

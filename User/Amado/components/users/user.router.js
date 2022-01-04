@@ -40,5 +40,6 @@ router.get('/logout', userController.getLogout);
 router.get('/', userController.index);
 router.get('/orders-manager', userController.getOrdersManagerPage);
 router.get('/orders-manager/:page', userController.getOrdersManagerAtPage);
+router.get('/orders-manager/details/:id', userController.getOrderDetails);
 
 module.exports = router;
