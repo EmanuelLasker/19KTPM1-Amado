@@ -676,7 +676,7 @@ img {
   padding: 100px 40px;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-  .order-table-area {
+  .main-content-wrapper .shop_sidebar_area {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 180px;
     flex: 0 0 180px;
@@ -686,7 +686,7 @@ img {
   }
 }
 @media only screen and (max-width: 767px) {
-  .order-table-area {
+  .main-content-wrapper .shop_sidebar_area {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 100%;
     flex: 0 0 100%;
@@ -697,7 +697,7 @@ img {
     order: 2;
   }
 }
-.order-table-area {
+.main-content-wrapper .amado_product_area {
   position: relative;
   z-index: 1;
   -webkit-box-flex: 0;
@@ -707,7 +707,7 @@ img {
   max-width: calc(95% - 550px);
 }
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
-  .order-table-area {
+  .main-content-wrapper .amado_product_area {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 calc(100% - 550px);
     flex: 0 0 calc(100% - 550px);
@@ -716,7 +716,7 @@ img {
   }
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-  .order-table-area {
+  .main-content-wrapper .amado_product_area {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 calc(100% - 460px);
     flex: 0 0 calc(100% - 460px);
@@ -725,7 +725,7 @@ img {
   }
 }
 @media only screen and (max-width: 767px) {
-  .order-table-area {
+  .main-content-wrapper .amado_product_area {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 100%;
     flex: 0 0 100%;
@@ -1081,7 +1081,7 @@ img {
 }
 .main-content-wrapper .cart-table-area .cart-summary {
   background-color: #f5f7fa;
-  margin-top: 118px;
+  margin-top: 24px;
   position: relative;
   z-index: 1;
   padding: 30px 20px;
