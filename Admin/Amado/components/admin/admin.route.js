@@ -53,6 +53,7 @@ router.get('/dashboard/pending-order-manager/update-all', adminController.getUpd
 router.get('/dashboard/pending-orders-manager/:page', adminController.getPendingOrderAtPage);
 router.get('/dashboard/pending-orders-manager', adminController.getPendingOrderPage);
 router.get('/dashboard/orders-manager', adminController.getOrdersManagerPage);
+router.get('/dashboard/orders-manager/:page', adminController.getOrdersManagerAtPage);
 // 2. Order
 router.get('/dashboard/orders-manager/update/:id', adminController.getUpdateOrder);
 router.post('/dashboard/orders-manager/update/:id', adminController.postUpdateOrder);

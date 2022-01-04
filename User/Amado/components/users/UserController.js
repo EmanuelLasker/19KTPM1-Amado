@@ -773,6 +773,44 @@ class UserController {
       res.redirect('/login');
     }
   }
+
+  getOrdersManagerPage(req, res, next) {
+    var numberItemPerpage = 6;
+    if (req.isAuthenticated()) {
+      customers.findOne({ "loginInformation.userName": req.session.passport.user.username }, (err, customerResult) => {
+        bill.find({userID: customerResult._id}, (err, billResult) => {
+          res.render('orders-manager', {
+            customer: customerResult,
+            bills: billResult,
+            page: 1,
+            numberItemPerpage: numberItemPerpage,
+            message: req.flash("success")
+          });
+        });
+      });
+    } else {
+      res.redirect('/login');
+    }
+  }
+  getOrdersManagerAtPage(req, res, next) {
+    var numberItemPerpage = 6;
+    var page = req.params.page;
+    if (req.isAuthenticated()) {
+      customers.findOne({ "loginInformation.userName": req.session.passport.user.username }, (err, customerResult) => {
+        bill.find({userID: customerResult._id}, (err, billResult) => {
+          res.render('orders-manager', {
+            customer: customerResult,
+            bills: billResult,
+            page: page,
+            numberItemPerpage: numberItemPerpage,
+            message: req.flash("success")
+          });
+        });
+      });
+    } else {
+      res.redirect('/login');
+    }
+  }
 }
 
 module.exports = new UserController();

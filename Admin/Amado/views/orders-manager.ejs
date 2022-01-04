@@ -264,7 +264,7 @@
                                         numberPage=(parseInt(bills.length/numberItemPerpage)) + 1 %>
                                         <% for(var i=1; i <=numberPage; i++) {%>
                                             <li class="page-item <%= i == page ? 'active' : '' %>">
-                                                <a class="page-link" href="/admin/dashboard/pending-order-manager/<%= i %> ">
+                                                <a class="page-link" href="/admin/dashboard/orders-manager/<%= i %> ">
                                                     <%= i %>
                                                 </a>
                                             </li>

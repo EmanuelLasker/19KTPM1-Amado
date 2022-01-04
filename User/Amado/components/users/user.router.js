@@ -38,5 +38,7 @@ router.get('/checkout', userController.getCheckoutPage);
 router.get('/search', userController.search);
 router.get('/logout', userController.getLogout);
 router.get('/', userController.index);
+router.get('/orders-manager', userController.getOrdersManagerPage);
+router.get('/orders-manager/:page', userController.getOrdersManagerAtPage);
 
 module.exports = router;

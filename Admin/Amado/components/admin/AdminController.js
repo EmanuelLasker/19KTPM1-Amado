@@ -648,6 +648,25 @@ class AdminController {
       res.redirect('/admin/login');
     }
   }
+  getOrdersManagerAtPage(req, res, next) {
+    var numberItemPerpage = 6;
+    var page = req.params.page;
+    if (req.isAuthenticated()) {
+      admin.findOne({ "loginInformation.userName": req.session.passport.user.username }, (err, customerResult) => {
+        bill.find({ status: { $nin: ['Chờ xác nhận'] } }, (err, billResult) => {
+          res.render('orders-manager', {
+            customer: customerResult,
+            bills: billResult,
+            page: page,
+            numberItemPerpage: numberItemPerpage,
+            message: req.flash("success")
+          });
+        });
+      });
+    } else {
+      res.redirect('/admin/login');
+    }
+  }
   getPendingOrderPage(req, res, next) {
     var numberItemPerpage = 6;
     if (req.isAuthenticated()) {
