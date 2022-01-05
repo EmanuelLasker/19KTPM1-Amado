@@ -10,6 +10,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("./passport/passport");
 
+
 // Passport configuration
 app.use(
   session({
