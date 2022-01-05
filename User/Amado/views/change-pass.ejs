@@ -79,35 +79,35 @@
                     <div class="row">
                         <div class="col-md-3 border-right">
                             <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" src="<%=customer.avatar%>"><span class="font-weight-bold"><%=customer.fullNameCustomer.firstName+" "+customer.fullNameCustomer.lastName%></span><span class="text-black-50"><%=customer.email %></span><span> </span></div>
-<!--                            <label class="form-label" for="customFile">Default file input example</label>-->
-<!--                            <input type="file" class="form-control" id="customFile" />-->
-                            <form action="/change-pass" method="get">
-                            <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" href="change-pass" onclick="this.form.submit()">Đổi mật khẩu</button></div>
+                            <!--                            <label class="form-label" for="customFile">Default file input example</label>-->
+                            <!--                            <input type="file" class="form-control" id="customFile" />-->
+                            <form action="/user-info" method="get">
+                                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" href="change-pass" onclick="this.form.submit()">Đổi thông tin cá nhân</button></div>
                             </form>
                         </div>
                         <div class="col-md-5 border-right">
                             <div class="p-3 py-5">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h4 class="text-right">Thông tin khách hàng</h4>
-                                </div>
-                                <form class="editUser" action="/user-info" method="post">
-                                <div class="row mt-2">
-                                    <div class="col-md-6"><label class="labels">Tên</label><input type="text" name="lastName" class="form-control" value="<%=customer.fullNameCustomer.lastName  %>" placeholder="" ></div>
-                                    <div class="col-md-6"><label class="labels">Họ</label><input type="text" name="firstName" class="form-control" value="<%=customer.fullNameCustomer.firstName%>" placeholder=""></div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-md-12"><label class="labels">Giới tính</label><input type="text" name="sex" class="form-control" placeholder="" value="<%=customer.sex=='true'?'Nam':'Nữ'%>"></div>
-                                    <div class="col-md-12"><label class="labels">CMND</label><input type="text" name="cmnd" class="form-control" placeholder="" value="<%=customer.identityCardNumber%>"></div>
-                                    <div class="col-md-12"><label class="labels">Số Điện Thoại</label><input type="text" name="phone" class="form-control" placeholder="" value="<%=customer.phoneNumber%>"></div>
-                                    <div class="col-md-12"><label class="labels">Địa Chỉ</label><input type="text" class="form-control" name="addr" placeholder="" value="<%=customer.address%>"></div>
-                                    <div class="col-md-12"><label class="labels">Email</label><input type="text" name="email" class="form-control" placeholder="" value="<%=customer.email%>"></div>
-                                    <div class="col-md-12"><label class="labels">Link Avatar</label><input type="text" name="avatar" class="form-control" placeholder="" value="<%=customer.avatar%>"></div>
-                                </div>
-                                <!--                                    <div class="row mt-3">-->
-                                <!--                                        <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" value=""></div>-->
-                                <!--                                        <div class="col-md-6"><label class="labels">State/Region</label><input type="text" class="form-control" value="" placeholder="state"></div>-->
-                                <!--                                    </div>-->
-                                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" onclick="this.form.submit()">Lưu thông tin</button></div>
+<!--                                <div class="d-flex justify-content-between align-items-center mb-3">-->
+<!--                                    <h4 class="text-right">Thông tin khách hàng</h4>-->
+<!--                                </div>-->
+                                <form class="editUser" action="/change-pass" method="post">
+<!--                                    <div class="row mt-2">-->
+<!--                                        <div class="col-md-6"><label class="labels">Tên</label><input type="text" name="lastName" class="form-control" value="<%=customer.fullNameCustomer.lastName  %>" placeholder="" ></div>-->
+<!--                                        <div class="col-md-6"><label class="labels">Họ</label><input type="text" name="firstName" class="form-control" value="<%=customer.fullNameCustomer.firstName%>" placeholder=""></div>-->
+<!--                                    </div>-->
+                                    <div class="row mt-3">
+                                        <div class="col-md-12"><label class="labels">Mật khẩu cũ</label><input type="password" name="oldPass" class="form-control" placeholder="" value=""></div>
+                                        <div class="col-md-12"><label class="labels">Mật khẩu mới</label><input type="password" name="newPass" class="form-control" placeholder="" value=""></div>
+                                        <div class="col-md-12"><label class="labels">Nhập lại mật khẩu mới</label><input type="password" name="retypeNewPass" class="form-control" placeholder="" value=""></div>
+<!--                                        <div class="col-md-12"><label class="labels">Địa Chỉ</label><input type="text" class="form-control" name="addr" placeholder="" value="<%=customer.address%>"></div>-->
+<!--                                        <div class="col-md-12"><label class="labels">Email</label><input type="text" name="email" class="form-control" placeholder="" value="<%=customer.email%>"></div>-->
+<!--                                        <div class="col-md-12"><label class="labels">Link Avatar</label><input type="text" name="avatar" class="form-control" placeholder="" value="<%=customer.avatar%>"></div>-->
+                                    </div>
+                                    <!--                                    <div class="row mt-3">-->
+                                    <!--                                        <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" value=""></div>-->
+                                    <!--                                        <div class="col-md-6"><label class="labels">State/Region</label><input type="text" class="form-control" value="" placeholder="state"></div>-->
+                                    <!--                                    </div>-->
+                                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button" onclick="this.form.submit()">Lưu thông tin</button></div>
                                 </form>
                             </div>
                         </div>
