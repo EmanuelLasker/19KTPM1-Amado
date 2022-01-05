@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name=" content="" />
+    <meta http-equiv=" X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <!-- Title  -->
+  <title>Amado - Furniture Ecommerce Template | Cart</title>
+
+  <!-- Favicon  -->
+  <link rel="icon" href="/public/img/core-img/favicon.ico" />
+
+  <!-- Core Style CSS -->
+  <link rel="stylesheet" href="/public/css/core-style.css" />
+  <link rel="stylesheet" href="/public/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+  <link rel="stylesheet" href="/public/assets/vendor/fonts/fontawesome/css/fontawesome-all.css" />
+</head>
+
+<body onload="process()">
+<!--Search Wrapper Start-->
+<%- include('layout/search-wrapper.ejs') %>
+<!--Search Wrapper End-->
+
+  <!-- ##### Main Content Wrapper Start ##### -->
+  <div class="main-content-wrapper d-flex clearfix">
+    <!-- Mobile Nav (max width 767px)-->
+    <div class="mobile-nav">
+      <!-- Navbar Brand -->
+      <div class="amado-navbar-brand">
+        <a href="/"><img src="/public/img/core-img/logo.png" alt="" /></a>
+      </div>
+      <!-- Navbar Toggler -->
+      <div class="amado-navbar-toggler">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- Header Start -->
+    <%- include('layout/header.ejs') %>
+    <!-- Header End -->
+
+    <div class="order-table-area section-padding-100">
+      <div class="container-fluid"> 
+        <% if(bills.length > 0){%> 
+          <div class="card">
+            <div class="col-12 col-lg-12">
+              <div class="order-title mt-50">
+                <h2>Đơn hàng</h2>
+              </div>
+              <hr class="divider" />
+              <div class="order-table p-0 clearfix">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Ngày mua</th>
+                        <th>Người nhận</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th>Xem chi tiết</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% listBill = bills.length > numberItemPerpage ?
+                          bills.slice((page - 1) * numberItemPerpage, numberItemPerpage *
+                          page): bills%>
+                      <% listBill.forEach(element=> {%>
+                        <% totalCost=0 %>
+                        <% element.listProduct.forEach(product=> {%>
+                          <% totalCost += parseInt(product.productPrice) %>
+                        <%}) %>
+                          <tr>
+                            <td class="date">
+                              <%= element.date.day + "/" + element.date.month + "/" + element.date.year %>
+                            </td>
+                            <td class="name">
+                              <%= element.displayName.lastName + " " + element.displayName.firstName %>
+                            </td>
+                            <td class="cost">
+                              <%= totalCost + " đ" %>
+                            </td>
+                            <td class="status">
+                              <%= element.status %>
+                            </td>
+                            <td>
+                              <a title="Xem chi tiết" style="margin-right: 5px" href="/orders-manager/details/<%= element._id %>"><i
+                                class="fas fa-info-circle"></i></a>
+                            </td>
+                          </tr>
+                        <%}) %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        <%} else {%>
+            <div class="col-12 col-lg-12">
+              <div class="cart-title mt-50">
+                <h2>Giỏ hàng</h2>
+              </div>
+              <hr class="divider" />
+              <div style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+              ">
+                <img src="../public/img/core-img/empty.jpg" width="350px" alt="empty" />
+                <h4>Hổng có đơn hàng nào hết hết!</h4>
+                <a class="mt-5 shopnow" href="/product">Mua ngay</a>
+              </div>
+            </div>
+        <%}%>
+      </div>
+      <nav aria-label="Page navigation example" style="margin-right: 15px">
+        <ul class="pagination justify-content-end">
+            <% numberPage=0 %>
+                <% bills.length % numberItemPerpage==0 ?
+                    numberPage=(parseInt(bills.length/numberItemPerpage)) :
+                    numberPage=(parseInt(bills.length/numberItemPerpage)) + 1 %>
+                    <% for(var i=1; i <=numberPage; i++) {%>
+                        <li class="page-item <%= i == page ? 'active' : '' %>">
+                            <a class="page-link" href="/orders-manager/<%= i %> ">
+                                <%= i %>
+                            </a>
+                        </li>
+                        <%} %>
+        </ul>
+    </nav>
+
+    </div>
+  </div>
+  <!-- ##### Main Content Wrapper End ##### -->
+
+  <!-- ##### Newsletter Area Start ##### -->
+  <section class="newsletter-area section-padding-100-0">
+    <div class="container">
+      <div class="row align-items-center">
+        <!-- Newsletter Text -->
+        <div class="col-12 col-lg-6 col-xl-7">
+          <div class="newsletter-text mb-100">
+            <h2>Subscribe for a <span>25% Discount</span></h2>
+            <p>
+              Nulla ac convallis lorem, eget euismod nisl. Donec in libero sit
+              amet mi vulputate consectetur. Donec auctor interdum purus, ac
+              finibus massa bibendum nec.
+            </p>
+          </div>
+        </div>
+        <!-- Newsletter Form -->
+        <div class="col-12 col-lg-6 col-xl-5">
+          <div class="newsletter-form mb-100">
+            <form action="#" method="post">
+              <input type="email" name="email" class="nl-email" placeholder="Your E-mail" />
+              <input type="submit" value="Subscribe" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ##### Newsletter Area End ##### -->
+
+
+<!--Footer-->
+<%- include('layout/footer.ejs') %>
+<!--Footer End-->
+
+
+  <!-- ##### jQuery (Necessary for All JavaScript Plugins) ##### -->
+  <script src="/public/js/jquery/jquery-2.2.4.min.js"></script>
+  <!-- Popper js -->
+  <script src="/public/js/popper.min.js"></script>
+  <!-- Bootstrap js -->
+  <script src="/public/js/bootstrap.min.js"></script>
+  <!-- Plugins js -->
+  <script src="/public/js/plugins.js"></script>
+  <!-- Active js -->
+  <script src="/public/js/active.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <% if(message && message.length> 0){%>
+        <script>
+            toastr.success("<%= message %>", "Thông báo", {
+                timeOut: 1500,
+                progressBar: true,
+                closeButton: true,
+            });
+        </script>
+        <%} %>
+      <script>
+        function comfirmDelete(msg, event) {
+          if (window.confirm(msg) == true) {
+            return true;
+          }
+          event.preventDefault();
+          return false;
+        }
+      </script>
+      <script>
+        function up(event) {
+          var quantity =
+            event.target.parentElement.children[1].firstElementChild.value;
+          quantity < 300 ? event.target.parentElement.children[1].firstElementChild.value = parseInt(quantity) + 1 : event.target.parentElement.children[1].firstElementChild.value = 300;
+        }
+        function down() {
+          var quantity =
+            event.target.parentElement.children[1].firstElementChild.value;
+          quantity > 1 ? event.target.parentElement.children[1].firstElementChild.value = parseInt(quantity) - 1 : event.target.parentElement.children[1].firstElementChild.value = 1;
+
+        }
+        function process() {
+          var price = document.querySelectorAll("td.price span");
+          var totalCost = document.querySelector("li.total-cost span:last-child");
+          var fee = document.querySelector("li.fee span:last-child");
+          var amount = document.querySelectorAll("input.qty-text");
+          var totalPayment = document.querySelector(
+            "li.total-payment span:last-child"
+          );
+          listPrice = Array.from(price).map((e) => parseInt(e.textContent));
+          listAmount = Array.from(amount).map((e) => parseInt(e.value));
+          price.forEach(e => e.textContent = e.textContent.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' đ');
+          var totalCostTemp = 0;
+          for (var i = 0; i < listPrice.length; i++) {
+            totalCostTemp += listPrice[i] * listAmount[i];
+          }
+          totalCost.textContent = totalCostTemp.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' đ';
+          totalPayment.textContent = (totalCostTemp + parseInt(fee.textContent)).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' đ';
+          fee.textContent = fee.textContent.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' đ'
+
+        }
+      </script>
+</body>
+
+</html>

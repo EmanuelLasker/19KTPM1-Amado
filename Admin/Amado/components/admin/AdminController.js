@@ -302,7 +302,7 @@ class AdminController {
       var data = {
         productName: req.body.productname,
         description: {
-          imageList: req.files.map((image) => `/${image.path}`),
+          imageList: req.files.map((image) => `/uploads/${image.filename}`),
           productDescription: req.body.description,
           price: req.body.price,
           unit: "Cái",
@@ -482,7 +482,7 @@ class AdminController {
           productName: req.body.productname,
           "description.imageList":
             req.files.length > 0
-              ? req.files.map((img) => `/${img.path}`)
+              ? req.files.map((img) => `/uploads/${img.filename}`)
               : productResult.description.imageList,
           "description.productDescription": req.body.description,
           "description.price": req.body.price,
@@ -639,6 +639,25 @@ class AdminController {
             customer: customerResult,
             bills: billResult,
             page: 1,
+            numberItemPerpage: numberItemPerpage,
+            message: req.flash("success")
+          });
+        });
+      });
+    } else {
+      res.redirect('/admin/login');
+    }
+  }
+  getOrdersManagerAtPage(req, res, next) {
+    var numberItemPerpage = 6;
+    var page = req.params.page;
+    if (req.isAuthenticated()) {
+      admin.findOne({ "loginInformation.userName": req.session.passport.user.username }, (err, customerResult) => {
+        bill.find({ status: { $nin: ['Chờ xác nhận'] } }, (err, billResult) => {
+          res.render('orders-manager', {
+            customer: customerResult,
+            bills: billResult,
+            page: page,
             numberItemPerpage: numberItemPerpage,
             message: req.flash("success")
           });
