@@ -96,7 +96,7 @@
                                     <div class="col-md-6"><label class="labels">Họ</label><input type="text" name="firstName" class="form-control" value="<%=customer.fullNameCustomer.firstName%>" placeholder=""></div>
                                 </div>
                                 <div class="row mt-3">
-                                    <div class="col-md-12"><label class="labels">Giới tính</label><input type="text" name="sex" class="form-control" placeholder="" value="<%=customer.sex=='true'?'Nam':'Nữ'%>"></div>
+                                    <div class="col-md-12"><label class="labels">Giới tính</label><input type="text" name="sex" class="form-control" placeholder="" value="<%=customer.sex==true?'Nam':'Nữ'%>"></div>
                                     <div class="col-md-12"><label class="labels">CMND</label><input type="text" name="cmnd" class="form-control" placeholder="" value="<%=customer.identityCardNumber%>"></div>
                                     <div class="col-md-12"><label class="labels">Số Điện Thoại</label><input type="text" name="phone" class="form-control" placeholder="" value="<%=customer.phoneNumber%>"></div>
                                     <div class="col-md-12"><label class="labels">Địa Chỉ</label><input type="text" class="form-control" name="addr" placeholder="" value="<%=customer.address%>"></div>
