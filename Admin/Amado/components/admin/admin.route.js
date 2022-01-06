@@ -5,9 +5,23 @@ const adminController = require('../admin/AdminController');
 
 const multer = require('multer');
 const { getLogout } = require('../admin/AdminController');
+const fs = require('fs');
+const path = require('path');
+
+const userUpload = path.resolve('../../User/Amado/uploads/'); // only change here
+
+fs.symlink(userUpload, "UserUpload", 'dir', (err) => {
+  if (err) console.log(err);
+  else {
+    console.log("Symlink created");
+    console.log("Symlink is a directory: ", 
+      fs.statSync("UserUpload").isDirectory());
+  }
+});
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '../../User/Amado/uploads/')
+    cb(null, path.resolve('../Amado/UserUpload/'))
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname)
