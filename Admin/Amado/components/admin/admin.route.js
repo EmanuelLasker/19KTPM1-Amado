@@ -103,6 +103,11 @@ router.get('/dashboard/users-manager/lock/:id', adminController.getLockUser);
 router.get('/dashboard/users-manager/unlock/:id', adminController.getUnlockUser);
 
 // Admin Manager
+router.post('/dashboard/admin-list/update/:id', uploadSingle.single('thumbnail'), adminController.postUpdateAdminPage);
+router.get('/dashboard/admin-list/update/:id', adminController.getUpdateAdminPage);
+
+router.get('/dashboard/users-manager/delete/:id', adminController.getDeleteAdminInfo);
+
 router.get('/dashboard/admin-list/lock/:id', adminController.getLockAdmin);
 router.get('/dashboard/admin-list/unlock/:id', adminController.getUnlockAdmin);
 

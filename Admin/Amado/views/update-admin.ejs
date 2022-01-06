@@ -16,11 +16,11 @@
     <link rel="stylesheet" href="/public/assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="/public/assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <!-- Title  -->
-    <title>Amado - Danh sách tài khoản quản trị</title>
+   <!-- Title  -->
+   <title>Amado - Dashboard</title>
 
-    <!-- Favicon  -->
-    <link rel="icon" href="/public/img/core-img/favicon.ico" />
+   <!-- Favicon  -->
+   <link rel="icon" href="/public/img/core-img/favicon.ico" />
 </head>
 
 <body>
@@ -28,6 +28,7 @@
     <!-- main wrapper -->
     <!-- ============================================================== -->
     <div class="dashboard-main-wrapper">
+
         <!-- ============================================================== -->
         <!-- navbar -->
         <!-- ============================================================== -->
@@ -40,7 +41,8 @@
                 <div class="collapse navbar-collapse " id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto navbar-right-top">
                         <li class="nav-item dropdown nav-user">
-                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="<%= customer.avatar %> " alt="" class="user-avatar-md rounded-circle"></a>
+                            <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="/uploads/user-01.png" alt="" class="user-avatar-md rounded-circle"></a>
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
                                     <% fullName = customer.fullNameCustomer.firstName + " " + customer.fullNameCustomer.lastName %> 
@@ -77,7 +79,7 @@
                                 <div id="submenu-1" class="collapse submenu show">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/admin/dashboard">Tổng quan</a>
+                                            <a class="nav-link active" href="/admin/dashboard">Tổng quan</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="/admin/dashboard/categories-manager">Quản lý danh mục</a>
@@ -102,7 +104,7 @@
                                             <a class="nav-link" href="/admin/dashboard/users-manager">Quản lý người dùng</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link active" href="/admin/dashboard/admin-list">Danh sách tài khoản quản trị</a>
+                                            <a class="nav-link " href="/admin/dashboard/admin-list">Danh sách tài khoản quản trị</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link " href="/sign-up">Thêm tài khoản quản trị</a>
@@ -122,106 +124,53 @@
         <!-- wrapper  -->
         <!-- ============================================================== -->
         <div class="dashboard-wrapper">
-            <div class="dashboard-ecommerce">
-                <div class="container-fluid dashboard-content ">
-                    <!-- ============================================================== -->
-                    <!-- pageheader  -->
-                    <!-- ============================================================== -->
-                    <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="page-header">
-                                <h2 class="pageheader-title"> Danh sách tài khoản quản trị </h2>
-                                <div class="page-breadcrumb">
-                                    <nav aria-label="breadcrumb">
-                                        <ol class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
-                                            <li class="breadcrumb-item" aria-current="page">Danh sách tài khoản quản trị</li>
-                                            <li class="breadcrumb-item active" aria-current="page">Trang <%= page %> </li>
-                                        </ol>
-                                    </nav>
+            <div class="amado-pro-catagory clearfix">
+                <!--User Infomation Area Start-->
+                <div class="amado-user-info">
+                    <div class="container rounded bg-white mt-5 md-5">
+                        <div class="row">
+                            <div class="col-md-4 border-right">
+                                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" src="<%=admin.avatar%>"><span class="font-weight-bold"><%=admin.fullNameCustomer.lastName+" "+admin.fullNameCustomer.firstName%></span><span name="adminName" class="text-black-50"><%=admin.loginInformation.userName%></span><span> </span></div>
+                            </div>
+                            <div class="col-md-8 border-right">
+                                <div class="p-3 py-5">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h4 class="text-right">Thông tin tài khoản</h4>
+                                    </div>
+                                    <form class="row g-3" accept-charset="utf-8" spellcheck="false" enctype="multipart/form-data" action="/dashboard/admin-list/update/<%=admin._id %>" method="POST">
+                                    <div class="row mt-2">
+                                        <div class="col-md-6"><label for="validationServer01" class="form-label">Họ</label><input type="text" name="adminLastName" class="form-control" id="validationServer01" value="<%=admin.fullNameCustomer.lastName%>" placeholder="<%=admin.fullNameCustomer.lastName%>" required></div>
+                                        <div class="col-md-6"><label for="validationServer01" class="form-label">Tên</label><input type="text" name="adminFirstName" class="form-control" id="validationServer01" value="<%=admin.fullNameCustomer.firstName%>" placeholder="<%=admin.fullNameCustomer.firstName%>" required></div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-12"><label for="validationServer01" class="form-label">Giới tính</label><input type="text" name="adminSex" class="form-control" id="validationServer01" placeholder="<%=admin.sex=='Nam'?'Nam':'Nữ'%>" value="<%=admin.sex=='Nam'?'Nam':'Nữ'%>"></div>
+                                        <div class="col-md-12"><label for="validationServer01" class="form-label">CMND</label><input type="text" name="adminIdentityCardNumber" class="form-control" id="validationServer01" placeholder="<%=admin.identityCardNumber%>" value="<%=admin.identityCardNumber%>"></div>
+                                        <div class="col-md-12"><label for="validationServer01" class="form-label">Ngày sinh</label>
+                                            <input id="validationServer01" class="form-control form-control-lg" type="date" name="adminDoB" required placeholder="yyyy-mm-dd" value="<%=admin.dateOfBirth%>">
+                                        </div>
+                                        <div class="col-md-12"><label for="validationServer01" class="form-label">Số Điện Thoại</label><input type="text" name="adminPhoneNumber" class="form-control" id="validationServer01" placeholder="<%=admin.phoneNumber%>" value="<%=admin.phoneNumber%>"></div>
+                                        <div class="col-md-12"><label for="validationServer01" class="form-label">Địa Chỉ</label><input type="text" name="adminAddress" class="form-control" id="validationServer01" placeholder="<%=admin.address%>" value="<%=admin.address%>"></div>
+                                        <div class="col-md-12"><label for="validationServer01" class="form-label">Email</label><input type="text" name="adminEmail" class="form-control" id="validationServer01" placeholder="<%=admin.email%>" value="<%=admin.email%>"></div>
+                                    </div>
+                                    <!--                                    <div class="row mt-3">-->
+                                    <!--                                        <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" value=""></div>-->
+                                    <!--                                        <div class="col-md-6"><label class="labels">State/Region</label><input type="text" class="form-control" value="" placeholder="state"></div>-->
+                                    <!--                                    </div>-->
+                                    <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Lưu thông tin</button></div>
+                                    </form>
                                 </div>
                             </div>
+                            <!--        <div class="col-md-4">-->
+                            <!--            <div class="p-3 py-5">-->
+                            <!--                <div class="d-flex justify-content-between align-items-center experience"><span>Edit Experience</span><span class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span></div><br>-->
+                            <!--                <div class="col-md-12"><label class="labels">Experience in Designing</label><input type="text" class="form-control" placeholder="experience" value=""></div> <br>-->
+                            <!--                <div class="col-md-12"><label class="labels">Additional Details</label><input type="text" class="form-control" placeholder="additional details" value=""></div>-->
+                            <!--            </div>-->
+                            <!--        </div>-->
                         </div>
                     </div>
-                    <!-- ============================================================== -->
-                    <!-- end pageheader  -->
-                    <!-- ============================================================== -->
-                    <div class="ecommerce-widget">
-                                          <!-- product manager  -->
-                            <!-- ============================================================== -->
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <div class="card">
-                                    <div class="header-product">
-                                        <h5 class="card-header">Danh sách tài khoản quản trị</h5>
-                                    </div>
-                                    <div class="card-body p-0">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <thead class="bg-light">
-                                                    <tr class="border-0">
-                                                        <th class="border-0">#</th>
-                                                        <th class="border-0">Tài khoản</th>
-                                                        <th class="border-0">Họ</th>
-                                                        <th class="border-0">Tên</th>
-                                                        <th class="border-0">Ngày sinh</th>
-                                                        <th class="border-0">CMND</th>
-                                                        <th class="border-0">Địa chỉ</th>
-                                                        <th class="border-0">SĐT</th>
-                                                        <th class="border-0">Email</th>
-                                                        <th class="border-0">Thao tác</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <% listAdmin =  admins.length > numberItemPerpage ?
-                                                     admins.slice((page - 1)*numberItemPerpage, numberItemPerpage*page) :
-                                                     admins %> 
-                                                    <% i = 1 %> 
-                                                        <% listAdmin.forEach(element => {%>
-                                                            <% if (element.locked == false) {%>
-                                                                <tr class="bg-light">
-                                                            <% } else {%> 
-                                                                <tr class="bg-lock">
-                                                            <% }%>
-                                                                <td><%= i %> </td>
-                                                                <td> <%= element.loginInformation.userName %>  </td>
-                                                                <td> <%= element.fullNameCustomer.lastName %>  </td>
-                                                                <td> <%= element.fullNameCustomer.firstName %>  </td>
-                                                                <td> <%= element.dateOfBirth %>  </td>
-                                                                <td> <%= element.identityCardNumber %>  </td>
-                                                                <td> <%= element.address %>  </td>
-                                                                <td> <%= element.phoneNumber %>  </td>
-                                                                <td> <%= element.email %>  </td>
-                                                                <td>
-                                                                    <% if (customer.loginInformation.userName != element.loginInformation.userName) {%>
-                                                                        <a style="margin-right: 5px;" href="/admin/dashboard/admin-list/update/<%= element._id %>"><i class="fas fa-edit"></i></a>
-                                                                        <a onclick="comfirmDelete('Bạn có muốn xóa thông tin quản trị viên này?',event)" style="margin-right: 5px;" href="/admin/dashboard/admin-list/delete/<%= element._id %>"><i class="fas fa-trash"></i></a>
-                                                                        <% if (element.locked == false) {%>
-                                                                            <a onclick="comfirmDelete('Bạn có muốn khóa tài khoản quản trị viên này?',event)" style="margin-right: 5px;" href="/admin/dashboard/admin-list/lock/<%= element._id %>"><i class="fas fa-lock"></i></a>
-                                                                        <% } else {%>
-                                                                            <a onclick="comfirmDelete('Bạn có muốn mở khóa tài khoản quản trị viên này?',event)" style="margin-right: 5px;" href="/admin/dashboard/admin-list/unlock/<%= element._id %>"><i class="fas fa-unlock"></i></a>
-                                                                        <% }%>
-                                                                    <% }%>
-                                                                </td>
-                                                                <% i++ %>
-                                                            </tr>
-                                                        <%}) %> 
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <nav aria-label="Page navigation example" style="margin-right: 15px;">
-                            <ul class="pagination justify-content-end">
-                                <% numberPage = 0 %> 
-                                <% admins.length % numberItemPerpage == 0 ? numberPage = (parseInt(admins.length/numberItemPerpage)) : numberPage = (parseInt(admins.length/numberItemPerpage)) + 1 %> 
-                                <% for(var i = 1; i <= numberPage; i++) {%>
-                                    <li class="page-item <%= i == page ? 'active' : '' %> "><a class="page-link" href="/admin/dashboard/admin-list/<%= i %> "><%= i %> </a></li>                                    
-                                <%} %> 
-                            </ul>
-                        </nav>
-                    </div>
                 </div>
+                <!--User Infomation Area End-->
             </div>
         </div>
         <!-- ============================================================== -->
@@ -240,16 +189,18 @@
     <script src="/public/assets/vendor/slimscroll/jquery.slimscroll.js"></script>
     <!-- main js -->
     <script src="/public/assets/libs/js/main-js.js"></script>
-    <script>
-       function comfirmDelete(msg, event) {
-        if(window.confirm(msg) == true)
-        {
-            return true;
-        }
-            event.preventDefault();
-            return false;
-        } 
-    </script>
+    <!-- chart chartist js -->
+    <script src="/public/assets/vendor/charts/chartist-bundle/chartist.min.js"></script>
+    <!-- sparkline js -->
+    <script src="/public/assets/vendor/charts/sparkline/jquery.sparkline.js"></script>
+    <!-- morris js -->
+    <!-- <script src="/public/assets/vendor/charts/morris-bundle/raphael.min.js"></script>
+    <script src="/public/assets/vendor/charts/morris-bundle/morris.js"></script> -->
+    <!-- chart c3 js -->
+    <script src="/public/assets/vendor/charts/c3charts/c3.min.js"></script>
+    <script src="/public/assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
+    <script src="/public/assets/vendor/charts/c3charts/C3chartjs.js"></script>
+    <script src="/public/assets/libs/js/dashboard-ecommerce.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <% if(message && message.length > 0){%>
         <script>
