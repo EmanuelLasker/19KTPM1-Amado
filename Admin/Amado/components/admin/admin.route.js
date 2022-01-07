@@ -5,9 +5,23 @@ const adminController = require('../admin/AdminController');
 
 const multer = require('multer');
 const { getLogout } = require('../admin/AdminController');
+const fs = require('fs');
+const path = require('path');
+
+const userUpload = path.resolve('../../User/Amado/uploads/'); // only change here
+
+fs.symlink(userUpload, "UserUpload", 'dir', (err) => {
+  if (err) console.log(err);
+  else {
+    console.log("Symlink created");
+    console.log("Symlink is a directory: ", 
+      fs.statSync("UserUpload").isDirectory());
+  }
+});
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '../../User/Amado/uploads/')
+    cb(null, path.resolve('../Amado/UserUpload/'))
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname)
@@ -89,6 +103,11 @@ router.get('/dashboard/users-manager/lock/:id', adminController.getLockUser);
 router.get('/dashboard/users-manager/unlock/:id', adminController.getUnlockUser);
 
 // Admin Manager
+router.post('/dashboard/admin-list/update/:id', uploadSingle.single('thumbnail'), adminController.postUpdateAdminPage);
+router.get('/dashboard/admin-list/update/:id', adminController.getUpdateAdminPage);
+
+router.get('/dashboard/users-manager/delete/:id', adminController.getDeleteAdminInfo);
+
 router.get('/dashboard/admin-list/lock/:id', adminController.getLockAdmin);
 router.get('/dashboard/admin-list/unlock/:id', adminController.getUnlockAdmin);
 

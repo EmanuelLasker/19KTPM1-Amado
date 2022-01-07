@@ -854,7 +854,6 @@ class AdminController {
       res.redirect("/admin/login");
     }
   }
-
   getUserListAtPage(req, res, next) {
     if (req.isAuthenticated()) {
       var numberItemPerpage = 12;
@@ -899,7 +898,6 @@ class AdminController {
       res.redirect("admin/login/");
     }
   }
-
   getUpdateUserPage(req, res, next) {
     if (req.isAuthenticated()) {
       var idCustomer = req.params.id;
@@ -930,7 +928,7 @@ class AdminController {
           },
           sex: req.body.userSex,
           dateOfBirth: req.body.userDoB,
-          identityCardNumber: req.body.userCardNumber,
+          identityCardNumber: req.body.userIdentityCardNumber,
           phoneNumber: req.body.userPhoneNumber,
           address: req.body.userAddress,
           email: req.body.userEmail
@@ -1013,6 +1011,77 @@ class AdminController {
     
         req.flash("success", "Mở khóa tài khoản thành công!");
         res.redirect("/admin/dashboard/users-manager");
+      });
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
+
+  getUpdateAdminPage(req, res, next) {
+    if (req.isAuthenticated()) {
+      var idAdmin = req.params.id;
+      admin.findOne({ _id: idAdmin }, (err, adminResult) => {
+        admin.findOne(
+          { "loginInformation.userName": req.session.passport.user.username },
+          (err, customerResult) => {
+            res.render("update-admin", {
+              customer: customerResult,
+              admin: adminResult,
+              message: req.flash('success')
+            });
+          }
+        );
+      });
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
+  postUpdateAdminPage(req, res, next) {
+    if (req.isAuthenticated()) {
+      var idAdmin = req.params.id;
+      admin.findOne({ _id: idAdmin }, (err, adminResult) => {
+        var data = {
+          fullNameCustomer: {
+            firstName: req.body.adminFirstName,
+            lastName: req.body.adminLastName
+          },
+          sex: req.body.adminSex,
+          dateOfBirth: req.body.adminDoB,
+          identityCardNumber: req.body.adminIdentityCardNumber,
+          phoneNumber: req.body.adminPhoneNumber,
+          address: req.body.adminAddress,
+          email: req.body.adminEmail
+        };
+        admin
+          .findOneAndUpdate({ _id: idAdmin }, data, { new: true })
+          .then(() => {
+            req.flash("success", "Cập nhật thông tin thành công!");
+            res.redirect("/admin/dashboard/admin-list");
+          })
+          .catch((err) => {
+            console.log(err);
+            req.flash(
+              "err",
+              "Cập nhật thông tin không thành công! Có lỗi xảy ra!"
+            );
+            next();
+          });
+      });
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
+  getDeleteAdminInfo(req, res, next) {
+    if (req.isAuthenticated()) {
+      var idAdmin = req.params.id;
+      admin.findOneAndRemove({ _id: idAdmin }, (err, result) => {
+        if (err) {
+          console.log(err);
+          req.flash("error", "Xóa thông tin không thành công! Có lỗi xảy ra!");
+          next();
+        }
+        req.flash("success", "Xóa thông tin thành công!");
+        res.redirect("/admin/dashboard/admin-list");
       });
     } else {
       res.redirect("/admin/login");

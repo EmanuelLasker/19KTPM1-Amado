@@ -130,7 +130,7 @@
                     <div class="container rounded bg-white mt-5 md-5">
                         <div class="row">
                             <div class="col-md-4 border-right">
-                                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" src="<%=user.avatar%>"><span class="font-weight-bold"><%=user.fullNameCustomer.firstName+" "+user.fullNameCustomer.lastName%></span><span name="userName" class="text-black-50"><%=user.loginInformation.userName%></span><span> </span></div>
+                                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" src="<%=user.avatar%>"><span class="font-weight-bold"><%=user.fullNameCustomer.lastName+" "+user.fullNameCustomer.firstName%></span><span name="userName" class="text-black-50"><%=user.loginInformation.userName%></span><span> </span></div>
                             </div>
                             <div class="col-md-8 border-right">
                                 <div class="p-3 py-5">
@@ -139,8 +139,8 @@
                                     </div>
                                     <form class="row g-3" accept-charset="utf-8" spellcheck="false" enctype="multipart/form-data" action="/dashboard/users-manager/update/<%=user._id %>" method="POST">
                                     <div class="row mt-2">
-                                        <div class="col-md-6"><label for="validationServer01" class="form-label">Tên</label><input type="text" name="userLastName" class="form-control" id="validationServer01" value="<%=user.fullNameCustomer.lastName%>" placeholder="<%=user.fullNameCustomer.lastName%>" required></div>
-                                        <div class="col-md-6"><label for="validationServer01" class="form-label">Họ</label><input type="text" name="userFirstName" class="form-control" id="validationServer01" value="<%=user.fullNameCustomer.firstName%>" placeholder="<%=user.fullNameCustomer.firstName%>" required></div>
+                                        <div class="col-md-6"><label for="validationServer01" class="form-label">Họ</label><input type="text" name="userLastName" class="form-control" id="validationServer01" value="<%=user.fullNameCustomer.lastName%>" placeholder="<%=user.fullNameCustomer.lastName%>" required></div>
+                                        <div class="col-md-6"><label for="validationServer01" class="form-label">Tên</label><input type="text" name="userFirstName" class="form-control" id="validationServer01" value="<%=user.fullNameCustomer.firstName%>" placeholder="<%=user.fullNameCustomer.firstName%>" required></div>
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-md-12"><label for="validationServer01" class="form-label">Giới tính</label><input type="text" name="userSex" class="form-control" id="validationServer01" placeholder="<%=user.sex=='Nam'?'Nam':'Nữ'%>" value="<%=user.sex=='Nam'?'Nam':'Nữ'%>"></div>
