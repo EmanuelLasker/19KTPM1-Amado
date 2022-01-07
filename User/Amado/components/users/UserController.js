@@ -91,10 +91,12 @@ class UserController {
   }
   getChangePassword(req, res, next){
     if (req.isAuthenticated()) {
+      var messageError = req.flash("error");
+      var messageSuccess = req.flash("success");
       customers.findOne(
           { "loginInformation.userName": req.session.passport.user.username },
           (err, customerResult) => {
-            res.render("change-pass", { title: "Thay đổi mật khẩu", customer: customerResult, message: req.flash('success') });
+            res.render("change-pass", { title: "Thay đổi mật khẩu", customer: customerResult, message: messageError.length != 0 ? messageError : messageSuccess, typeMessage: messageError.length != 0 ? "error":"success"  });
           }
       );
     } else {
@@ -105,34 +107,51 @@ class UserController {
 
 
     if (req.isAuthenticated()) {
+
       var username = req.session.passport.user.username;
-      var oldPass = bcrypt.hashSync(req.body.oldPass, 10);
+      var oldPass = req.body.oldPass;
       var newPass = bcrypt.hashSync(req.body.newPass, 10);
-      if(req.body.newPass != req.body.retypeNewPass){
-        req.flash("err", "Mật khẩu nhập lại không khớp!");
-        res.redirect("/change-pass");
-        return;
+      if(req.body.newPass !== req.body.retypeNewPass){
+      req.flash("error", "Mật khẩu nhập lại không khớp!");
+      res.redirect("/change-pass");
       }
-      if(oldPass!=req.session.passport.user.password){
-        req.flash("err", "Mật khẩu cũng không đúng!");
-        res.redirect("/change-pass");
-        return;
+
+
+      customers.findOne(
+          { 'loginInformation.userName': username },
+          function (err, user) {
+
+            console.log(bcrypt.compareSync(oldPass, user.loginInformation.password));
+            if (bcrypt.compareSync(oldPass, user.loginInformation.password)==false) {
+              req.flash("error", "Mật khẩu cũ không đúng!");
+              return res.redirect("/change-pass");
+          }
+            else if(bcrypt.compareSync(req.body.newPass, user.loginInformation.password)){
+              req.flash("error", "Mật khẩu mới trùng với mật khẩu cũ!");
+              return res.redirect("/change-pass");
+            }
+          else{
+            customers
+                .findOneAndUpdate({ 'loginInformation.userName': username }, {'loginInformation.password': newPass }, { new: true })
+                .then(() => {
+                  req.flash("success", "Đổi mật khẩu thành công!");
+                  res.redirect("/change-pass");
+                })
+                .catch((err) => {
+                  console.log(err);
+                  req.flash(
+                      "error",
+                      "Cập nhật thông tin không thành công! Có lỗi xảy ra!"
+                  );
+                });
+
+          }
+          })
+
+
+
       }
-        customers
-            .findOneAndUpdate({ 'loginInformation.userName': username }, {'loginInformation.password': newPass }, { new: true })
-            .then(() => {
-              req.flash("success", "Đổi mật khẩu thành công!");
-              res.redirect("/change-pass");
-            })
-            .catch((err) => {
-              console.log(err);
-              req.flash(
-                  "err",
-                  "Cập nhật thông tin không thành công! Có lỗi xảy ra!"
-              );
-              next();
-            });
-      }
+
      else {
       res.redirect("/login");
     }
