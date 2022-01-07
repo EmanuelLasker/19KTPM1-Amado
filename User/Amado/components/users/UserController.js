@@ -12,6 +12,10 @@ const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const jwt_decoder = require("jwt-decode");
 const email_exist = require("email-existence");
+const ExpressRedisCache = require('express-redis-cache');
+const cache = ExpressRedisCache({
+    expire: 30, // optional: expire every 10 seconds
+})
 
 const EMAIL_SECRET = 'asdf1093KMnzxcvnkljvasdu09123nlasdasdf';
 
@@ -121,7 +125,7 @@ class UserController {
           { 'loginInformation.userName': username },
           function (err, user) {
 
-            console.log(bcrypt.compareSync(oldPass, user.loginInformation.password));
+            //console.log(bcrypt.compareSync(oldPass, user.loginInformation.password));
             if (bcrypt.compareSync(oldPass, user.loginInformation.password)==false) {
               req.flash("error", "Mật khẩu cũ không đúng!");
               return res.redirect("/change-pass");
