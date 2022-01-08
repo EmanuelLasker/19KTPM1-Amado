@@ -209,7 +209,7 @@
               <div class="product-sorting d-flex">
                 <div class="sort-by-date d-flex align-items-center mr-15">
                   <p class="pr-3">Sắp xếp theo</p>
-                  <form class="priceFilter" action="/product/product-filter" method="post">
+                  <form class="priceFilter" action="/product/product-filter/<%=currentPage%>?" method="get">
                     <select name="price" id="sortBydate" onchange="this.form.submit()">
                       <%if(priceValue==undefined){%>
                         <option value="0" selected>Mặc định</option>
