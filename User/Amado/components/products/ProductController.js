@@ -309,6 +309,8 @@ class ProductController {
         var itemsPerPage = 6;
         var currentPage = req.params.page;
         var priceFilter = req.body.price;
+        if(priceFilter==undefined)
+            priceFilter = 0;
         product.find({}, (err, result) => {
             type.find({}, (err, data) => {
                 supplier.find({}, (err, supplier) => {
@@ -345,6 +347,7 @@ class ProductController {
         var selection = req.body.selection;
         var supplierFilter = req.body.supplier;
         var priceFilter = req.body.price;
+        var currentPage = req.params.page;
 
         req.session.selection = selection;
         req.session.supplierFilter = supplierFilter;
