@@ -21,7 +21,8 @@ class CategoriesController {
                 products: result,
                 type: typeResult,
                 itemsPerPage: itemsPerPage,
-                currentPage: 1
+                currentPage: 1,
+                priceValue: 0
               });
             })
           } else {
@@ -33,7 +34,8 @@ class CategoriesController {
               products: result,
               type: typeResult,
               itemsPerPage: itemsPerPage,
-              currentPage: 1
+              currentPage: 1,
+              priceValue: 0
             });
           }
         });
@@ -57,7 +59,8 @@ class CategoriesController {
                 products: result,
                 type: typeResult,
                 itemsPerPage: itemsPerPage,
-                currentPage: currentPage
+                currentPage: currentPage,
+                priceValue: 0
               });
             })
           } else {
@@ -69,7 +72,8 @@ class CategoriesController {
               products: result,
               type: typeResult,
               itemsPerPage: itemsPerPage,
-              currentPage: currentPage
+              currentPage: currentPage,
+              priceValue: 0
             });
           }
         });

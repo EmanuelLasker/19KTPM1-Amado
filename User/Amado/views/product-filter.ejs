@@ -200,8 +200,8 @@
                   <%= types.typeName %>
                 </h3>
                 <div class="view d-flex">
-                  <a href="#"><i class="fa fa-th-large" aria-hidden="true"></i></a>
-                  <a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
+<!--                  <a href="#"><i class="fa fa-th-large" aria-hidden="true"></i></a>-->
+<!--                  <a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>-->
                 </div>
               </div>
 
@@ -209,7 +209,8 @@
               <div class="product-sorting d-flex">
                 <div class="sort-by-date d-flex align-items-center mr-15">
                   <p class="pr-3">Sắp xếp theo</p>
-                  <form class="priceFilter" action="/product/product-filter" method="post">
+                  <form class="priceFilter" action="/product/product-filter/<%=currentPage%>" method="post">
+
                     <select name="price" id="sortBydate" onchange="this.form.submit()">
                       <%if(priceValue==undefined){%>
                         <option value="0" selected>Mặc định</option>

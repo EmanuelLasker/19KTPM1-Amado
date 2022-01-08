@@ -14,6 +14,7 @@ router.get('/:id', productController.productDetail);
 router.get('/:id/page/:page', productController.productDetailAtPage);
 router.get('/page/:page', productController.productAtPage);
 router.post('/product-filter', productController.filterProduct);
+router.post('/product-filter/:page', productController.filterProductAtPage)
 router.get('/product-filter/:page', productController.filterProductAtPage)
 router.get('/',cache1.route(), productController.getProductDefault)
 router.post('/:id', productController.postComment)

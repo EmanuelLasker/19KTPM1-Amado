@@ -348,6 +348,8 @@ class ProductController {
         var supplierFilter = req.body.supplier;
         var priceFilter = req.body.price;
         var currentPage = req.params.page;
+        if(currentPage == undefined)
+            currentPage = 1;
 
         req.session.selection = selection;
         req.session.supplierFilter = supplierFilter;
@@ -390,7 +392,7 @@ class ProductController {
                                         types: data,
                                         suppliers: supplier,
                                         itemsPerPage: itemsPerPage,
-                                        currentPage: 1,
+                                        currentPage: currentPage,
                                         message: req.flash('success'),
                                         customer: customerResult,
                                         selected: selection,
@@ -404,7 +406,7 @@ class ProductController {
                                     types: data,
                                     suppliers: supplier,
                                     itemsPerPage: itemsPerPage,
-                                    currentPage: 1,
+                                    currentPage: currentPage,
                                     message: req.flash('success'),
                                     customer: undefined,
                                     selected: selection,
@@ -451,7 +453,7 @@ class ProductController {
                                         types: data,
                                         suppliers: supplier,
                                         itemsPerPage: itemsPerPage,
-                                        currentPage: 1,
+                                        currentPage: currentPage,
                                         message: req.flash('success'),
                                         customer: customerResult,
                                         selected: selection,
@@ -465,7 +467,7 @@ class ProductController {
                                     types: data,
                                     suppliers: supplier,
                                     itemsPerPage: itemsPerPage,
-                                    currentPage: 1,
+                                    currentPage: currentPage,
                                     message: req.flash('success'),
                                     customer: undefined,
                                     selected: selection,
@@ -513,7 +515,7 @@ class ProductController {
                                         types: data,
                                         suppliers: supplier,
                                         itemsPerPage: itemsPerPage,
-                                        currentPage: 1,
+                                        currentPage: currentPage,
                                         message: req.flash('success'),
                                         customer: customerResult,
                                         selected: selection,
@@ -527,7 +529,7 @@ class ProductController {
                                     types: data,
                                     suppliers: supplier,
                                     itemsPerPage: itemsPerPage,
-                                    currentPage: 1,
+                                    currentPage: currentPage,
                                     message: req.flash('success'),
                                     customer: undefined,
                                     selected: selection,
@@ -573,7 +575,7 @@ class ProductController {
                                         types: data,
                                         suppliers: supplier,
                                         itemsPerPage: itemsPerPage,
-                                        currentPage: 1,
+                                        currentPage: currentPage,
                                         message: req.flash('success'),
                                         customer: customerResult,
                                         selected: selection,
@@ -586,7 +588,7 @@ class ProductController {
                                     types: data,
                                     suppliers: supplier,
                                     itemsPerPage: itemsPerPage,
-                                    currentPage: 1,
+                                    currentPage: currentPage,
                                     message: req.flash('success'),
                                     customer: undefined,
                                     selected: selection,
