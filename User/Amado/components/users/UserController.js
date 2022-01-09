@@ -372,7 +372,50 @@ class UserController {
           });
       });
     } else {
-      res.redirect("/login");
+      // res.redirect("/login");
+      var id = req.params.id;
+      var amount = req.body.quantity ? req.body.quantity : 1;
+      let tmp_user = JSON.parse(localStorage.getItem(req.sessionID));
+      if (tmp_user == null) {
+        let data = {
+          'fullNameCustomer': null,
+          'dateOfBirth': null,
+          'sex': null,
+          'identityCardNumber': null,
+          'address': null,
+          'phoneNumber': null,
+          'email': null,
+          'listProduct': [],
+          'listFavorite': [],
+          'loginInformation': null,
+          'avatar': null
+        }
+        tmp_user = new customers(data);
+      }
+      //res.redirect("/login");
+      product.findOne({ _id: id }, (err, productResult) => {
+        let data =
+            {
+              productID: productResult._id.toString(),
+              productName: productResult.productName,
+              productPrice: productResult.description.price,
+              productImage: productResult.description.imageList[0],
+              productType: productResult.description.typeCode,
+              amount: amount
+            };
+        tmp_user.listProduct.push(data)
+
+      }).then(() => {
+        req.flash("success", "Sản phẩm đã thêm vào giỏ!");
+        localStorage.setItem(req.sessionID, JSON.stringify(tmp_user));
+        res.redirect(`/product/`);
+      })
+          .catch((err) => {
+            console.log(err);
+            req.flash("error", "Lỗi khi thêm sản phẩm vào giỏ!");
+            next();
+          });
+
     }
   }
   postUpdateQTYInCart(req, res, next) {

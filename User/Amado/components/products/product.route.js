@@ -10,7 +10,7 @@ const cache2 = ExpressRedisCache({
     expire: 5, // optional: expire every 10 seconds
 })
 router.get('/search',cache1.route(), productController.search);
-router.get('/:id', productController.productDetail);
+router.get('/:id', cache1.route(), productController.productDetail);
 router.get('/:id/page/:page', productController.productDetailAtPage);
 router.get('/page/:page', productController.productAtPage);
 router.post('/product-filter', productController.filterProduct);
