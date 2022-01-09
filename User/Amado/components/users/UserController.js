@@ -456,8 +456,14 @@ class UserController {
       // res.redirect('/login');
       var id = req.params.id;
       let tmp_user = JSON.parse(localStorage.getItem(req.sessionID));
-      tmp_user.listProduct.remove(tmp_user.listProduct.findIndex(x => x.productID));
-      localStorage.setItem(req.sessionID,JSON.stringify(tmp_user));
+      // tmp_user.listProduct.remove(tmp_user.listProduct.findIndex(x => x.productID === id));
+      if(tmp_user.listProduct){
+        tmp_user.listProduct.splice(tmp_user.listProduct.findIndex(x => x.productID === id), 1);
+        localStorage.setItem(req.sessionID,JSON.stringify(tmp_user));
+        req.flash("success", "Đã xóa sản phẩm khỏi giỏ!");
+        res.redirect('/cart');
+        return;
+      }
     }
   }
   getCheckoutPage(req, res, next) {
