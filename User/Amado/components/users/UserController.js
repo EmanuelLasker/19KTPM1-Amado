@@ -11,7 +11,7 @@ const LocalStorage = require('node-localstorage').LocalStorage,
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const jwt_decoder = require("jwt-decode");
-const email_exist = require("email-existence");
+// const email_exist = require("email-existence");
 const ExpressRedisCache = require('express-redis-cache');
 const cache = ExpressRedisCache({
     expire: 30, // optional: expire every 10 seconds
@@ -613,10 +613,10 @@ class UserController {
 
             // email doesn't exist in database
           } else {
-            email_exist.check(email, (err, emailExistResult) => {
+            // email_exist.check(email, (err, emailExistResult) => {
 
               // email exists on the internet
-              if (emailExistResult) {
+              // if (emailExistResult) {
 
                 // == Account registration section start ===========================
                 var newUser = new customers(data);
@@ -679,13 +679,13 @@ class UserController {
                 // == Account registration section end =============================
 
                 // email doesn't exist on the internet
-              } else {
-                console.log("[ERROR] Email doesn't exist!");
-                req.flash('error', 'Email không tồn tại.');
-                res.redirect('/sign-up');
-              }
+              // } else {
+              //   console.log("[ERROR] Email doesn't exist!");
+              //   req.flash('error', 'Email không tồn tại.');
+              //   res.redirect('/sign-up');
+              // }
 
-            });
+            // });
           }
         });
 
