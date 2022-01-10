@@ -984,7 +984,7 @@ class AdminController {
           , (err, res) => {
             console.log(res);
           });
-    
+
         req.flash("success", "Khóa tài khoản thành công!");
         res.redirect("/admin/dashboard/users-manager");
       });
@@ -1008,7 +1008,7 @@ class AdminController {
           , (err, res) => {
             console.log(res);
           });
-    
+
         req.flash("success", "Mở khóa tài khoản thành công!");
         res.redirect("/admin/dashboard/users-manager");
       });
@@ -1103,7 +1103,7 @@ class AdminController {
           , (err, res) => {
             console.log(res);
           });
-    
+
         req.flash("success", "Khóa tài khoản thành công!");
         res.redirect("/admin/dashboard/admin-list");
       });
@@ -1127,7 +1127,7 @@ class AdminController {
           , (err, res) => {
             console.log(res);
           });
-    
+
         req.flash("success", "Mở khóa tài khoản thành công!");
         res.redirect("/admin/dashboard/admin-list");
       });
@@ -1154,7 +1154,7 @@ class AdminController {
 
       var hashed_password = bcrypt.hashSync(password, 10);
 
-      admin.findOne({ 'email': email}, (err, customerResult) => {
+      admin.findOne({ 'email': email }, (err, customerResult) => {
         // email found
         if (customerResult) {
           admin.updateOne(
@@ -1163,11 +1163,12 @@ class AdminController {
             , (err, res) => {
               console.log(res);
             });
-            req.flash('success', 'Đặt lại mật khẩu thành công.')
-            res.render('loginuser', { 
-              message: req.flash('success'), typeMessage: 'success' });
-  
-        // email not found
+          req.flash('success', 'Đặt lại mật khẩu thành công.')
+          res.render('loginuser', {
+            message: req.flash('success'), typeMessage: 'success'
+          });
+
+          // email not found
         } else {
           req.flash('error', 'Tài khoản chứa email này không tồn tại.');
           res.render('confirm', { type: 2, message: req.flash('error'), email: undefined, typeMessage: 'error' });
@@ -1188,12 +1189,12 @@ class AdminController {
         expiresIn: '1d',
       },
     );
-    
-    admin.findOne({ 'email': email}, (err, customerResult) => {
+
+    admin.findOne({ 'email': email }, (err, customerResult) => {
 
       // email found
       if (customerResult) {
-        
+
         const url = `http://localhost:3000/admin/reset-password/${email_token}`;
 
         var transporter = nodemailer.createTransport({
@@ -1210,7 +1211,7 @@ class AdminController {
           subject: 'Đặt lại mật khẩu Amado',
           html: `Bạn vừa gửi yêu cầu đặt lại mật khẩu. Đặt lại mật khẩu cho tài khoản <a href="${url}">tại đây</a>`
         }
-        
+
         transporter.sendMail(mailOptions, function (error, info) {
           if (error) {
             console.log(error);
@@ -1223,13 +1224,72 @@ class AdminController {
         req.flash('success', 'Đã gửi email đặt lại mật khẩu!');
         res.render('confirm', { type: 2, message: req.flash('success'), email: undefined, typeMessage: 'success' });
 
-      // email not found
+        // email not found
       } else {
         req.flash('error', 'Tài khoản chứa email này không tồn tại.');
         res.render('confirm', { type: 2, message: req.flash('error'), email: undefined, typeMessage: 'error' });
       }
 
     });
+  }
+
+  getChangePassword(req, res, next) {
+    if (req.isAuthenticated()) {
+      var messageError = req.flash('error');
+      var messageSuccess = req.flash('success');
+      admin.findOne(
+        { "loginInformation.userName": req.session.passport.user.username },
+        (err, adminResult) => {
+          res.render("change-password", { title: "Thay đổi mật khẩu", adminProfile: adminResult, message: messageError.length != 0 ? messageError : messageSuccess, typeMessage: messageError.length != 0 ? 'error' : 'success' });
+        }
+      );
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
+  postChangePassword(req, res, next) {
+    if (req.isAuthenticated()) {
+
+      var username = req.session.passport.user.username;
+      var oldPass = req.body.oldPass;
+      var newPass = bcrypt.hashSync(req.body.newPass, 10);
+      if (req.body.newPass !== req.body.retypeNewPass) {
+        req.flash('error', "Mật khẩu nhập lại không khớp!");
+        res.redirect("/change-password");
+      }
+
+      admin.findOne(
+        { 'loginInformation.userName': username },
+        function (err, user) {
+          //console.log(bcrypt.compareSync(oldPass, user.loginInformation.password));
+          if (bcrypt.compareSync(oldPass, user.loginInformation.password) == false) {
+            req.flash('error', 'Mật khẩu cũ không đúng!');
+            return res.redirect("/change-password");
+          }
+          else if (bcrypt.compareSync(req.body.newPass, user.loginInformation.password)) {
+            req.flash('error', 'Mật khẩu mới trùng với mật khẩu cũ!');
+            return res.redirect("/change-password");
+          }
+          else {
+            admin
+              .findOneAndUpdate({ 'loginInformation.userName': username }, { 'loginInformation.password': newPass }, { new: true })
+              .then(() => {
+                req.flash('success', 'Đổi mật khẩu thành công!');
+                res.redirect("/change-password");
+              })
+              .catch((err) => {
+                console.log(err);
+                req.flash(
+                  'error',
+                  'Cập nhật thông tin không thành công! Có lỗi xảy ra!'
+                );
+              });
+          }
+        })
+    }
+    else {
+      res.redirect("/admin/login");
+    }
   }
 }
 module.exports = new AdminController();

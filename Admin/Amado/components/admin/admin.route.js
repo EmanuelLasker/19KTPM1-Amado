@@ -91,6 +91,9 @@ router.get('/dashboard/admin-list/', adminController.getAdminListPage);
 router.get('/profile', adminController.getAdminProfile);
 router.post('/profile/:id', uploadSingle.single('thumbnail'), adminController.postAdminProfile);
 
+router.get('/change-password', adminController.getChangePassword);
+router.post('/change-password',adminController.postChangePassword);
+
 // User Manager
 router.get('/dashboard/users-manager/:page', adminController.getUserListAtPage);
 router.get('/dashboard/users-manager/', adminController.getUserListPage);
