@@ -183,7 +183,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <% if(message && message.length > 0){%>
     <script>
-        toastr.success('<%= message %>','Thông báo', {timeOut: 1500, progressBar: true, closeButton: true});
+        var type = '<%- typeMessage %>';
+        if (type.localeCompare('success') == 0) {
+            toastr.success('<%= message %>', 'Thông báo', { timeOut: 1500, progressBar: true, closeButton: true });
+        }
+        else {
+            toastr.error('<%= message %>', 'Thông báo', { timeOut: 1500, progressBar: true, closeButton: true });
+        } 
     </script>
 <%} %>
 </body>

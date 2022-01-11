@@ -12,7 +12,7 @@ const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const jwt_decoder = require("jwt-decode");
 // const email_exist = require("email-existence");
-const ExpressRedisCache = require('express-redis-cache');
+// const ExpressRedisCache = require('express-redis-cache');
 // const cache = ExpressRedisCache({
 //     expire: 30, // optional: expire every 10 seconds
 // })
