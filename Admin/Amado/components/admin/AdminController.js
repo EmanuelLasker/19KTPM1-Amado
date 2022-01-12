@@ -1253,9 +1253,15 @@ class AdminController {
       var username = req.session.passport.user.username;
       var oldPass = req.body.oldPass;
       var newPass = bcrypt.hashSync(req.body.newPass, 10);
+
+      if(oldPass == "" || req.body.newPass == "" || req.body.retypeNewPass == ""){
+        req.flash("error", "Vui lòng điền đủ thông tin!");
+        return res.redirect("/change-password");
+      }
+
       if (req.body.newPass !== req.body.retypeNewPass) {
         req.flash('error', "Mật khẩu nhập lại không khớp!");
-        res.redirect("/change-password");
+        return res.redirect("/change-password");
       }
 
       admin.findOne(
