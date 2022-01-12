@@ -25,9 +25,9 @@
     "nodemon": "^2.0.7",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0"
-
   },
   "devDependencies": {
+    "dotenv": "^11.0.0",
     "node-localstorage": "^2.2.1"
   }
 }

@@ -115,9 +115,17 @@ class UserController {
       var username = req.session.passport.user.username;
       var oldPass = req.body.oldPass;
       var newPass = bcrypt.hashSync(req.body.newPass, 10);
+
+      if(oldPass == "" || req.body.newPass == "" || req.body.retypeNewPass == ""){
+        req.flash("error", "Vui lòng điền đủ thông tin!");
+        res.redirect("/change-pass");
+        return;
+      }
+
       if(req.body.newPass !== req.body.retypeNewPass){
       req.flash("error", "Mật khẩu nhập lại không khớp!");
       res.redirect("/change-pass");
+      return;
       }
 
 

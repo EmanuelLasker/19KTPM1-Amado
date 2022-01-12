@@ -4,12 +4,13 @@ const path = require("path");
 const index = require('./components/users/user.router');
 const product = require("./components/products/product.route");
 const categories = require("./components/categories/categories.route");
-const PORT = 3000;
 const flash = require('connect-flash');
 const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("./passport/passport");
-
+const dotenv = require('dotenv');
+dotenv.config();
+const PORT = process.env.PORT;
 
 // Passport configuration
 app.use(
@@ -26,7 +27,7 @@ app.use(passport.session());
 
 // Mongoose connection
 mongoose
-  .connect('mongodb://127.0.0.1/ecommerce', {
+  .connect(process.env.DB_HOST, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
