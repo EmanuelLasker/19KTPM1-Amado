@@ -174,17 +174,17 @@
                                 <label for="validationServer01" class="form-label col-12">Địa chỉ nhận hàng:</label>
                                 <div class="col-12 col-md-4 col-lg-4">
                                     <select name="city" class="form-select form-select-sm my-3" style="width: 300px;padding: 10px; outline: none; display: inline-block; color: #71748d; width: -moz-available;" id="city" aria-label=".form-select-sm">
-                                        <option value="none" selected>Chọn tỉnh thành</option>           
+                                        <option value="none" selected><%= bill.address.split(',')[3] %></option>           
                                     </select>
                                 </div>
                                 <div class="col-12 col-md-4 col-lg-4">
                                     <select name="district" class="form-select form-select-sm my-3" style="width: 300px;padding: 10px; display: inline-block; color: #71748d; width: -moz-available;" id="district" aria-label=".form-select-sm">
-                                        <option value="none" selected>Chọn quận huyện</option>
+                                        <option value="none" selected><%= bill.address.split(',')[2] %></option>
                                       </select>
                                 </div>
                                 <div class="col-12 col-md-4 col-lg-4">
                                     <select name="ward" class="form-select form-select-sm my-3" style="width: 300px;padding: 10px; display: inline-block; color: #71748d; width: -moz-available;" id="ward" aria-label=".form-select-sm">
-                                        <option value="none" selected>Chọn phường xã</option>
+                                        <option value="none" selected><%= bill.address.split(',')[1] %></option>
                                     </select>
                                 </div>
                                 <div class="col-md-12 col-sm-12 col-lg-12 mb-3">
