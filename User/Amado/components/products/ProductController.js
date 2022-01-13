@@ -369,20 +369,24 @@ class ProductController {
                         });
                     else if (priceFilter == 3)
                         result.sort(function(a, b) {
-                            if (a._doc.productName < b._doc.productName)
+                            /*if (a._doc.productName < b._doc.productName)
                                 return -1;
                             if (a._doc.productName > b._doc.productName)
                                 return 1;
-                            return 0;
+                            return 0;*/
+                            return a._doc.productName.localeCompare(b._doc.productName);
                         });
                     else if (priceFilter == 4)
                         result.sort(function(a, b) {
-                            if (a._doc.productName < b._doc.productName)
+                            /*if (a._doc.productName < b._doc.productName)
                                 return 1;
                             if (a._doc.productName > b._doc.productName)
                                 return -1;
-                            return 0;
+                            return 0;*/
+                            return b._doc.productName.localeCompare(a._doc.productName);
                         });
+                    else
+                        return result;
                     type.find({}, (err, data) => {
                         supplier.find({}, (err, supplier) => {
                             if (req.isAuthenticated()) {
