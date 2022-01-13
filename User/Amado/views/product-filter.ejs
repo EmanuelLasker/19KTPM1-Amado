@@ -218,6 +218,12 @@
                         <option value="2">Giá giảm dần</option>
                         <option value="3">A->Z</option>
                         <option value="4">Z->A</option>
+                      <%}else if(priceValue==0){%>
+                        <option value="0" selected>Mặc định</option>
+                        <option value="1">Giá tăng dần</option>
+                        <option value="2">Giá giảm dần</option>
+                        <option value="3">A->Z</option>
+                        <option value="4">Z->A</option>
                       <%}else if(priceValue==1){%>
                         <option value="0" >Mặc định</option>
                         <option value="1" selected>Giá tăng dần</option>
@@ -313,7 +319,7 @@
                   itemsPerPage %>
                   <% for(var i=1; i <=totalPage; i++){%>
                     <li class="page-item <%= i == currentPage ? 'active' : '' %> ">
-                      <a class="page-link" href="/product/product-filter/<%= i %> ">0<%= i %> .</a>
+                      <a class="page-link" href="/product/product-filter/<%= i %>/<%= ">0<%= i %> .</a>
                     </li>
                     <%} %>
               </ul>
