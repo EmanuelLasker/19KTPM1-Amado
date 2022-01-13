@@ -350,6 +350,8 @@ class ProductController {
         var currentPage = req.params.page;
         if(currentPage == undefined)
             currentPage = 1;
+        if(priceFilter==undefined)
+            priceFilter = 0;
 
         req.session.selection = selection;
         req.session.supplierFilter = supplierFilter;
@@ -611,6 +613,8 @@ class ProductController {
         var priceFilter = req.body.price;
         var itemsPerPage = 6;
         var currentPage = req.params.page;
+        if(priceFilter==undefined)
+            priceFilter = 0;
         if (selection) {
             product.find({ 'description.typeCode': selection }, (err, result) => {
                 type.find({}, (err, data) => {
