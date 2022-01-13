@@ -80,7 +80,7 @@ router.get('/dashboard', adminController.getDashboardPage);
 
 router.get('/login', adminController.getLoginPage);
 router.post('/login', passport.authenticate('admin-local', {failureRedirect: '/admin/login', successFlash: true, failureFlash: true}), adminController.getDashboardPage);
-router.get('/', adminController.getLoginPage);
+router.get('/', adminController.getEntrance);
 
 router.get('/sign-up', adminController.getSignUpPage);
 router.post('/sign-up', adminController.postSignUpUser);

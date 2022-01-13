@@ -24,6 +24,7 @@
     "nodemon": "^2.0.7",
     "nodemailer": "^6.7.2",
     "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "dotenv": "^11.0.0"
   }
 }
