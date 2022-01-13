@@ -616,11 +616,54 @@ class ProductController {
         if(priceFilter==undefined)
             priceFilter = 0;
         if (selection) {
-            product.find({ 'description.typeCode': selection }, (err, result) => {
-                type.find({}, (err, data) => {
-                    supplier.find({}, (err, supplier) => {
-                        if (req.isAuthenticated()) {
-                            customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
+            if (supplierFilter) {
+                product.find({ description: { $elementMatch: { typeCode: selection, supplierCode: supplierFilter } } }, (err, result) => {
+                    if (priceFilter == 1)
+                        result.sort(function(a, b) {
+                            return parseFloat(a._doc.description.price) - parseFloat(b._doc.description.price);
+                        });
+                    else if (priceFilter == 2)
+                        result.sort(function(a, b) {
+                            return parseFloat(b._doc.description.price) - parseFloat(a._doc.description.price);
+                        });
+                    else if (priceFilter == 3)
+                        result.sort(function(a, b) {
+                            /*if (a._doc.productName < b._doc.productName)
+                                return -1;
+                            if (a._doc.productName > b._doc.productName)
+                                return 1;
+                            return 0;*/
+                            return a._doc.productName.localeCompare(b._doc.productName);
+                        });
+                    else if (priceFilter == 4)
+                        result.sort(function(a, b) {
+                            /*if (a._doc.productName < b._doc.productName)
+                                return 1;
+                            if (a._doc.productName > b._doc.productName)
+                                return -1;
+                            return 0;*/
+                            return b._doc.productName.localeCompare(a._doc.productName);
+                        });
+                    else
+                        return result;
+                    type.find({}, (err, data) => {
+                        supplier.find({}, (err, supplier) => {
+                            if (req.isAuthenticated()) {
+                                customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
+                                    res.render("product-filter", {
+                                        data: result,
+                                        types: data,
+                                        suppliers: supplier,
+                                        itemsPerPage: itemsPerPage,
+                                        currentPage: currentPage,
+                                        message: req.flash('success'),
+                                        customer: customerResult,
+                                        selected: selection,
+                                        supplierFilter: supplierFilter,
+                                        priceValue: priceFilter
+                                    });
+                                })
+                            } else {
                                 res.render("product-filter", {
                                     data: result,
                                     types: data,
@@ -628,35 +671,122 @@ class ProductController {
                                     itemsPerPage: itemsPerPage,
                                     currentPage: currentPage,
                                     message: req.flash('success'),
-                                    customer: customerResult,
+                                    customer: undefined,
                                     selected: selection,
                                     supplierFilter: supplierFilter,
                                     priceValue: priceFilter
                                 });
-                            })
-                        } else {
-                            res.render("product-filter", {
-                                data: result,
-                                types: data,
-                                suppliers: supplier,
-                                itemsPerPage: itemsPerPage,
-                                currentPage: currentPage,
-                                message: req.flash('success'),
-                                customer: undefined,
-                                selected: selection,
-                                supplierFilter: supplierFilter,
-                                priceValue: priceFilter
-                            });
-                        }
+                            }
+                        });
                     });
                 });
-            });
+            } else {
+                console.log("tsest");
+                product.find({ 'description.typeCode': selection }, (err, result) => {
+                    if (priceFilter == 1)
+                        result.sort(function(a, b) {
+                            return parseFloat(a._doc.description.price) - parseFloat(b._doc.description.price);
+                        });
+                    else if (priceFilter == 2)
+                        result.sort(function(a, b) {
+                            return parseFloat(b._doc.description.price) - parseFloat(a._doc.description.price);
+                        });
+                    else if (priceFilter == 3)
+                        result.sort(function(a, b) {
+                            if (a._doc.productName < b._doc.productName)
+                                return -1;
+                            if (a._doc.productName > b._doc.productName)
+                                return 1;
+                            return 0;
+                        });
+                    else if (priceFilter == 4)
+                        result.sort(function(a, b) {
+                            if (a._doc.productName < b._doc.productName)
+                                return 1;
+                            if (a._doc.productName > b._doc.productName)
+                                return -1;
+                            return 0;
+                        });
+                    type.find({}, (err, data) => {
+                        supplier.find({}, (err, supplier) => {
+                            if (req.isAuthenticated()) {
+                                customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
+                                    res.render("product-filter", {
+                                        data: result,
+                                        types: data,
+                                        suppliers: supplier,
+                                        itemsPerPage: itemsPerPage,
+                                        currentPage: currentPage,
+                                        message: req.flash('success'),
+                                        customer: customerResult,
+                                        selected: selection,
+                                        supplierFilter: supplierFilter,
+                                        priceValue: priceFilter
+                                    });
+                                })
+                            } else {
+                                res.render("product-filter", {
+                                    data: result,
+                                    types: data,
+                                    suppliers: supplier,
+                                    itemsPerPage: itemsPerPage,
+                                    currentPage: currentPage,
+                                    message: req.flash('success'),
+                                    customer: undefined,
+                                    selected: selection,
+                                    supplierFilter: supplierFilter,
+                                    priceValue: priceFilter
+                                });
+                            }
+                        });
+                    });
+                });
+            }
         } else {
-            product.find({}, (err, result) => {
-                type.find({}, (err, data) => {
-                    supplier.find({}, (err, supplier) => {
-                        if (req.isAuthenticated()) {
-                            customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
+            if (supplierFilter) {
+                product.find({ 'description.supplierCode': supplierFilter }, (err, result) => {
+                    if (priceFilter == 1)
+                        result.sort(function(a, b) {
+                            return parseFloat(a._doc.description.price) - parseFloat(b._doc.description.price);
+                        });
+                    else if (priceFilter == 2)
+                        result.sort(function(a, b) {
+                            return parseFloat(b._doc.description.price) - parseFloat(a._doc.description.price);
+                        });
+                    else if (priceFilter == 3)
+                        result.sort(function(a, b) {
+                            if (a._doc.productName < b._doc.productName)
+                                return -1;
+                            if (a._doc.productName > b._doc.productName)
+                                return 1;
+                            return 0;
+                        });
+                    else if (priceFilter == 4)
+                        result.sort(function(a, b) {
+                            if (a._doc.productName < b._doc.productName)
+                                return 1;
+                            if (a._doc.productName > b._doc.productName)
+                                return -1;
+                            return 0;
+                        });
+                    type.find({}, (err, data) => {
+                        supplier.find({}, (err, supplier) => {
+                            if (req.isAuthenticated()) {
+                                customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
+                                    res.render("product-filter", {
+                                        data: result,
+                                        types: data,
+                                        suppliers: supplier,
+                                        itemsPerPage: itemsPerPage,
+                                        currentPage: currentPage,
+                                        message: req.flash('success'),
+                                        customer: customerResult,
+                                        selected: selection,
+                                        supplierFilter: supplierFilter,
+                                        priceValue: priceFilter
+                                    });
+                                })
+                            } else {
                                 res.render("product-filter", {
                                     data: result,
                                     types: data,
@@ -664,29 +794,74 @@ class ProductController {
                                     itemsPerPage: itemsPerPage,
                                     currentPage: currentPage,
                                     message: req.flash('success'),
-                                    customer: customerResult,
+                                    customer: undefined,
                                     selected: selection,
                                     supplierFilter: supplierFilter,
                                     priceValue: priceFilter
                                 });
-                            })
-                        } else {
-                            res.render("product-filter", {
-                                data: result,
-                                types: data,
-                                suppliers: supplier,
-                                itemsPerPage: itemsPerPage,
-                                currentPage: currentPage,
-                                message: req.flash('success'),
-                                customer: undefined,
-                                selected: selection,
-                                supplierFilter: supplierFilter,
-                                priceValue: priceFilter
-                            });
-                        }
+                            }
+                        });
                     });
                 });
-            });
+            } else {
+                product.find({}, (err, result) => {
+                    if (priceFilter == 1)
+                        result.sort(function(a, b) {
+                            return parseFloat(a._doc.description.price) - parseFloat(b._doc.description.price);
+                        });
+                    else if (priceFilter == 2)
+                        result.sort(function(a, b) {
+                            return parseFloat(b._doc.description.price) - parseFloat(a._doc.description.price);
+                        });
+                    else if (priceFilter == 3)
+                        result.sort(function(a, b) {
+                            if (a._doc.productName < b._doc.productName)
+                                return -1;
+                            if (a._doc.productName > b._doc.productName)
+                                return 1;
+                            return 0;
+                        });
+                    else if (priceFilter == 4)
+                        result.sort(function(a, b) {
+                            if (a._doc.productName < b._doc.productName)
+                                return 1;
+                            if (a._doc.productName > b._doc.productName)
+                                return -1;
+                            return 0;
+                        });
+                    type.find({}, (err, data) => {
+                        supplier.find({}, (err, supplier) => {
+                            if (req.isAuthenticated()) {
+                                customers.findOne({ 'loginInformation.userName': req.session.passport.user.username }, (err, customerResult) => {
+                                    res.render("product-filter", {
+                                        data: result,
+                                        types: data,
+                                        suppliers: supplier,
+                                        itemsPerPage: itemsPerPage,
+                                        currentPage: currentPage,
+                                        message: req.flash('success'),
+                                        customer: customerResult,
+                                        selected: selection,
+                                        priceValue: priceFilter
+                                    });
+                                })
+                            } else {
+                                res.render("product-filter", {
+                                    data: result,
+                                    types: data,
+                                    suppliers: supplier,
+                                    itemsPerPage: itemsPerPage,
+                                    currentPage: currentPage,
+                                    message: req.flash('success'),
+                                    customer: undefined,
+                                    selected: selection,
+                                    priceValue: priceFilter
+                                });
+                            }
+                        });
+                    });
+                });
+            }
         }
     }
 }
