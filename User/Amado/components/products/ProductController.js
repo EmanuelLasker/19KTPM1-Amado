@@ -350,6 +350,8 @@ class ProductController {
         var currentPage = req.params.page;
         if(currentPage == undefined)
             currentPage = 1;
+        if(priceFilter==undefined)
+            priceFilter = 0;
 
         req.session.selection = selection;
         req.session.supplierFilter = supplierFilter;
