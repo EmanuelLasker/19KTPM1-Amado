@@ -209,7 +209,7 @@ class UserController {
           'address': address,
           'phoneNumber': phone,
           'email': email,
-          'avatar': avatar
+          'avatar': '/uploads/user-01.png'
         }
         customers
           .findOneAndUpdate({ 'loginInformation.userName': username }, data, { new: true })
