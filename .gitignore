@@ -69,7 +69,7 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+#.env
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
@@ -112,3 +112,5 @@ User/Amado/scratch
 User/Amado/Amado.zip
 User/User_uncheckmail.zip
 User/User-Final.zip
+User/Amado/Update.zip
+Admin/Amado/update.zip
