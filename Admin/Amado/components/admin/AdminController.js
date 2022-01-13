@@ -14,6 +14,18 @@ const nodemailer = require("nodemailer");
 const EMAIL_SECRET = 'asdf1093KMnzxcvnkljvasdu09123nlasdasdf';
 
 class AdminController {
+  getEntrance(req, res, next) {
+    if (req.isAuthenticated()) {
+      admin.findOne(
+        { "loginInformation.userName": req.session.passport.user.username },
+        (err, adminResult) => {
+          res.redirect("/dashboard");  
+        }
+      );
+    } else {
+      res.redirect("/admin/login");
+    }
+  }
   getLoginPage(req, res, next) {
     res.render("login", { message: req.flash("error") });
   }
