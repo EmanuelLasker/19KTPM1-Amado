@@ -607,6 +607,7 @@ class ProductController {
             }
         }
     }
+    
     filterProductAtPage(req, res, next) {
         var supplierFilter = req.session.supplierFilter;
         var selection = req.session.selection;
