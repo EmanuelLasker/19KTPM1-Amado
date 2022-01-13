@@ -319,7 +319,7 @@
                   itemsPerPage %>
                   <% for(var i=1; i <=totalPage; i++){%>
                     <li class="page-item <%= i == currentPage ? 'active' : '' %> ">
-                      <a class="page-link" href="/product/product-filter/<%= i %>/<%= ">0<%= i %> .</a>
+                      <a class="page-link" href="/product/product-filter/<%= i %>/<%= priceValue %>">0<%= i %> .</a>
                     </li>
                     <%} %>
               </ul>

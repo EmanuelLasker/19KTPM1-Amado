@@ -608,9 +608,9 @@ class ProductController {
     filterProductAtPage(req, res, next) {
         var supplierFilter = req.session.supplierFilter;
         var selection = req.session.selection;
-        var priceFilter = req.body.price;
+        var priceFilter = (req.params.price != undefined) ? req.params.price : req.body.price;
         var itemsPerPage = 6;
-        var currentPage = req.params.page;
+        var currentPage = (req.params.price != undefined) ? req.params.page : 1;
         if (selection) {
             if (supplierFilter) {
                 product.find({ description: { $elementMatch: { typeCode: selection, supplierCode: supplierFilter } } }, (err, result) => {
