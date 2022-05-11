@@ -9,7 +9,6 @@ const bill = new mongoose.Schema({
     resquest: String,
     date: Object,
     status: String
-
 },{ versionKey: null });
 
 module.exports = mongoose.model('bills', bill);
