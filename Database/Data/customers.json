@@ -1,0 +1,143 @@
+[{
+  "fullNameCustomer": {
+    "firstName": "Trịnh Tường",
+    "lastName:": "Khâm"
+  },
+  "dateOfBirth": "08/03/1999",
+  "sex": true,
+  "identityCardNumber": "331858506",
+  "address": "Bình Tân - Vĩnh Long",
+  "phoneNumber": "0776688934",
+  "email": "khamtt8399@gmail.com",
+  "listProduct": [],
+  "listFavorite": [],
+  "loginInformation": {
+    "userName": "tuongkhamuser",
+    "password": "khamtt12345",
+    "type": "User",
+    "roles": [
+      "Normal"
+    ]
+  },
+  "avatar": "/public/images/avatar-2.jpg"
+},{
+  "fullNameCustomer": {
+    "firstName": "Trịnh Tường",
+    "lastName:": "Khâm"
+  },
+  "dateOfBirth": "08/03/1999",
+  "sex": true,
+  "identityCardNumber": "331858506",
+  "address": "Bình Tân - Vĩnh Long",
+  "phoneNumber": "0776688934",
+  "email": "khamtt8399@gmail.com",
+  "listProduct": [],
+  "listFavorite": [],
+  "loginInformation": {
+    "userName": "user",
+    "password": "123",
+    "type": "User",
+    "roles": [
+      "Normal"
+    ]
+  },
+  "avatar": "/public/images/avatar-2.jpg"
+},{
+  "listProduct": [],
+  "listFavorite": [],
+  "fullNameCustomer": {
+    "firstName": "Trần",
+    "lastName": "Tuấn"
+  },
+  "dateOfBirth": null,
+  "sex": true,
+  "identityCardNumber": "184365476",
+  "address": "164 Cao Lo",
+  "phoneNumber": "+84981242671",
+  "email": "coppydera@gmail.com",
+  "loginInformation": {
+    "userName": "coppydera",
+    "password": "$2b$10$Q5qCpC0FIfhe5o01fczy8e1k/xFqMdNk0nogGuzwNGNB0o5bXKYtS",
+    "type": "User",
+    "roles": []
+  },
+  "avatar": "https://cdn.pixabay.com/photo/2021/10/26/12/34/christmas-6743572_960_720.jpg"
+},{
+  "listProduct": [],
+  "listFavorite": [],
+  "fullNameCustomer": {
+    "firstName": "FFFF",
+    "lastName": "Tuấn"
+  },
+  "dateOfBirth": null,
+  "sex": null,
+  "identityCardNumber": "187674342",
+  "address": null,
+  "phoneNumber": "0123456789",
+  "email": "kptkt01@gmail.com",
+  "loginInformation": {
+    "userName": "kptkt01",
+    "password": "$2b$10$jMPpw0AzlqcO4foIEJgwMu6a4piOZ5y/ea5PSYld4Qe5ibDTjJZra",
+    "type": "User",
+    "roles": []
+  },
+  "avatar": "/uploads/user-01.png",
+  "verified": false,
+  "locked": false
+},{
+  "fullNameCustomer": {
+    "firstName": "Quang Tấn Long",
+    "lastName": "Lê"
+  },
+  "dateOfBirth": "02/02/2001",
+  "sex": true,
+  "identityCardNumber": "312471727",
+  "address": "Gò Công - Tiền Giang",
+  "phoneNumber": "07799588585",
+  "email": "longlequangtan@gmail.com",
+  "listProduct": [],
+  "listFavorite": [],
+  "loginInformation": {
+    "userName": "lqtlong",
+    "password": "$2b$10$kv7BP0n7OGlTWLWaeMA91upn0gnfQOozily2kTxg3UW/jDAZvuOtC",
+    "type": "User",
+    "roles": [
+      "Normal"
+    ]
+  },
+  "avatar": "/public/images/avatar-2.jpg",
+  "verified": true,
+  "locked": false
+},{
+  "fullNameCustomer": {
+    "firstName": "Thanh Tùng",
+    "lastName": "Trần"
+  },
+  "dateOfBirth": "05/08/2001",
+  "sex": true,
+  "identityCardNumber": "331858506",
+  "address": "Tân Bình - Thành phố Hồ Chí Minh",
+  "phoneNumber": "0776688934",
+  "email": "trthtn0508@gmail.com",
+  "listProduct": [
+    {
+      "productID": "60929e4d6ce96574b4508dc8",
+      "productName": "Bàn kính Ikea Vittsjo",
+      "productPrice": "1390000",
+      "productImage": "/uploads/ikea-vittsjo-01.jpg",
+      "amount": 1
+    }
+  ],
+  "listFavorite": [],
+  "loginInformation": {
+    "userName": "user",
+    "password": "$2b$10$TWkeKzZ/IhNcQxr6zz/fMODVJKAb.sjn14AvjbvAmmkPHs63m6axC",
+    "type": "User",
+    "roles": [
+      "Normal"
+    ]
+  },
+  "avatar": "/public/images/avatar-2.jpg",
+  "verified": false,
+  "locked": false
+}]

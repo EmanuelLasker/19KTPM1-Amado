@@ -1,0 +1,43 @@
+[{
+  "fullNameCustomer": {
+    "firstName": "Quang Tấn Long",
+    "lastName": "Lê"
+  },
+  "dateOfBirth": "2001-02-02",
+  "identityCardNumber": "079219127201",
+  "address": "Gò Công - Tiền Giang",
+  "phoneNumber": "07799588585",
+  "email": "longlequangtan@gmail.com",
+  "loginInformation": {
+    "userName": "admin",
+    "password": "$2b$10$0Hmvq679/Vv26WGwbcI.j.l3W2HIznIFrPq/iyxiqlEHyuWepyVpK",
+    "type": "Admin",
+    "roles": [
+      "All"
+    ]
+  },
+  "avatar": "/uploads/user-01.png",
+  "locked": false,
+  "gender": "true"
+},{
+  "fullNameCustomer": {
+    "firstName": "Thanh Tùng",
+    "lastName": "Trần"
+  },
+  "dateOfBirth": "2001-08-05",
+  "gender": "true",
+  "identityCardNumber": "079219127311",
+  "address": "Tân Bình - TPHCM",
+  "phoneNumber": "0719127311",
+  "email": "trthtn0508@gmail.com",
+  "loginInformation": {
+    "userName": "gulugulu10",
+    "password": "$2b$10$D2KE7ksMSK7sN8jflzqyBujz0aDnN1M2sp.ip.OCjjYcN3SSOl61a",
+    "type": "Admin",
+    "roles": [
+      "All"
+    ]
+  },
+  "avatar": "/uploads/user-01.png",
+  "locked": false
+}]
