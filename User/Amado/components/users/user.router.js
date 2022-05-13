@@ -2,13 +2,6 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const userController = require('../users/UserController');
-// const ExpressRedisCache = require('express-redis-cache');
-// const cache1 = ExpressRedisCache({
-//     expire: 60, // optional: expire every 10 seconds
-// })
-// const cache2 = ExpressRedisCache({
-//     expire: 5, // optional: expire every 10 seconds
-// })
 
 router.get('/login', userController.getLoginPage);
 router.get('/user-info',userController.getUserInformation);
